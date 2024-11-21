@@ -1,0 +1,28 @@
+{
+    "editor.tabSize": 3,
+    "files.trimTrailingWhitespace": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.formatOnSave": true,
+    "black-formatter.args": [
+       "--line-length=120",
+    ],
+    "[python]": {
+       "editor.tabSize": 4,
+       "editor.defaultFormatter": "ms-python.black-formatter",
+       "editor.formatOnType": true,
+    },
+    "[toml]": {
+       "editor.tabSize": 2,
+       "editor.formatOnType": true,
+    },
+    "yaml.schemas": {
+       "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": [
+          "file:///Users/wythe/Library/Mobile%20Documents/com~apple~CloudDocs/WorkSpace/FutureNest/_github_repo/AInsight-backend/docker-compose/dev.yml",
+          "file:///Users/wythe/Library/Mobile%20Documents/com~apple~CloudDocs/WorkSpace/FutureNest/_github_repo/AInsight-backend/ainsight_backend/config/settings/prod_image_tst.yml"
+       ]
+    },
+    "python.analysis.extraPaths": [
+       "./ainsight_backend"
+    ]
+ }
+ 
