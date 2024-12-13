@@ -30,12 +30,12 @@ class Prepare:
 
     def __do_crawl(self) -> tuple[
         dict[str, list[dict[str, str | list[str] | datetime]]],
-        set[str],
+        dict[str, set[str]],
     ]:
         crawl_results, today_tags = Crawl().crawl()
         return crawl_results, today_tags
 
-    def __do_embedding_and_upload(self, today_tags: set[str]) -> bool:
+    def __do_embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
         """Embedding 上傳到 vectorestore：將 tags 進行 embedding 並存在 google vectorestore
         - 包含：tags、embedding
         """

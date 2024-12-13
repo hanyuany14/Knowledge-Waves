@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "stream-assistant"
+version = "0.1.0"
+description = ""
+authors = ["Stephenworkplace <139206587+hanyuany14@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "stream_assistant"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+looker-sdk = "^24.20.0"
+google-auth = "^2.36.0"
+google-auth-oauthlib = "^1.2.1"
+google-auth-httplib2 = "^0.2.0"
+google-api-python-client = "^2.154.0"
+selenium = "^4.26.1"
+pillow = "^11.0.0"
+webdriver-manager = "^4.0.2"
+langchain-google-community = {extras = ["featurestore"], version = "^2.0.3"}
+langchain-openai = "^0.2.9"
+sqlalchemy-bigquery = "^1.12.0"
+grandalf = "^0.8"
+langchain = "^0.3.7"
+langchain-google-vertexai = "^2.0.8"
+uvicorn = "^0.32.1"
+fastapi = "^0.115.6"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.12.3"
+feedparser = "^6.0.11"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
