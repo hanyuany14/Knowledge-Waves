@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from langchain_google_community.bigquery import BigQueryLoader
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_community import BigQueryVectorStore
@@ -11,6 +13,9 @@ class VectorStore:
     def __init__(self):
         self.__embedding_obj = self.__get_embeddings_obj()
         self.__vectorstore_obj = self.__get_vectorestore_obj()
+
+        today_date = datetime.now().strftime("%Y%m%d")
+        self.__table_name = f"{configs.VECTORSTORE_TABLE}_{today_date}"
 
     def embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
 
@@ -45,8 +50,9 @@ class VectorStore:
         return BigQueryVectorStore(
             project_id=configs.PROJECT_ID,
             dataset_name=configs.DATASET_ID,
-            table_name=configs.VECTORSTORE_TABLE,
+            table_name=self.__table_name,
             location=configs.VECTORSTORE_REGION,
             embedding=self.__embedding_obj,
             credentials=utils.CREDENTIAL_OBJ,
+            distance_type="COSINE",  # 'COSINE', 'EUCLIDEAN', 'DOT_PRODUCT'
         )
