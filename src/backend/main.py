@@ -1,7 +1,3 @@
-# 1. 使用者層：接收使用者 query 今日有興趣主題
-# 2. 資料層：爬蟲、embedding、上傳資料
-
-
 """
 main 包含：
 1. 使用者層：接收使用者 query 今日有興趣主題
@@ -19,7 +15,7 @@ main 包含：
 - 上傳到 BigQuery：將爬取的資料上傳到 BigQuery
     - 包含：文章標題、tags、文章網址、文章時間、文章來源
 - 上傳到 GCS：將爬取的資料上傳到 GCS
-    - 包含：文章內容
+    - 包含：文章內容、文章標題
 - Embedding 上傳到 vectorestore：將 tags 進行 embedding 並存在 google vectorestore
     - 包含：tags、embedding
 """
@@ -33,9 +29,11 @@ class Main:
         """
         使用者層：接收使用者 query 今日有興趣主題
         """
-        interested_tags = []
-        summaarized_content = ""
-        article_titles = [("title", "url")]
+        # interested_tags = []
+        # summaarized_content = ""
+        # article_titles = [("title", "url")]
+
+        interested_tags, summaarized_content, article_titles = Summarization.do_summary(query)
 
         return interested_tags, summaarized_content, article_titles
 
@@ -44,3 +42,7 @@ class Main:
         資料層：爬蟲、embedding、上傳資料
         """
         return True
+
+if __name__ == "__main__":
+    main = Main()
+    main.do_summarize("今日有興趣主題")
