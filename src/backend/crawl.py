@@ -5,7 +5,7 @@ import feedparser
 from datetime import datetime, timedelta
 from typing import Set
 
-import src.backend.configs as configs
+import configs as configs
 
 
 class Crawl:
@@ -23,10 +23,17 @@ class Crawl:
     ]:
         """
         爬蟲：爬取三個網站的文章內容
+
+        Returns:
+            crawl_results (dict[str, list[dict[str, str | list[str] | datetime]]): 爬取的文章內容 e.g. {"github": [{"title": "title", "content": "content", "tags": ["tag1", "tag2"], "url": "url", "publish_date": datetime}]}
+            today_tags (dict[str, set[str]]): 今日爬取的 tags e.g. {"github": {"tag1", "tag2"}}
         """
-        github_result, github_tags = self.__crawl_from_github()
+        # github_result, github_tags = self.__crawl_from_github()
         medium_result, medium_tags = self.__crawl_from_medium()
-        csdn_result, csdn_tags = self.__crawl_from_csdn()
+        # csdn_result, csdn_tags = self.__crawl_from_csdn()
+
+        github_result, github_tags = [], []
+        csdn_result, csdn_tags = [], []
 
         crawl_results = {
             "github": github_result,
@@ -46,11 +53,10 @@ class Crawl:
         result_list = [
             {
                 "title": "title",
-                "subtitle": "subtitle",
                 "content": "content",
                 "tags": ["tag1", "tag2"],
                 "url": "url",
-                "publish_time": datetime,
+                "publish_date": datetime,
             }
         ]
 
@@ -59,8 +65,18 @@ class Crawl:
         return result_list, tags
 
     def __crawl_from_medium(self) -> tuple[list[dict[str, str | list[str] | datetime]], set[str]]:
+        """Crwal articles from medium.com
+
+        Returns:
+            tuple[list[dict[str, str | list[str] | datetime]], set[str]]: A tuple containing the list of articles and the set of tags.
+                - gloabl_medium_result(list[dict[str, str | list[str] | datetime]]): A list of dictionaries, each representing an article with keys like 'title', 'content', 'tags', 'url', and 'publish_date'.
+
+                - tags(set[str]): A set of tags.
+        """
 
         # categories = ["technology", "self-improvement", "software-development", "deep-learning", "python"]
+
+        print(f"\nNow crawling from medium.com\n")
 
         max_times = 3
         gloabl_medium_result = []
@@ -70,21 +86,22 @@ class Crawl:
 
         for i in range(max_times):
             print(f"\n----------------Processing round: {i+1}----------------\n")
+
+            categories = categories[:1]  # for testing
+
             print(f"    The number of categories: {len(categories)}")
 
             parse_medium_result, parsed_tags = self.__crawl_medium_24hr_feed_by_categories(categories)
-            print(f"    parse_medium_result: {parse_medium_result}, parsed_tags: {parsed_tags}")
+            # print(f"    parse_medium_result: {parse_medium_result}, parsed_tags: {parsed_tags}")
 
-            if all(
-                value == [] for value in parse_medium_result.values()
-            ):  # 第一個終止條件 - 這一輪查詢沒有出現任何新的文章
+            if parse_medium_result == []:  # 第一個終止條件 - 這一輪查詢沒有出現任何新的文章
                 print("parse_medium_result is empty, 結束爬蟲")
                 break
             else:
-                gloabl_medium_result.append(parse_medium_result)
+                gloabl_medium_result.extend(parse_medium_result)
 
-            print(f"    existed_tags: {self.__medium_existed_tags}")
-            print(f"    parsed_tags: {parsed_tags}")
+            # print(f"    existed_tags: {self.__medium_existed_tags}")
+            # print(f"    parsed_tags: {parsed_tags}")
             if set(parsed_tags).issubset(
                 self.__medium_existed_tags
             ):  # 第二個終止條件 - 本輪新的 tags 都已經存在於 existed_tags 中
@@ -93,8 +110,9 @@ class Crawl:
             else:
                 categories = [tag for tag in parsed_tags if tag not in self.__medium_existed_tags]
                 self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
-                print(f"    新的 tags: {categories}")
+                # print(f"    新的 tags: {categories}")
 
+        print(f"    爬取的文章數量: {len(gloabl_medium_result)}")
         tags = self.__get_tags(gloabl_medium_result)
 
         return gloabl_medium_result, tags
@@ -104,11 +122,10 @@ class Crawl:
         result_list = [
             {
                 "title": "title",
-                "subtitle": "subtitle",
                 "content": "content",
                 "tags": ["tag1", "tag2"],
                 "url": "url",
-                "publish_time": datetime,
+                "publish_date": datetime,
             }
         ]
 
@@ -116,8 +133,11 @@ class Crawl:
 
         return result_list, tags
 
-    def __get_tags(self, parse_result: list[dict]) -> set[str]:
-        tags = [tag for result in parse_result for tag in result["tags"]]
+    def __get_tags(self, parse_results_list: list[dict]) -> set[str]:
+        # print(f"\n\n\n\nparse_result: {parse_results_list[0]}")
+        # print(f"\n\n\n\nparse_result[0]['tags']: {parse_results_list[0]['tags']}")
+
+        tags = [tag for parse_result in parse_results_list for tag in parse_result["tags"]]
         return set(tags)
 
     def __crawl_medium_url(self, url: str) -> dict:
@@ -132,23 +152,22 @@ class Crawl:
                 paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
 
                 return {
-                    "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
+                    # "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
                     "content": "".join(paragraph["text"] for paragraph in paragraphs),
                 }
 
         else:
             raise Exception(f"Failed to retrieve data: {response.status_code}")
 
-        return {}
+        return {"content": ""}
 
     def __crawl_medium_24hr_feed_by_categories(self, categories: list[str]):
 
         parsed_tags: Set[str] = set()
-        parse_medium_result = {}
+        parse_medium_result = []
 
         for category in categories:
             print(f"Processing category: {category}")
-            result = []
             feed = feedparser.parse(f"{configs.MEDIUM_TAG_BASE_URL+category}")
 
             for entry in feed.entries:
@@ -167,12 +186,12 @@ class Crawl:
                         parse_result.update(
                             {
                                 "title": entry.title,
-                                "link": entry.id,
+                                "url": entry.id,
                                 "tags": tags,
-                                "published_time": published_time,
+                                "publish_date": published_time,
                             }
                         )
-                        result.append(parse_result)
+                        parse_medium_result.append(parse_result)
                         self.__medium_existed_article.add(entry.id)
                         parsed_tags = parsed_tags.union(tags)
 
@@ -180,7 +199,6 @@ class Crawl:
                         print(f"Failed to parse article: {e}")
                         parse_result = "failed"
 
-            parse_medium_result[category] = result
-            print(f"category: {category}, count: {len(parse_medium_result[category])}")
+            print(f"category: {category}, count: {len(parse_medium_result)}")
 
         return parse_medium_result, parsed_tags
