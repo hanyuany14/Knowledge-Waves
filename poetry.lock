@@ -753,6 +753,20 @@ files = [
 ]
 
 [[package]]
+name = "google"
+version = "3.0.0"
+description = "Python bindings to the Google search engine."
+optional = false
+python-versions = "*"
+files = [
+    {file = "google-3.0.0-py2.py3-none-any.whl", hash = "sha256:889cf695f84e4ae2c55fbc0cfdaf4c1e729417fa52ab1db0485202ba173e4935"},
+    {file = "google-3.0.0.tar.gz", hash = "sha256:143530122ee5130509ad5e989f0512f7cb218b2d4eddbafbad40fd10e8d8ccbe"},
+]
+
+[package.dependencies]
+beautifulsoup4 = "*"
+
+[[package]]
 name = "google-api-core"
 version = "2.23.0"
 description = "Google API client core library"
@@ -3963,4 +3977,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "65ff4ea0c172e3437beaa5be5075776bc13e21d0f115e6923b7897f6da0207de"
+content-hash = "d8d4d53215b3e117769e3e62ba7cc9a6efdbe35ee10051d4e4651b01cd01081e"

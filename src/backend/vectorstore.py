@@ -15,7 +15,7 @@ class VectorStore:
         self.__vectorstore_obj = self.__get_vectorestore_obj()
 
         today_date = datetime.now().strftime("%Y%m%d")
-        self.__table_name = f"{configs.VECTORSTORE_TABLE}_{today_date}"
+        self.__table_name = f"{configs.VECTORSTORE_TABLE_ID}_{today_date}"
 
     def embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
 
@@ -27,8 +27,19 @@ class VectorStore:
         self.__vectorstore_obj.add_texts(texts=list(all_texts), metadatas=metadatas)
         return True
 
-    def search_similar_tags(self, query: str, sources: list[str]) -> list[(str)]:
+    def search_similar_tags(self, query: str, sources: list[str] | None) -> list[(str)]:
+        """Searches for similar tags based on the query.
+
+        Args:
+            query (str): The query to search for. e.g. "Give me some information about NLP."
+            sources (list[str], optional): The sources selected by user to search. Defaults to None.
+                                            e.g. ["github", "medium"]
+
+        Returns:
+            list[(str)]: A list of similar tags. e.g. ["NLP", "Natural Language Processing"]
+        """
         interested_tags = []
+        sources = sources if sources else ["github", "medium", "csdn"]
 
         for source in sources:
             docs_for_tags = self.__vectorstore_obj.similarity_search(

@@ -23,10 +23,17 @@ class Crawl:
     ]:
         """
         爬蟲：爬取三個網站的文章內容
+
+        Returns:
+            crawl_results (dict[str, list[dict[str, str | list[str] | datetime]]): 爬取的文章內容 e.g. {"github": [{"title": "title", "content": "content", "tags": ["tag1", "tag2"], "url": "url", "publish_time": datetime}]}
+            today_tags (dict[str, set[str]]): 今日爬取的 tags e.g. {"github": {"tag1", "tag2"}}
         """
-        github_result, github_tags = self.__crawl_from_github()
+        # github_result, github_tags = self.__crawl_from_github()
         medium_result, medium_tags = self.__crawl_from_medium()
-        csdn_result, csdn_tags = self.__crawl_from_csdn()
+        # csdn_result, csdn_tags = self.__crawl_from_csdn()
+
+        github_result, github_tags = [], []
+        csdn_result, csdn_tags = [], []
 
         crawl_results = {
             "github": github_result,
@@ -46,7 +53,6 @@ class Crawl:
         result_list = [
             {
                 "title": "title",
-                "subtitle": "subtitle",
                 "content": "content",
                 "tags": ["tag1", "tag2"],
                 "url": "url",
@@ -59,6 +65,14 @@ class Crawl:
         return result_list, tags
 
     def __crawl_from_medium(self) -> tuple[list[dict[str, str | list[str] | datetime]], set[str]]:
+        """Crwal articles from medium.com
+
+        Returns:
+            tuple[list[dict[str, str | list[str] | datetime]], set[str]]: A tuple containing the list of articles and the set of tags.
+                - gloabl_medium_result(list[dict[str, str | list[str] | datetime]]): A list of dictionaries, each representing an article with keys like 'title', 'content', 'tags', 'url', and 'publish_time'.
+
+                - tags(set[str]): A set of tags.
+        """
 
         # categories = ["technology", "self-improvement", "software-development", "deep-learning", "python"]
 
@@ -104,7 +118,6 @@ class Crawl:
         result_list = [
             {
                 "title": "title",
-                "subtitle": "subtitle",
                 "content": "content",
                 "tags": ["tag1", "tag2"],
                 "url": "url",
@@ -132,14 +145,14 @@ class Crawl:
                 paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
 
                 return {
-                    "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
+                    # "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
                     "content": "".join(paragraph["text"] for paragraph in paragraphs),
                 }
 
         else:
             raise Exception(f"Failed to retrieve data: {response.status_code}")
 
-        return {}
+        return {"content": ""}
 
     def __crawl_medium_24hr_feed_by_categories(self, categories: list[str]):
 
@@ -167,9 +180,9 @@ class Crawl:
                         parse_result.update(
                             {
                                 "title": entry.title,
-                                "link": entry.id,
+                                "url": entry.id,
                                 "tags": tags,
-                                "published_time": published_time,
+                                "publish_time": published_time,
                             }
                         )
                         result.append(parse_result)
