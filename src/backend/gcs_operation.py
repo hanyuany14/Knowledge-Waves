@@ -1,8 +1,8 @@
 from datetime import datetime
 from google.api_core.exceptions import Conflict
 
-import src.backend.utils as utils
-import src.backend.configs as configs
+import utils as utils
+import configs as configs
 
 
 class GCSOperation:
@@ -24,10 +24,11 @@ class GCSOperation:
         Returns:
             bool: True if upload succeeds, False otherwise.
         """
+        print(f"\nNow uploading content to GCS...")
         try:
             for source, articles in crawl_results.items():
                 for article in articles:
-                    file_path = f"{self.__datetime_str}/{source}/{article["title"]}.txt"
+                    file_path = f"{self.__datetime_str}/{source}/{article['title']}.txt"
                     bucket = utils.GCS_CLIENT.bucket(configs.GCS_BUCKET_ID)
 
                     blob = bucket.blob(file_path)
@@ -86,7 +87,7 @@ class GCSOperation:
         try:
             bucket = utils.GCS_CLIENT.lookup_bucket(bucket_name=configs.GCS_BUCKET_ID)
             if bucket:
-                print(f"Bucket {configs.GCS_BUCKET_ID} already exists.")
+                print(f"\n\n    Bucket {configs.GCS_BUCKET_ID} already exists.")
             else:
                 utils.GCS_CLIENT.create_bucket(configs.GCS_BUCKET_ID)
                 print(f"Bucket {configs.GCS_BUCKET_ID} created successfully.")

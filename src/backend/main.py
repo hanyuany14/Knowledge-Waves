@@ -1,8 +1,10 @@
-from src.backend.summary import Summarization
-from src.backend.vectorstore import VectorStore
-from src.backend.bigquery_operation import BigQueryOperation
-from src.backend.gcs_operation import GCSOperation
-from src.backend.crawl import Crawl
+import datetime
+
+from summary import Summarization
+from vectorstore import VectorStore
+from bigquery_operation import BigQueryOperation
+from gcs_operation import GCSOperation
+from crawl import Crawl
 
 
 class Main:
@@ -25,7 +27,7 @@ class Main:
     - 上傳到 GCS：將爬取的資料上傳到 GCS
         - 包含：文章內容、文章標題
     - Embedding 上傳到 vectorestore：將 tags 進行 embedding 並存在 google vectorestore
-        - 包含：tags、embedding
+        - 包含：tags、embeddings
     """
 
     def __init__(self): ...
@@ -72,8 +74,3 @@ class Main:
         VectorStore().embedding_and_upload(today_tags=today_tags)
 
         return True
-
-
-if __name__ == "__main__":
-    main = Main()
-    main.prepare_news()

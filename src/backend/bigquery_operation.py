@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from google.cloud import bigquery
+import time
 
-import src.backend.utils as utils
-import src.backend.configs as configs
+import utils as utils
+import configs as configs
 
 
 class BigQueryOperation:
@@ -11,6 +12,8 @@ class BigQueryOperation:
         self.yesterday = datetime.now().replace(day=datetime.now().day - 1)
 
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
+
+        self.__create_dataset_if_not_exists()
         self.__create_table()
 
     def upload(self, crawl_results: dict[str, list[dict[str, str | list[str] | datetime]]]):
@@ -19,20 +22,27 @@ class BigQueryOperation:
 
         Args:
             articles (list[dict]): A list of dictionaries, each representing an article with keys like
-                                'title', 'content', 'tags', 'url', and 'publish_time'.
+                                'title', 'content', 'tags', 'url', and 'publish_date'.
 
         Returns:
             bool: True if upload succeeds, False otherwise.
         """
+        print(f"\nNow uploading articles to BigQuery...")
         try:
             for source, articles in crawl_results.items():
+                if not articles:
+                    print(f"No articles to upload for {source}.")
+                    continue
                 rows_to_insert = [
                     {
                         "title": article["title"],
-                        "content": article["content"],
                         "tags": article["tags"],
                         "url": article["url"],
-                        "publish_time": article["publish_time"],
+                        "publish_date": (
+                            article["publish_date"].strftime("%Y-%m-%dT%H:%M:%S")
+                            if isinstance(article["publish_date"], datetime)
+                            else article["publish_date"]
+                        ),
                         "source": source,
                     }
                     for article in articles
@@ -104,6 +114,7 @@ class BigQueryOperation:
         """
         Checks if the table exists in BigQuery. If not, creates the table with the specified schema.
         """
+
         schema = [
             bigquery.SchemaField("title", "STRING", mode="REQUIRED", description="文章標題"),
             bigquery.SchemaField("source", "STRING", mode="REQUIRED", description="文章來源"),
@@ -113,13 +124,31 @@ class BigQueryOperation:
         ]
 
         try:
-            tables = list(utils.BQ_CLIENT.list_tables(configs.DATASET_ID))
-            if any(table.table_id == configs.ARTICLE_INFO_TABLE_ID for table in tables):
-                print(f"Table {self.article_table_ref} already exists.")
-                return
-
             table = bigquery.Table(self.article_table_ref, schema=schema)
-            utils.BQ_CLIENT.create_table(table)
+            utils.BQ_CLIENT.create_table(table, exists_ok=True)
+            time.sleep(5)
             print(f"Table {self.article_table_ref} created successfully.")
         except Exception as e:
             print(f"Failed to create table {self.article_table_ref}: {e}")
+
+    def __create_dataset_if_not_exists(self):
+        """
+        Checks if the dataset exists in BigQuery. If not, creates the dataset.
+        """
+        dataset_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}"
+
+        try:
+            dataset = bigquery.Dataset(dataset_ref)
+            dataset.location = configs.BIGQUERY_REGION
+            utils.BQ_CLIENT.create_dataset(dataset, exists_ok=False)
+            print(f"Dataset {dataset_ref} created successfully.")
+        except Exception as e:
+            print(f"Failed to create dataset {dataset_ref}: {e}")
+
+    def __delete_existed_table(self):
+        try:
+            utils.BQ_CLIENT.delete_table(self.article_table_ref, not_found_ok=True)
+            time.sleep(5)
+            print(f"Table `{self.article_table_ref}` deleted successfully.")
+        except Exception as e:
+            print(f"Failed to delete table {self.article_table_ref}: {e}")

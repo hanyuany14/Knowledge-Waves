@@ -1,8 +1,6 @@
-from src.backend.summary import Summarization
-from src.backend.vectorstore import VectorStore
-from src.backend.bigquery_operation import BigQueryOperation
-from src.backend.gcs_operation import GCSOperation
-from src.backend.crawl import Crawl
+from vectorstore import VectorStore
+from bigquery_operation import BigQueryOperation
+from gcs_operation import GCSOperation
 
 
 class Summarization:

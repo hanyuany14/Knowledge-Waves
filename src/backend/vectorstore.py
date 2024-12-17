@@ -1,30 +1,36 @@
 from datetime import datetime
 
-from langchain_google_community.bigquery import BigQueryLoader
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_community import BigQueryVectorStore
 
 
-import src.backend.configs as configs
-import src.backend.utils as utils
+import configs as configs
+import utils as utils
 
 
 class VectorStore:
     def __init__(self):
-        self.__embedding_obj = self.__get_embeddings_obj()
-        self.__vectorstore_obj = self.__get_vectorestore_obj()
-
         today_date = datetime.now().strftime("%Y%m%d")
         self.__table_name = f"{configs.VECTORSTORE_TABLE_ID}_{today_date}"
+        print(f"table_name: {self.__table_name}")
+
+        self.__vectorstore_obj = self.__get_vectorestore_obj()
 
     def embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
 
-        all_texts = set()
-        for source, tags in today_tags.items():
-            all_texts = all_texts.union(tags)
-            metadatas = [{"source": source} for _ in tags]
+        print(f"\n\nNow embedding and uploading tags to vectorestore...")
 
-        self.__vectorstore_obj.add_texts(texts=list(all_texts), metadatas=metadatas)
+        all_tags = set()
+        all_metadatas = []
+        for source, tags in today_tags.items():
+            all_tags = all_tags.union(tags)
+            all_metadatas.extend([{"source": source} for _ in tags])
+
+        print(f"    all_tags: {all_tags}")
+        print(f"    all_metadatas: {all_metadatas}\n\n")
+
+        all_tags = list(all_tags)
+        self.__vectorstore_obj.add_texts(all_tags, metadatas=all_metadatas)
         return True
 
     def search_similar_tags(self, query: str, sources: list[str] | None) -> list[(str)]:
@@ -58,12 +64,19 @@ class VectorStore:
         )
 
     def __get_vectorestore_obj(self):
+        self.__delete_existed_vectorstore_table()
         return BigQueryVectorStore(
             project_id=configs.PROJECT_ID,
             dataset_name=configs.DATASET_ID,
             table_name=self.__table_name,
             location=configs.VECTORSTORE_REGION,
-            embedding=self.__embedding_obj,
+            embedding=self.__get_embeddings_obj(),
             credentials=utils.CREDENTIAL_OBJ,
             distance_type="COSINE",  # 'COSINE', 'EUCLIDEAN', 'DOT_PRODUCT'
         )
+
+    def __delete_existed_vectorstore_table(self):
+        utils.BQ_CLIENT.delete_table(
+            f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{self.__table_name}", not_found_ok=True
+        )
+        print(f"Table  `{self.__table_name}` deleted successfully.")
