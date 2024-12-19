@@ -7,6 +7,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 CREDENTIAL_PATH = "final-project-vectorestore_credentials.json"
 
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # BigQuery
 PROJECT_ID = "final-project-1-444506"
 DATASET_ID = "final_project_poc"
