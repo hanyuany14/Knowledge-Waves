@@ -1,0 +1,1428 @@
+{
+  "crawl_results": {
+    "github": [
+      {
+        "title": "lintstar/SharpHunter",
+        "content": "Automated Hosting Information Hunting Tool - Windows 主机信息自动化狩猎工具",
+        "tags": [
+          "bof",
+          "cobalt-strike",
+          "execute-assembly",
+          "postexplotation",
+          "redteam-tools"
+        ],
+        "url": "https://github.com/lintstar/SharpHunter",
+        "publish_date": "2024-12-19T04:30:39",
+        "readme": "\nAutomated Hosting Information Hunting Tool\n   \n功能特性\n\n支持自动化一键 Hunting 主机各类关键信息和凭据，降低后渗透阶段操作的割裂感，有效拓宽后渗透攻击面\n支持参数化执行特定模块，例如只获取 RDP 连接信息、特定软件凭据，或通过 Post 模块截图、执行 Shellcode\n借助 C# 的底层能力通过代码和 API 实现各类主机信息收集命令，降低攻防中各类马的动态行为特征\n获取最新版本的 WeChat、Chromium 系列、MobaXterm、ToDesk、SunLogin 等各类软件凭据获取和解密\n保留必要的异常抛出的同时内置大量提示信息，方便攻击者知晓 Hunting 失败原因，不遗漏关键信息的获取\n\n\n详情见分享议题：https://xz.aliyun.com/t/16823\n\n可选参数\n```shell\n[*] Usage: SharpHunter [command] [options]\nInfo Commands:\n    all       - Hunt all informations and credenti..."
+      },
+      {
+        "title": "aollivierre/ConditionalAccess",
+        "content": "This repository contains a comprehensive set of Conditional Access (CA) policies and PowerShell management tools for Microsoft Entra ID (formerly Azure AD), designed to enhance your organization's security posture while maintaining usability.",
+        "tags": [],
+        "url": "https://github.com/aollivierre/ConditionalAccess",
+        "publish_date": "2024-12-18T20:46:08",
+        "readme": "Modern Conditional Access Baseline 2025\nThis repository contains a comprehensive set of Conditional Access (CA) policies and PowerShell management tools for Microsoft Entra ID (formerly Azure AD), designed to enhance your organization's security posture while maintaining usability.\n🙏 Acknowledgments\nThis project builds upon the excellent work of:\n- Kenneth van Surksum (@kennethvs) - Original CA baseline policies\n- Daniel Chronlund (@DanielChronlund) - DC Toolbox CA implementations\n📋 Prerequisite..."
+      },
+      {
+        "title": "DrHazemAli/awesome-tech-courses",
+        "content": "A curated list of the best LinkedIn Learning courses to skill up your technology career. Whether you're just starting out or looking to advance your expertise, this repository provides top-rated courses across various technology domains.",
+        "tags": [],
+        "url": "https://github.com/DrHazemAli/awesome-tech-courses",
+        "publish_date": "2024-12-19T12:18:02",
+        "readme": "Awesome Technology Courses\nA curated list of the best LinkedIn Learning courses to skill up your technology career. Whether you're just starting out or looking to advance your expertise, this repository provides top-rated courses across various technology domains.\n\nA comprehensive and carefully curated list of the most highly-rated LinkedIn Learning courses designed to help you advance your technology career. Whether you're a beginner aiming to build a strong foundation in programming, web devel..."
+      },
+      {
+        "title": "Xianpwr/SOLANA_SNIPER_BOT",
+        "content": "A Solana game-changer in the booming SOL ecosystem. Token sniping bot which is a sophisticated automated tool designed to swiftly identify and purchase newly listed tokens",
+        "tags": [
+          "solana",
+          "solana-sniper",
+          "pumpfun-sniper",
+          "solana-snipe",
+          "raydium-bot",
+          "trading-solana",
+          "solana-meme",
+          "solana-trade-bot",
+          "sniper-bot-solana-raydium"
+        ],
+        "url": "https://github.com/Xianpwr/SOLANA_SNIPER_BOT",
+        "publish_date": "2024-12-18T19:48:32",
+        "readme": " SOLANA BOT \n\n\n\n\n\n\n  A Bot in your pocket based on take profit or buy/sell on Raydium.\n\n\n\nTable of Contents\n\nIntroduction\nFeatures\nUsage\nSetting\nDisclaimer \nContact \n\n\nIntroduction\nThe Solana Sniper/Trading Bot is a groundbreaking tool in the booming Solana ecosystem, designed to tackle a common issue faced by traders: missing out on profit opportunities after purchasing tokens on the Solana network, leading to token rug-pulls or dumps. This software not only integrates sniping functionality, al..."
+      },
+      {
+        "title": "Aerasyn/Solaris-Solana-Bot-AI",
+        "content": "The first SOL Bot AI Based",
+        "tags": [
+          "ai",
+          "bot",
+          "cryptocurrency",
+          "sniper",
+          "solana",
+          "wallet",
+          "web3"
+        ],
+        "url": "https://github.com/Aerasyn/Solaris-Solana-Bot-AI",
+        "publish_date": "2024-12-18T19:27:12",
+        "readme": "🛸Solaris Solana Bot\n\n\n\n\n\nSolaris is the first and fastest software that listens to new pump.fun pools and buys tokens for a fixed amount in SOL.\nDepending on the speed of the RPC node, the purchase usually happens before the token is available on pump.fun UI for swapping.\n\nWebsite\n\n\nTelegram\n\n\nDownload\n\n\nSOL Snipe\nAuto-Sell\nTP/SL\nTelegram Check\nWebsite Check\nTwitter Check\nFast Buy\n\n\n[!NOTE]\nThis is provided as is, for learning purposes.\n\n\n\n👾 SETUP\nTo run the script you need to:\n0. Download our t..."
+      },
+      {
+        "title": "Jaennaet/pISSStream",
+        "content": "macOS menu bar app that shows how full the International Space Station's urine tank is in real time",
+        "tags": [],
+        "url": "https://github.com/Jaennaet/pISSStream",
+        "publish_date": "2024-12-18T16:20:56",
+        "readme": "pISSStream\npISSStream is a macOS menu bar app that shows how full the International Space Station's urine tank is in real time:\n\nDownload yours while supplies last!\nBugs\nNot the epitome of good coding practices since this was my first Swift & macOS app ever, may break in exciting ways at the slightest excuse.\n\ndoesn't tell you if the signal is lost\nshrugs at stale data\ndoesn't bother with error handling\n\nErrata\nI found out about the data stream from https://iss-mimic.github.io/Mimic/, which has ..."
+      },
+      {
+        "title": "FartyPants/StoryCrafter",
+        "content": "Writing Extension for Text Generation WebUI",
+        "tags": [],
+        "url": "https://github.com/FartyPants/StoryCrafter",
+        "publish_date": "2024-12-18T21:30:14",
+        "readme": "StoryCrafter\nNew Writing Extension for Text Generation WebUI\n\nBased on my previous BlockWriter extension, but extended much further!\nBecause I'm super lazy and I didn't have my coffee yet, I used the StoryCrafter to write manual for itself. So don't roll your eyes, I used llama 3.2 and this is how it sounds. Totally human, right?\nStory beats are the building blocks of a narrative, representing individual moments or scenes that, when linked together, form the larger story. \nBeats can be thought o..."
+      },
+      {
+        "title": "Robot-VLAs/RoboVLMs",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/Robot-VLAs/RoboVLMs",
+        "publish_date": "2024-12-19T03:57:07",
+        "readme": "| RoboVLMs | Towards Generalist Robot Policies: What Matters in Building Vision-Language-Action Models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXinghang Li*  \n    Peiyan Li  \n    Minghuan Liu*  \n    Dong Wang  \n    Jirong Liu  \n    \nBingyi Kang  \n    Xiao Ma  \n    Tao Kong†  \n    Hanbo Zhang*†  \n    Huaping Liu†  \n    \n\n*Project lead \n        †Corresponding author\n\n\n\n    Tsinghua University   ByteDance Research   CASIA MAIS-NLPR \n    Shanghai Jiao Tong University   National University of Singapore\n\n\n\n\n\n\nUpdates\n\n[..."
+      },
+      {
+        "title": "IIIImmmyyy/AntiOllvm",
+        "content": "AntiOllvm Fla with Fake Runtime",
+        "tags": [],
+        "url": "https://github.com/IIIImmmyyy/AntiOllvm",
+        "publish_date": "2024-12-19T08:47:14",
+        "readme": "AntiOllvm\nis writing..."
+      },
+      {
+        "title": "WenhaoHe02/seu-course-enroll-invincible",
+        "content": "目前性能最好的抢课脚本，经过实战检验",
+        "tags": [],
+        "url": "https://github.com/WenhaoHe02/seu-course-enroll-invincible",
+        "publish_date": "2024-12-19T05:08:03",
+        "readme": "东南大学抢课脚本无敌版\n目前性能最好的抢课脚本，经过实战检验,给个star就能用\n油猴链接\nmotivation: \n目前的抢课脚本已经有realhuhu发布的正式版和julymiaw发布的修改版两种。正式版采用并行抢课方式，但由于网站的限制，一次最多接受3个请求；修改版采用串行抢课方式，每次抢一门后等待一段时间再抢。两种方式各有优势，前者抢课快，但选多门会请求过快错误，后者可选多门，但是抢课慢，因此我提出了分组并行抢课方式，每个batch含有3门课，每抢完3门课就等待一段时间，再继续并行抢下三门。\ncontribution:\n- 最优性能的并行抢课方式: 支持任意门课程并行抢课(最高尝试14门，只会有1-2门课发生请求过快的情况，且前3门保证能抢到)\n- 最低组间延迟: 我们通过十几次实验，测试出最低组间延迟为1000ms\n- 删除列表中已选课: 不会重复进行选课\n- 优化的用户友好ui以及课表功能: 正在开发中\n\n目前选课方法同之前几个脚本，输入课程号+教师编号，按下回车即可将课程加入列表，按一键抢课即可开始抢课\n"
+      },
+      {
+        "title": "Bact-AI/BactAI",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/Bact-AI/BactAI",
+        "publish_date": "2024-12-19T08:26:51",
+        "readme": "Bact.AI - Functional Prection AI-Agent 🌱🧬\nBact.AI is an advanced AI-powered platform 🤖 designed to map prokaryotic clades (e.g., genera, species, or subspecies) to a variety of metabolic or other ecologically relevant functions. Leveraging cutting-edge artificial intelligence and machine learning algorithms, Bact.AI not only provides functional annotations based on current literature 📚 but also delivers intelligent predictions and insights 💡 based on user-specific microbial community data.\nThis ..."
+      },
+      {
+        "title": "JasperSui/fastapi-injectable",
+        "content": "A seamless solution for using FastAPI's dependency injection system outside of route handlers, enabling painless reuse of dependencies in CLI tools, background tasks, and other non-HTTP contexts.",
+        "tags": [],
+        "url": "https://github.com/JasperSui/fastapi-injectable",
+        "publish_date": "2024-12-18T17:01:35",
+        "readme": "FastAPI Injectable\n\n\n\n\n\n\n\nA lightweight package that lets you use FastAPI's dependency injection anywhere - not just in route handlers. Perfect for CLI tools, background tasks, and more.\nOverview\nfastapi-injectable is a lightweight package that enables seamless use of FastAPI's dependency injection system outside of route handlers. It solves a common pain point where developers need to reuse FastAPI dependencies in non-HTTP contexts like CLI tools, background tasks, or scheduled jobs.\nQuick Star..."
+      },
+      {
+        "title": "RingLinkPlatform/RingLink",
+        "content": "implemention of RingLink network core function",
+        "tags": [
+          "rust",
+          "network",
+          "sdk",
+          "ringlink"
+        ],
+        "url": "https://github.com/RingLinkPlatform/RingLink",
+        "publish_date": "2024-12-19T08:12:03",
+        "readme": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n🌍 Explore more at ring.link\n📘 Dive into the User Manual\n📰 Stay Updated with our Release Notes\nExample\nYou can try the tunnel example, which is a simple layer 2 tunnel based on RingLink.\nSee the Run Tunnel for more details.\nHave Feedback or Suggestions?\nWe’d love to hear from you! Share your thoughts or feature requests:\n\nOn GitHub: Open an issue or start\n  a discussion.\nOn LinkedIn: Connect with us and share your ideas directly.\n\nYour feedback helps us make RingLink even better. Ha..."
+      },
+      {
+        "title": "zjwfufu/FateAvatar",
+        "content": "The official repo for \"FATE: Full-head Gaussian Avatar with Textural Editing from Monocular Video\"",
+        "tags": [
+          "3d-head-modeling",
+          "3d-head-reconstruction",
+          "gaussian-splatting"
+        ],
+        "url": "https://github.com/zjwfufu/FateAvatar",
+        "publish_date": "2024-12-19T09:14:47",
+        "readme": "FATE\nCode for \"FATE: Full-head Gaussian Avatar with Textural Editing from Monocular Video\" (FateAvatar).\nJiawei Zhang1, Zijian Wu1, Zhiyang Liang1, Yicheng Gong1, Dongfang Hu2, Yao Yao1, Xun Cao1, and Hao Zhu1+\n1Nanjing University, 2OPPO\n+corresponding author\n[Paper] | [中文文档] | [Project Page]\n\nReconstructing high-fidelity, animatable 3D head avatars from effortlessly captured monocular videos is a pivotal yet formidable challenge. Although significant progress has been made in rendering performa..."
+      },
+      {
+        "title": "v3153/CVE-2024-50379-POC",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/v3153/CVE-2024-50379-POC",
+        "publish_date": "2024-12-18T19:53:46",
+        "readme": "CVE-2024-50379 Exploitation and POC\nThis repository contains a Proof of Concept (POC) for CVE-2024-50379, a vulnerability affecting Apache Tomcat. The issue involves a Time-of-Check Time-of-Use (TOCTOU) race condition, which can lead to Remote Code Execution (RCE), especially on case-insensitive file systems like Windows.\n\nTable of Contents\n\nDescription\nPOC\nUsage\nSecurity Considerations\nLicense\n\n\nDescription\nCVE-2024-50379 is a vulnerability in Apache Tomcat that allows attackers to execute arbi..."
+      },
+      {
+        "title": "fib-nm/mipt-useful-links",
+        "content": "Полезные ссылки для обучения в МФТИ",
+        "tags": [],
+        "url": "https://github.com/fib-nm/mipt-useful-links",
+        "publish_date": "2024-12-18T16:07:24",
+        "readme": "Полезные ссылки МФТИ\nСписок актуальных ссылок на полезные для студентов МФТИ ресурсы.\nСписок\nУчебные диски\nДиск РТ\nДиск БМ\nФЭФМ. Учебное\nДиск ФЭФМа\n! Disquette - Диск Гриши Цвика\nДиск Саши Богданова\nДиск Алексея Охрименко\nДиск Ани Назарчук\nMIPT by alexey krasnov - Диск Вики Ханиной\nМаленький фопфёнок - Диск Алексея Тюрникова\nДиск Николая Победина\nLectures Tex Club\nТупой скат - Последнее изменение в 2018\nМ(ФТИ) всякие приколы - Диск Юли Киселевой\nзадания 3-4 курс факи\nДиск Скубачевского\nГОС по Вы..."
+      },
+      {
+        "title": "danielroe/hello-zero-nuxt",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/danielroe/hello-zero-nuxt",
+        "publish_date": "2024-12-18T23:28:04",
+        "readme": "Nuxt ❤️ Zero\nThis is a quick port of https://github.com/rocicorp/hello-zero to use Vue and Nuxt.\nRun this repo\nFirst, install dependencies:\nsh\ncorepack enable\npnpm i\nNext, run docker:\nsh\npnpm dev:db-up\nIn a second terminal, run the zero cache server:\nsh\npnpm dev:zero-cache\nIn a third terminal, run the Vite dev server:\nsh\npnpm dev:ui\n❤️ Credits\nThis was based on https://github.com/rocicorp/hello-zero.\n🏛️ License\nMade with ❤️\nPublished under MIT License."
+      },
+      {
+        "title": "s0md3v/wappalyzer-next",
+        "content": "continuation of wappalyzer project (also available as a library)",
+        "tags": [
+          "wappalyzer",
+          "wappalyzer-cli"
+        ],
+        "url": "https://github.com/s0md3v/wappalyzer-next",
+        "publish_date": "2024-12-19T05:57:01",
+        "readme": "Wappalyzer Next\nThis project is a command line tool and python library that uses Wappalyzer extension (and its fingerprints) to detect technologies. Other projects emerged after discontinuation of the official open source project are using outdated fingerpints and lack accuracy when used on dynamic web-apps, this project bypasses those limitations.\n\nInstallation\nFor Users\nFor Developers\nFAQ\n\nInstallation\nFor CLI usage:\nbash\npipx install wappalyzer\nTo use it as a library, install it with pip insi..."
+      },
+      {
+        "title": "cmliu/Blog-CDN-Gateway",
+        "content": "博客多CDN智能调度网关 - 自动测速并路由到最快的CDN节点",
+        "tags": [],
+        "url": "https://github.com/cmliu/Blog-CDN-Gateway",
+        "publish_date": "2024-12-18T19:48:33",
+        "readme": "BlogCDN智能访问网关 Blog-CDN-Gateway\n\n一个轻量级的CDN智能网关系统，具有以下特点：\n- 🚀 多CDN线路智能测速\n- 🔄 自动跳转到最快节点\n- 📊 保留链接参数302跳转\n- 🌐 支持多CDN供应商\n- 💡 基于 Cloudflare Workers / Pages\n- 🎨 美观的用户界面\n变量说明\n| 变量名 | 示例 | 备注 | \n|--------|---------|-----|\n| URL | https://blog.cmliussss.com#Cloudflare CDN,https://xn--1uto7rutmzjk.us.kg#备用地址 | 测速链接，链接标题用#做间隔 (多元素换行作间隔)| \n| ICO | https://raw.cmliussss.com/favicon.ico | 网站图标 | \n| PNG | https://raw.cmliussss.com/IMG_0038.png | 网站头像 | \n| IMG | https://raw.cmliussss.com/keqing1080p.jpg | 背景图片，多张..."
+      },
+      {
+        "title": "qianlanwyd/paper-citation-ranking",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/qianlanwyd/paper-citation-ranking",
+        "publish_date": "2024-12-19T11:25:42",
+        "readme": "Conference Citation Ranking\nThis repository provides a tool for ranking the citations of individual papers presented at various AI top-tier conferences such as NeurIPS (NIPS), ICML, ICLR and others. The aim of this project is to provide insights into the citation performance of papers within a specific conference, helping researchers and institutions assess the impact of individual works.\nFeatures\n\nCitation Ranking: Displays citation counts for papers and their ranks within the conference.\nPerce..."
+      },
+      {
+        "title": "echohive42/AI-book-maker-with-perplexity-search-grounding",
+        "content": "uses gpt-4o and gpt-4-mini to write books on topics while researching with perplexity API",
+        "tags": [],
+        "url": "https://github.com/echohive42/AI-book-maker-with-perplexity-search-grounding",
+        "publish_date": "2024-12-19T08:17:53",
+        "readme": "📚 AI Book Maker\nAn intelligent book creation tool that uses GPT-4o and Perplexity AI to automatically generate well-researched, structured books on any topic.\n🌟 Features\n\nAutomated Book Outline Generation: Creates detailed chapter structures with research questions\nParallel Research Processing: Efficiently researches multiple chapters simultaneously\nSmart Chapter Writing: Converts research into coherent, engaging chapters\nReal-time Progress Updates: Colorful console output showing progress\nBeaut..."
+      },
+      {
+        "title": "codedidit/axiomprompting",
+        "content": "Axiom Prompt Engineering testing and results",
+        "tags": [],
+        "url": "https://github.com/codedidit/axiomprompting",
+        "publish_date": "2024-12-19T05:52:03",
+        "readme": "\n🧮 Axiom Prompt Engineering (APE)\nTHIS IS A NEW REPO AND IS STILL A BIG WORK IN PROGRESS \nPlease let me know what you want to add or change. \nA collaborative research project exploring mathematical axiom-based approaches to prompt engineering for Large Language Models.\n📖 Overview\nAxiom Prompt Engineering (APE) is a systematic approach to creating high-performance prompts using mathematical optimization principles. This repository serves as a central hub for research, testing, and development of ..."
+      },
+      {
+        "title": "shahzaibhaider746/React_Native_Stop_Watch_Expo",
+        "content": " A beginner-friendly project idea is a Stopwatch Timer, easy to create and enhance with features like lap and reset buttons. For added functionality, you can integrate a world clock showing time zones of different countries, making it more practical and engaging",
+        "tags": [],
+        "url": "https://github.com/shahzaibhaider746/React_Native_Stop_Watch_Expo",
+        "publish_date": "2024-12-18T16:23:30",
+        "readme": "React Native Timer App\nA simple cross platform (iOS and Android) React Native timer app. This example was put together for React Native by Example. Get started learning & mastering React Native for free!\n\n\nInstallation\n\ngit clone https://github.com/shahzaibhaider746/React_Native_Stop_Watch_Expo.git\nyarn install/npm install\n\nRunning\n\nyarn run ios/npm run ios or yarn run android/npm run android\n\n\nThis project was put together to serve as an example to help you in building your own React Native app..."
+      },
+      {
+        "title": "tanayvk/nuxflare",
+        "content": "The fastest way to deploy your Nuxt apps to Cloudflare.",
+        "tags": [],
+        "url": "https://github.com/tanayvk/nuxflare",
+        "publish_date": "2024-12-18T18:24:50",
+        "readme": "Nuxflare\nThe fastest, open-source way to deploy your Nuxt applications to Cloudflare.\nNuxflare simplifies deployment with a single CLI command and requires only a Cloudflare API token - no additional accounts or complex setup needed.\nOverview\nNuxflare automatically deploys resources according to your NuxtHub configuration, enabling seamless integration with @nuxt-hub/core.\n\nNuxtHub is a platform for managing and deploying full-stack Nuxt applications globally using Cloudflare’s infrastructure.\n\n..."
+      },
+      {
+        "title": "Fitretech-Security/dylight",
+        "content": "macOS dylib stager",
+        "tags": [],
+        "url": "https://github.com/Fitretech-Security/dylight",
+        "publish_date": "2024-12-18T22:37:26",
+        "readme": "Dylight\n\nDylight is a project that loads macOS dynamic libraries (dylibs) from the internet over HTTP and injects within the local process. \nIt handles the dylib \"almost\" without touching disk, but is limited to the capabilities of dlopen. Read main.c for more information on how this is done, specifically main.c 140-157.\nThis project requires a macOS machine to compile for best results\nConfiguration\nThe config.env file contains the configuration variables for the project:\n```env\nBINARY_NAME=load..."
+      },
+      {
+        "title": "LeapLabTHU/diver-ct",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/LeapLabTHU/diver-ct",
+        "publish_date": "2024-12-19T03:44:47",
+        "readme": " DiveR-CT\nOfficial code for AAAI25 paper for red teaming: DiveR-CT: Diversity-enhanced Red Teaming Large Language Model Assistants with Relaxing Constraints\n_______ ______\n                  |     / |    /\n       O          |    /  |   /\n                  |   /   |  /\n    o  O 0         \\  \\   \\  \\\n    o               \\  \\   \\  \\\n       o            /  /   /  /\n        o     /\\_  /\\\\\\   /  /\n         O  /    /    /     /\n ..       /    /    /\\=    /\n.  ))))))) = /====/    \\\n. (((((((( /    /\\=  _..."
+      },
+      {
+        "title": "FlagOpen/FlagCX",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/FlagOpen/FlagCX",
+        "publish_date": "2024-12-19T06:23:19",
+        "readme": "\nAbout\nFlagCX is a scalable and adaptive cross-chip communication library developed with the backing of the Beijing Academy of Artificial Intelligence (BAAI).\nFlagCX is also a part of FlagAI-Open, an open-source initiative by BAAI that aims to foster an open-source ecosystem for AI technologies. It serves as a platform where developers, researchers, and AI enthusiasts can collaborate on various AI projects, contribute to the development of cutting-edge AI solutions, and share their work with the..."
+      },
+      {
+        "title": "Zlkcyber/plazafintot",
+        "content": "Plaza Finance Testnet -- auto daily deposit and withdraw -- auto get faucet -- auto create new wallets -- support proxy",
+        "tags": [],
+        "url": "https://github.com/Zlkcyber/plazafintot",
+        "publish_date": "2024-12-18T15:33:36",
+        "readme": "PLAZA FINANCE BOT\n\nPlaza is a platform for on-chain bonds and leverage on Base.\nPlaza is a platform for programmable derivatives built as a set of Solidity smart contracts on Base. It offers two core products: bondETH and levETH, which are programmable derivatives of a pool of ETH liquid staking derivatives (LSTs) and liquid restaking derivatives (LRTs) such as wstETH. Users can deposit an underlying pool asset like wstETH and receive levETH or bondETH in return, which are represented as ERC20 t..."
+      },
+      {
+        "title": "DEVRhylme-Foundation/Join-Us",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/DEVRhylme-Foundation/Join-Us",
+        "publish_date": "2024-12-18T23:32:21",
+        "readme": "Join-Us"
+      },
+      {
+        "title": "YuxiaoWang-AI/PIHOT",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/YuxiaoWang-AI/PIHOT",
+        "publish_date": "2024-12-19T08:40:01",
+        "readme": "\nPrecision-Enhanced Human-Object Contact Detection via Depth-Aware Perspective Interaction and Object Texture Restoration\n\nYuxiao Wang, Wenpeng Neng, Zhenao Wei, Yu Lei, WeiYing Xue, Nan Zhuang, Yanwu Xu, Xinyu Jiang, Qi Liu\n\nAccepted by AAAI 2025\n\n\n\n\n\n\n\n\n\n\n\n\n## Environment\nPlease first install the follow environment:\n- python 3.8\n- pytorch 1.11.0 (cu113)\n- torchvision 0.12.0 (cu113)\n\n## Installation\n```\npip3 install -r requirements.txt\n```\n\n## Data Preparation\n- Data: download the HOT dataset f..."
+      },
+      {
+        "title": "nullenc0de/trust-validator",
+        "content": "Validates priv escalation of AD trusts",
+        "tags": [],
+        "url": "https://github.com/nullenc0de/trust-validator",
+        "publish_date": "2024-12-18T17:09:42",
+        "readme": "Trust Validator Tool\nOverview\nThis tool validates potential security issues in Active Directory trust relationships, focusing on inactive trusts and encryption configuration vulnerabilities. It performs safe validation without modifying domain objects or attempting exploitation.\n⚠️ Important Notes\n\nThis is a security testing tool - use only with explicit permission\nRun only in authorized test environments\nSome organizations may classify this as a security testing tool\nAlways follow your organiza..."
+      },
+      {
+        "title": "behdanisohrab/awesome-persian-oss",
+        "content": "لیستی از پروژه‌های اوپن سورس فارسی",
+        "tags": [],
+        "url": "https://github.com/behdanisohrab/awesome-persian-oss",
+        "publish_date": "2024-12-18T23:26:11",
+        "readme": "\n\n# لیستی از پروژه‌های اوپن‌سورس فارسی\n\nاین مخزن با هدف گردآوری پروژه‌های اوپن‌سورس فارسی ایجاد شده است.\n\nبرای مشارکت کردن حتما [راهنمای مشارکت](https://github.com/behdanisohrab/awesome-persian-oss/blob/main/CONTRIBUTING.md) را بخوانید.\n\n--------\n\n## دسته‌بندی پروژه‌ها\n- [ابزارهای خط فرمان و اتوماسیون](#ابزارهای-خط-فرمان-و-اتوماسیون)\n- [پردازش زبان طبیعی (NLP)](#پردازش-زبان-طبیعی-nlp)\n- [توزیع‌های گنو/لینوکسی](#توزیع‌های-گنولینوکسی)\n- [قلم](#قلم)\n- [مدیریت بارگیری](#مدیریت-بارگیری)\n\n--------\n\n##..."
+      },
+      {
+        "title": "IsaacSchulz/CIP_Discover",
+        "content": "Discovering all CIP communicating devices on a network",
+        "tags": [],
+        "url": "https://github.com/IsaacSchulz/CIP_Discover",
+        "publish_date": "2024-12-18T15:33:15",
+        "readme": "CIP_Discover\nDiscovering all CIP communicating devices on a network\nThis uses Pycomm3 at the heart. https://docs.pycomm3.dev/en/latest/\nThis scans the network your windows PC is on and returns an excel sheet listing details of each device:\nIP Address,\nVendor,\nProduct Type,\nProduct Code,\nFirmware,\nSerial Number,\nProduct Name\nand creates an extra column titles 'Device Name' for the user to enter their own nicknames for the devices.\nThe Discover function in Pycomm3 is not perfect. Running it once c..."
+      },
+      {
+        "title": "flexpa/mpc-fhir",
+        "content": "A Model Context Protocol implementation for FHIR",
+        "tags": [
+          "fhir",
+          "model-context-protocol",
+          "mpc"
+        ],
+        "url": "https://github.com/flexpa/mpc-fhir",
+        "publish_date": "2024-12-18T15:48:45",
+        "readme": "@flexpa/mpc-fhir\n\n[!WARNING]\nThis is an experimental demo not intended for production use.\n\nThis is a TypeScript-based MCP server that connects to a FHIR server. It provides core MCP functionality for interacting with FHIR resources by:\n\nAccessing FHIR resources via URIs\nProviding search capabilities for FHIR resources\n\nFeatures\nResources\n\n[!TIP]\n\"Resources\" here refers to the MCP definition not the FHIR one. MCP Resources are a core primitive in the Model Context Protocol (MCP) that allow serve..."
+      },
+      {
+        "title": "Vinsonzyh/BlueSuffix",
+        "content": "BlueSuffix: Reinforced Blue Teaming for Vision-Language Models Against Jailbreak Attacks",
+        "tags": [],
+        "url": "https://github.com/Vinsonzyh/BlueSuffix",
+        "publish_date": "2024-12-19T05:43:20",
+        "readme": " BlueSuffix\nCode for Papar \"BlueSuffix: Reinforced Blue Teaming for Vision-Language Models Against Jailbreak Attacks\". \nWe currently provide the code for the three components of BlueSuffix. For the fine-tuned Suffix Generator, we will provide in the future.\n📌 Abstract\nDespite their superb multimodal capabilities, Vision-Language Models (VLMs) have been shown to be vulnerable to jailbreak attacks, which are inference-time attacks that induce the model to output harmful responses with tricky promp..."
+      },
+      {
+        "title": "prasad-bigdp/2pmdb",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/prasad-bigdp/2pmdb",
+        "publish_date": "2024-12-19T10:09:20",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "nickfredman/cs-curriculum",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/nickfredman/cs-curriculum",
+        "publish_date": "2024-12-19T01:00:17",
+        "readme": "Software Engineering Master Curriculum\nThis repository contains a comprehensive curriculum for mastering software engineering concepts, from fundamentals to advanced topics.\nProgress Checklist\n\n[ ] 1. Mathematical Foundations\n[ ] Linear Algebra\n[ ] Discrete Mathematics\n[ ] Statistics and Probability\n\n[ ] Calculus and Optimization\n\n\n[ ] 2. Computer Science Fundamentals\n\n[ ] Data Structures\n[ ] Algorithms\n[ ] Computer Architecture\n\n[ ] Theory of Computation\n\n\n[ ] 3. Programming Language Theory\n\n[ ..."
+      },
+      {
+        "title": "threepointone/wangler",
+        "content": "Evil wrangler. ",
+        "tags": [],
+        "url": "https://github.com/threepointone/wangler",
+        "publish_date": "2024-12-18T21:30:02",
+        "readme": "wangler\nEvil wrangler. A place for experiments by Sunil. Use at your own caution.\nA wrapper around wrangler. For the lolz.\nAs of now, this adds just one feature: it automatically loads environment variables from .env files and populates process.env in your Cloudflare Workers.\nWhy\nThis is a feature that wrangler will eventually ship, but I wanted it now for my own stuff.\nInstallation\nbash\nnpm install wangler wrangler\nUsage\n\nCreate a .env file in your project root:\n\nenv\nAPI_KEY=your-api-key\nDATABA..."
+      },
+      {
+        "title": "123quant/QMT-QuantLimit",
+        "content": "打板策略一直是a股生命力很顽强的策略，也造就了很多游资神话，本项目是研究如何将打板策略实现量化。",
+        "tags": [],
+        "url": "https://github.com/123quant/QMT-QuantLimit",
+        "publish_date": "2024-12-19T00:32:19",
+        "readme": "QuantLimit\n该项目实现了一种量化打板策略，用于A股股票交易，涨停板制度只存在于A股市场,\n旨在识别并利用市场中潜在的涨停机会。该策略通过技术指标、历史价格数据和成交量分析，股吧数据分析获取可能达到涨停的股票池，并在股票涨停瞬间买入以获取隔日高溢价。\n安装步骤\n克隆仓库：\n```\nbash\n复制代码\ngit clone  https://github.com/123quant/QMT-QuantLimit.git\n```\n安装所需依赖：\n复制代码\npip install -r requirements.txt\n使用方法\n1.配置参数\n打开 配置文件->config.ini\n\n\n\n本策略通过miniqmt实现，需要配置三个参数\n\nqmt_path ：qmt软件的安装路径\nstock_account ：股票账号\nbuy_values ：每只票买入金额\n\n2.填好配置文件，第二步上传股票池\n打开 配置文件->股票池.txt\n\n\n\n把需要监控的股票填进股票池，也可以使用同花顺、通达信导出的股票池。\n3.在每日打板策略运行前，需要先初始化涨停板数据\n直接运行    策略数据初始化.py\n..."
+      },
+      {
+        "title": "NimblePros/Metronome",
+        "content": "A simple tool for tracking Database and Http calls per ASP.NET Core request.",
+        "tags": [],
+        "url": "https://github.com/NimblePros/Metronome",
+        "publish_date": "2024-12-18T18:15:27",
+        "readme": "Metronome by NimblePros\nA simple tool for tracking Database and Http calls per ASP.NET Core request.\nInstallation\nInstall the NuGet package:\n```powershell\nInstall-Package NimblePros.Metronome\ndotnet add package NimblePros.Metronome\n```\nUsage\nRefer to the samples in the samples directory.\nWire up services\ncsharp\nbuilder.Services.AddMetronome();\nAdd Middleware\nAdd the middleware near the top of the pipeline. Recommended to be used only in development environment.\ncsharp\nif (app.Environment.IsDevel..."
+      },
+      {
+        "title": "valyentdev/valyent",
+        "content": "A developers-first cloud platform.",
+        "tags": [
+          "cloud"
+        ],
+        "url": "https://github.com/valyentdev/valyent",
+        "publish_date": "2024-12-19T09:17:04",
+        "readme": "Valyent\nAbout\nValyent is a developers-first cloud platform.\nAt its core relies Ravel, an open-source orchestrator.\nIt turns Docker images into lightning-fast microVMs and orchestrates them into fleets — collections of machines that power your services at scale.\nTo learn more about Valyent, check out the documentation.\nLicense\nValyent is an open source project licensed under the Apache License Version 2.0.\nContributing\nYou can signal bugs or request a feature by opening an issue and/or a pull req..."
+      },
+      {
+        "title": "wuzhiyuan2000/FedICT",
+        "content": "[TPDS 2024] FedICT: Federated Multi-task Distillation for Multi-access Edge Computing",
+        "tags": [],
+        "url": "https://github.com/wuzhiyuan2000/FedICT",
+        "publish_date": "2024-12-19T02:08:43",
+        "readme": "FedICT\nThis repository is the official Pytorch implementation DEMO of FedICT:\nFedICT: Federated Multi-task Distillation for Multi-access Edge Computing. IEEE Transactions on Parallel and Distributed Systems (TPDS). 2024\n\nRun this DEMO\npython main_fedict.py\n\nCite this work\nbibtex\n@ARTICLE{wu2024fedict,\n  author={Wu, Zhiyuan and Sun, Sheng and Wang, Yuwei and Liu, Min and Pan, Quyang and Jiang, Xuefeng and Gao, Bo},\n  journal={IEEE Transactions on Parallel and Distributed Systems}, \n  title={FedIC..."
+      },
+      {
+        "title": "Zeredan/shopping_lists",
+        "content": "Test task for KMP, which is a shopping lists frontend",
+        "tags": [],
+        "url": "https://github.com/Zeredan/shopping_lists",
+        "publish_date": "2024-12-18T17:13:35",
+        "readme": "Приложение - список покупок\nЭто приложение - тестовое задание, для вакансии Junior-developer KMP(kotlin multiplatform)\nОписание приложения:\nПриложение представляет собой kmp-проект, который на данный момент запускается и работает на следующих платформах: Android, Windows, IOS\nПриложение служит для работы со списком покупок в онлайн режиме, и полностью реализует весь функционал, предназначенный для реализации сайтом https://cyberprot.ru/shopping/v2/\nРеализованный функционал:\n\nГенерация ключа\nДоба..."
+      },
+      {
+        "title": "filaPro/cad-recode",
+        "content": "CAD-Recode: Reverse Engineering CAD Code from Point Clouds",
+        "tags": [],
+        "url": "https://github.com/filaPro/cad-recode",
+        "publish_date": "2024-12-18T17:27:07",
+        "readme": "CAD-Recode: Reverse Engineering CAD Code from Point Clouds\nNews:\n * :fire: December, 2024. CAD-Recode is state-of-the-art in three CAD reconstruction benchmarks: \n  DeepCAD  \n  Fusion360  \n  CC3D \nThis repository contains an implementation of CAD-Recode, a 3D CAD reverse engineering method introduced in our paper:\n\nCAD-Recode: Reverse Engineering CAD Code from Point Clouds\nDanila Rukhovich,\nElona Dupont,\nDimitrios Mallis,\nKseniya Cherenkova,\nAnis Kacem,\nDjamila Aouada \nUnivesity of Luxembourg \nh..."
+      },
+      {
+        "title": "GraHms/gorm-xray",
+        "content": "A GORM plugin that seamlessly integrates AWS X-Ray tracing into your Go application, allowing you to monitor and visualize SQL queries in real-time. ",
+        "tags": [],
+        "url": "https://github.com/GraHms/gorm-xray",
+        "publish_date": "2024-12-19T05:45:06",
+        "readme": "GORM X-Ray Plugin\n\n\n\nGORM X-Ray Plugin seamlessly integrates AWS X-Ray with GORM, enabling you to trace and visualize database operations. It automatically creates annotated X-Ray subsegments for SQL queries, providing deep insights into your data layer’s performance, pinpointing bottlenecks, and making it easier to debug issues.\nFeatures\n\nAutomatic Tracing: Hooks into GORM lifecycle events (Create, Query, Update, Delete, Raw, and Row) without manual instrumentation.\nDetailed Metadata: Captures ..."
+      },
+      {
+        "title": "llSourcell/ScienceFlow",
+        "content": "An AI to accelerate Scientific Discovery",
+        "tags": [],
+        "url": "https://github.com/llSourcell/ScienceFlow",
+        "publish_date": "2024-12-18T20:02:58",
+        "readme": "Mathematical Discovery Pipeline 🧮\nAn AI-powered platform that automates the process of mathematical discovery, verification, and paper generation. This system combines advanced pattern analysis with formal verification to help explore and validate new mathematical conjectures.\n🌟 Features\n\nInteractive Discovery Interface: User-friendly web interface for inputting mathematical queries\nMulti-Stage Pipeline:\nInitial Curiosity Analysis\nPattern Recognition & Analysis\nAutomated Discovery\nFormal Proof V..."
+      },
+      {
+        "title": "Hanson/WechatSphDecrypt",
+        "content": "2024最新微信/企微视频号解密，还原加密视频",
+        "tags": [
+          "decrypt",
+          "finder",
+          "sph",
+          "wechat",
+          "wecom",
+          "weixin"
+        ],
+        "url": "https://github.com/Hanson/WechatSphDecrypt",
+        "publish_date": "2024-12-18T17:54:25",
+        "readme": "视频号解密\n如果你只能拿到带有加密的URL，可以使用本工具解密\n如果你拿到的是本地视频文件，也可以直接解密。\n如果不知道如何获取加密URL，可以看github开源项目，想要全自动化一点可以这个文档 https://www.apifox.cn/apidoc/shared-71b9855b-693c-48fc-858b-cde2c5afe5a8/api-34744242\n使用\n方式一：参考 cos/README.MD,腾讯COS方式\n方式二：参考 bin/README.MD，本地返回原文件"
+      },
+      {
+        "title": "knoop7/html-card-pro",
+        "content": "新一代AI搭配神器 Home Assistant  Pro Card 复制粘贴即刻美化您的智能家居界面",
+        "tags": [],
+        "url": "https://github.com/knoop7/html-card-pro",
+        "publish_date": "2024-12-19T12:27:57",
+        "readme": "html-card-pro\n一个强大而灵活的 Home Assistant 自定义卡片，允许您使用 HTML 模板创建完全自定义的界面。由于AI在于Html格式上有显著设计能力，故而开发这类卡片，本卡片相对来说较同类卡片来说提升幅度较大，会解决很多相对来说很难快速上手的卡片（card-mod、弹出卡、刷卡等)，对比同类型卡片性能会好很多。\n特性\n\n完全自定义的 HTML/CSS 界面, 支持实体状态的实时更新\n支持长按显示更多信息, 支持亮度滑块控制\n支持外部脚本加载, 自动状态更新\n\n安装方法\n\n下载 html-pro-card.js 文件\n将文件复制到您的 www 文件夹中\n在 Home Assistant 的 Lovelace 资源中添加：\n   yaml\n   url: /local/html-pro-card.js\n   type: module\n\n基础配置\n```yaml\ntype: custom:html-pro-card\ncontent: |\n\n\n\n      客厅灯\n      \n\n\n```\n提示词\n```\n你是 Home Assistant 的专业卡片设计助手，请帮..."
+      },
+      {
+        "title": "learnwithjason/die-hard-xmas",
+        "content": "VS Code Copilot is free now!",
+        "tags": [],
+        "url": "https://github.com/learnwithjason/die-hard-xmas",
+        "publish_date": "2024-12-18T19:53:00",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "senzi/reverse-captcha",
+        "content": "A reversed CAPTCHA that proves you're a robot by recognizing AprilTag sequences",
+        "tags": [],
+        "url": "https://github.com/senzi/reverse-captcha",
+        "publish_date": "2024-12-19T03:03:18",
+        "readme": "反向验证码\n一个反向验证码，通过识别 AprilTag 序列来证明你是一个机器人。\n项目简介\n反向验证码是一种创新的验证系统，其目的是通过识别 AprilTag 序列来验证用户是否为机器人。与传统验证码不同，反向验证码要求用户证明自己是机器人。\n功能特点\n\nAprilTag 验证：从本地的 tag25h9 文件夹中随机选择四个 AprilTag 图像进行展示。\n用户输入验证：用户需按顺序输入显示的 AprilTag 序号。\n验证反馈：\n验证成功时，页面会显示烟花效果，并将图标变为绿色。\n验证失败时，页面会显示错误信息，并将图标变为红色。\n刷新功能：提供刷新按钮以更换新的 AprilTag 序列。\n\n使用技术\n\nHTML5 和 CSS3：用于页面结构和样式。\nJavaScript：实现验证码逻辑和用户交互。\nFireworks.js：用于验证成功时的烟花效果。\n\n如何运行\n\n克隆此仓库到本地。\n确保项目目录中包含必要的 AprilTag 图像。\n在浏览器中打开 index.html 文件。\n也可以使用python server.py来运行一个轻量级的服务器。\n\n贡献\n欢迎对本项目提出建议..."
+      },
+      {
+        "title": "VuehappyJob20241219/octfair3",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/VuehappyJob20241219/octfair3",
+        "publish_date": "2024-12-19T00:38:04",
+        "readme": ""
+      },
+      {
+        "title": "xingyunchajian/haijiao",
+        "content": "海角社区/91短视频/极乐禁地/汤头条/草榴社区/含羞草/海角社区",
+        "tags": [],
+        "url": "https://github.com/xingyunchajian/haijiao",
+        "publish_date": "2024-12-19T06:46:25",
+        "readme": "Lucky脚本/插件(包含付费及免费)\nLucky脚本网址:  https://vip.luckychajian.cn\n脚本列表\n----海角社区\n脚本链接: https://cdn.luckychajian.com/script/haijiao.user.js\n海角地址(需梯子): https://haijiao.com\n\n----91短视频\n脚本链接: https://cdn.luckychajian.com/script/jiuyivideo.user.js\n91短视频地址: https://pwa3.dsp12a.cc\n\n----极乐禁地\n脚本链接: https://cdn.luckychajian.com/script/jilejindi.user.js\n极乐禁地地址: https://h5dfsg.anwangjd1.com/home\n\n----汤头条\n脚本链接: https://cdn.luckychajian.com/script/tangtoutiao.user.js\n汤头条地址: https://p5.zacdqpi.com\n汤头条地址(需梯子): https://..."
+      },
+      {
+        "title": "Verified-zkEVM/ZKLib",
+        "content": "Formally Verified Cryptographic Proof Systems",
+        "tags": [
+          "formal-verification",
+          "lean",
+          "lean4",
+          "snark",
+          "zero-knowledge",
+          "zk"
+        ],
+        "url": "https://github.com/Verified-zkEVM/ZKLib",
+        "publish_date": "2024-12-18T16:10:14",
+        "readme": "Formally Verified Cryptographic Proof Systems\nThis library aims to provide a modular and composable framework for formally verifying cryptographic proof systems (e.g. SNARKs) based on Interactive (Oracle) Proofs. This is done as part of the Verified zkEVM project.\nIn the first stage of this library (until middle of 2025), we plan to formalize interactive (oracle) reductions (a modular way of stating IOPs), and prove information-theoretic completeness and soundness for a select list of protocols...."
+      },
+      {
+        "title": "Koishi0425/taiciGenerator",
+        "content": "让你的人物照片说一些台词！",
+        "tags": [],
+        "url": "https://github.com/Koishi0425/taiciGenerator",
+        "publish_date": "2024-12-19T13:19:07",
+        "readme": "taiciGenerator\n让你的人物照片说一些台词！\n网页\nhttps://koishi0425.github.io/taiciGenerator/"
+      },
+      {
+        "title": "wankdanker/claude-desktop-linux-bash",
+        "content": "A bash-based installer for Claude Desktop on Ubuntu",
+        "tags": [],
+        "url": "https://github.com/wankdanker/claude-desktop-linux-bash",
+        "publish_date": "2024-12-18T18:30:04",
+        "readme": "claude-desktop-linux-bash\nBased on claude-desktop-linux-flake, discovered via reddit, Claude built this all inclusive bash script to build the desktop client for Linux on Ubuntu. I would guess that it works on Debian, but I haven't tested it.\nThe build script assumes that you already have node, pnpm, rust, and cargo installed. If you don't, you'll need to install them first. I'm not going to include how to do that here, because it's pretty easy to find that information elsewhere.\n\nFirst, install..."
+      },
+      {
+        "title": "shahzaibhaider746/Boxer-Website",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/shahzaibhaider746/Boxer-Website",
+        "publish_date": "2024-12-18T20:31:56",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "cyjdlhy/diffusion_flow_inversion",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/cyjdlhy/diffusion_flow_inversion",
+        "publish_date": "2024-12-19T08:04:49",
+        "readme": "Diffusion Flow Inversion\ndiffusion_flow_inversion is a versatile repository built using the diffusers library, designed to work with various diffusion models such as SD1.5, SD2.0, SD2.1, SD3.0, Flux, and other flow-based models. This repository offers powerful tools for visualizing the transformation process between images and noise, allowing users to observe and analyze the differences in the image-to-noise-to-image cycle and noise-to-image-to-noise cycle.\nKey Features\n\nSupport for Multiple Dif..."
+      },
+      {
+        "title": "MSIIP/MedM-VL",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/MSIIP/MedM-VL",
+        "publish_date": "2024-12-19T06:33:40",
+        "readme": "MedM-VL: Large Vision-Language Models for Medical Image Analysis\n\nMedM-VL is a series of medical large vision-language models (LVLMs), which can be used to directly perform simple general medical tasks, or serve as foundation models for fine-tuning specialized medical LVLMs. \nIn this project, we focus on supporting small-scale LVLMs, making it easier to fine-tune for downstream tasks and deploy in real-world scenarios.\n:newspaper: News\n\n[2024.12.19]: The model weights (v1.0) have been uploaded t..."
+      },
+      {
+        "title": "hesamsheikh/llm-mechanics",
+        "content": "Coding an LLM and its building blocks from scratch. ",
+        "tags": [
+          "gpt",
+          "large-language-model",
+          "llm",
+          "natural-language-processing",
+          "python",
+          "pytorch"
+        ],
+        "url": "https://github.com/hesamsheikh/llm-mechanics",
+        "publish_date": "2024-12-19T11:20:08",
+        "readme": "LLM Mechanics (implementing from scratch)\n\nThis repository is my personal playground to implement large language models (LLM) and their building blocks from scratch using PyTorch. If you like to know the theory behind how LLMs operate, check out my Advanced ML Learning Journal.\n\n\n"
+      },
+      {
+        "title": "4GeeksAcademy/proyecto-final-team1",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/4GeeksAcademy/proyecto-final-team1",
+        "publish_date": "2024-12-18T18:41:33",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "jarif87/BERT-Driven-Sentiment-Classification-with-PyTorch",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/jarif87/BERT-Driven-Sentiment-Classification-with-PyTorch",
+        "publish_date": "2024-12-18T16:42:19",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "GabyBevilacqua/Proyecto-final-G-J-F-C",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/GabyBevilacqua/Proyecto-final-G-J-F-C",
+        "publish_date": "2024-12-18T20:11:34",
+        "readme": "\nFlask Boilerplate for Junior Developers\nCreate flask API's in minutes, 📹 watch the video tutorial.\n\nExtensive documentation here.\nIntegrated with Pipenv for package managing.\nFast deloyment to render.com or heroku with $ pipenv run deploy.\nUse of .env file.\nSQLAlchemy integration for database abstraction.\n\n1) Installation\nThis template installs itself in a few seconds if you open it for free with Codespaces (recommended) or Gitpod.\nSkip this installation steps and jump to step 2 if you decide t..."
+      },
+      {
+        "title": "echohive42/video-scene-splitter",
+        "content": "splits videos into scenes with gpt-4o-mini and saves them separately",
+        "tags": [],
+        "url": "https://github.com/echohive42/video-scene-splitter",
+        "publish_date": "2024-12-19T07:40:10",
+        "readme": "Video Scene Splitter\nA Python tool that automatically detects and splits videos into separate scenes using OpenAI's GPT-4 Vision API and OpenCV.\nFeatures\n\nCombines GPT-4 Vision and OpenCV for accurate scene detection\nSplits video into separate files for each scene\nGenerates detailed scene analysis report\nSupports MP4 video format\n\n❤️ Support & Get 400+ AI Projects\nThis is one of 400+ fascinating projects in my collection! Support me on Patreon to get:\n\n🎯 Access to 400+ AI projects (and growing w..."
+      },
+      {
+        "title": "mkfe35a7x1/fdm80p9ftewe8l-Craxs-RAT-7.6-Telegram-EVFLDEV",
+        "content": null,
+        "tags": [
+          "android-rat",
+          "cra",
+          "craxs-rat-7-6-update",
+          "craxs-rat-7-7",
+          "craxs-rat-android-rat",
+          "craxs-rat-source-codes",
+          "craxs-rat-v7-6-latest",
+          "craxs-rat-vip-2024",
+          "craxsrat-7-6-latest-update",
+          "craxsrat-android",
+          "craxsrat-latest-update",
+          "craxsrat-latest-update-7",
+          "craxsrat-source",
+          "craxsrat-source-codes",
+          "craxsrat-update",
+          "craxsrat-v7-6-latest"
+        ],
+        "url": "https://github.com/mkfe35a7x1/fdm80p9ftewe8l-Craxs-RAT-7.6-Telegram-EVFLDEV",
+        "publish_date": "2024-12-19T13:02:32",
+        "readme": "fdm80p9ftewe8l-Craxs-RAT-7.6-Telegram-EVFLDEV   -   - Craxs RAT工具提供对设备的远程控制，包括隐身操作等高级功能。 系统管理员可以使用它，但网络罪犯也会利用它来进行非法活动。 它支持数据传输、键盘记录和远程屏幕访问。 防范此类工具需要增强安全意识，使用强密码，并及时更新安全补丁。"
+      },
+      {
+        "title": "developer-krushna/JKS-SignKey-Generator",
+        "content": "Android jks key generator with optional certificate details",
+        "tags": [],
+        "url": "https://github.com/developer-krushna/JKS-SignKey-Generator",
+        "publish_date": "2024-12-18T19:35:12",
+        "readme": "JKS-SignKey-Generator\nAndroid jks key generator with optional certificate details\nAvailable features\n\n[x] No need to fill all the certificate details like Organization name, country, State etc..You can only set your common name for generating keys\n[x] Can export pk8 + pem keys\n\nUsage\n\nPlease add this Provider code in your Application class or any other class\njava\nstatic {\n java.security.Security.addProvider(new android.sun.security.provider.JavaKeyStoreProvider());\n}\n\nSample\n\nDownload Sample APK..."
+      },
+      {
+        "title": "arturbikbaev/ChatGPT",
+        "content": "Custom Instructions for ChatGPT",
+        "tags": [],
+        "url": "https://github.com/arturbikbaev/ChatGPT",
+        "publish_date": "2024-12-18T15:49:00",
+        "readme": "Custom Instructions for ChatGPT\nMy optimized custom instructions for ChatGPT that demonstrably improve its performance.\nOverview\nThis repository provides a structured set of custom instructions for ChatGPT, enabling personalized and optimized responses. By following the setup steps and replacing placeholders with actual user information, you can ensure ChatGPT understands your background, objectives, and preferred communication style.\nFeatures\n\nUser Profile & Lifestyle: Add personal details, pre..."
+      },
+      {
+        "title": "adrianhajdin/react_native-restate",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/adrianhajdin/react_native-restate",
+        "publish_date": "2024-12-19T10:54:00",
+        "readme": "Welcome to your Expo app 👋\nThis is an Expo project created with create-expo-app.\nGet started\n\nInstall dependencies\n\nbash\n   npm install\n\nStart the app\n\nbash\n    npx expo start\nIn the output, you'll find options to open the app in a\n\ndevelopment build\nAndroid emulator\niOS simulator\nExpo Go, a limited sandbox for trying out app development with Expo\n\nYou can start developing by editing the files inside the app directory. This project uses file-based routing.\nGet a fresh project\nWhen you're ready, ..."
+      },
+      {
+        "title": "aceiny/dz_artisan",
+        "content": "DZ Artisan a jobs listing platform  ( ESTIN first semester project )",
+        "tags": [],
+        "url": "https://github.com/aceiny/dz_artisan",
+        "publish_date": "2024-12-18T15:36:41",
+        "readme": "DZ-Artisan - Artisan Services Platform\nAbout\nDZ-Artisan is a platform connecting skilled artisans (plumbers, electricians, carpenters, etc.) with clients, enabling quick access to qualified professionals for various services.\nDatabase schema\nbash\nhttps://drawsql.app/teams/aceiny/diagrams/dz-artisan\nAPI Documentation\n```bash\nAPI documentation is auto-generated using Swagger and can be accessed at:\n/api\n```\nGetting Started\nPrerequisites\nbash\nnode >= 16.x\nnpm >= 8.x\nPostgreSQL >= 14\nCloning\nbash\n$ ..."
+      },
+      {
+        "title": "dobriban/Principles-of-AI-LLMs",
+        "content": "Materials for the course Principles of AI: LLMs at UPenn (Stat 9911, Spring 2025)",
+        "tags": [],
+        "url": "https://github.com/dobriban/Principles-of-AI-LLMs",
+        "publish_date": "2024-12-18T18:53:06",
+        "readme": "Principles of AI: LLMs (UPenn, Stat 9911, Spring 2025)\nThis course explores of Large Language Models (LLMs), from their fundamental principles to cutting-edge research directions. We aim to discuss the design and future of AI systems through lecture content and student-led presentations.\nThe course is structured around topics such as transformer architectures, empirical behaviors, training paradigms, and safety considerations. Students will also explore emerging challenges and the broader implic..."
+      },
+      {
+        "title": "perzeuss/dify-plugin-webhook",
+        "content": "Dify plugin to call Dify apps via webhook.",
+        "tags": [],
+        "url": "https://github.com/perzeuss/dify-plugin-webhook",
+        "publish_date": "2024-12-18T21:31:19",
+        "readme": "Webhook Dify Plugin\nAuthor: perzeuss\nVersion: 0.1.1\nType: Extension  \n\nDescription\nThis project is a Dify Plugin that allows users to trigger Dify applications using webhooks seamlessly. With this plugin, you can effortlessly initiate both chatflows and workflows through HTTP requests. 🚀\nGetting Started\nTo utilize this plugin, you must define an api_key upon installation. This key will authenticate your requests to the Dify webhook endpoints: Chatflow and Workflow.\nInstallation\n\n\nCreate Endpoint..."
+      },
+      {
+        "title": "sholajegede/eventix",
+        "content": "An event management application to demo the use of Convex with Kinde Auth",
+        "tags": [],
+        "url": "https://github.com/sholajegede/eventix",
+        "publish_date": "2024-12-19T08:09:47",
+        "readme": "Eventix\nOverview\nEventix is an event management app that is feature-rich and designed to create, manage, and update events seamlessly. Built with modern technologies such as Convex for backend operations and Kinde Auth for secure authentication, the app provides a user-friendly interface and powerful tools to handle event data efficiently.\nFeatures\nCore Features\n\nEvent Creation: Add new events with essential details like name, date, description, location, and organizer.\nEvent Editing: Update exi..."
+      },
+      {
+        "title": "TOTBWF/shapedtt",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/TOTBWF/shapedtt",
+        "publish_date": "2024-12-18T18:49:17",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "chengazhen/gitlens-pro",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/chengazhen/gitlens-pro",
+        "publish_date": "2024-12-19T13:25:41",
+        "readme": "GitLens Pro Activator\n一个用于激活 GitLens Pro 的工具。\n下载文件在 bin 目录下\n使用方法\n指定扩展目录\n默认使用 ~/.vscode 目录\n\n通过命令行参数：\n\nbash\n./activate --ext-dir ~/.cursor\nWindows 用户\n直接运行 activate.exe 即可。\nmacOS 用户\n直接运行 activate_mac 即可。\nbash\n./activate_mac\nLinux 用户\n直接运行 activate 即可。\nbash\n./activate"
+      },
+      {
+        "title": "mxgamecoder/ShadowVortex",
+        "content": "Mysterious and powerful, with a dark edge.",
+        "tags": [],
+        "url": "https://github.com/mxgamecoder/ShadowVortex",
+        "publish_date": "2024-12-18T18:39:49",
+        "readme": "👿 ShadowVortex 👿\nif you don't add your number to the owner in datsbase the code will not appear it will fail i warn you oooo\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n ## ShadowVortex Deployment Methods\n\n### 1. FORK THIS REPO\n\n\n\n\n## **NOTE: USE PANEL DEPLOYMENT METHOD BECAUSE ITS THE CURRENT METHOD**\n\n### 2. DEPLOY ON PANEL\n\n1. If you don't have an account in PANEL, create one and deploy.\n    \n\n\n### 2b. DEPLOY ON REPLIT\n\n1. If you don't have an account in REPLIT, create one and deploy.\n        \n\n\n\n### 2b. DEPLOY ON..."
+      },
+      {
+        "title": "kaualandi/bot-whatsapp-flow",
+        "content": "Chatbot de WhatsApp para fluxo de conversa",
+        "tags": [
+          "chatbot",
+          "nodejs"
+        ],
+        "url": "https://github.com/kaualandi/bot-whatsapp-flow",
+        "publish_date": "2024-12-18T20:41:00",
+        "readme": "Olá, bem vindo!\n\n\n\n\n\n\n\n\nOlá, esse bot de whatsapp foi criado com foco em atendimento ao cliente.\n\nComo iniciar\nbash\ngit clone https://github.com/kaualandi/bot-whatsapp-flow.git\nbash\ncd bot-whatsapp-flow\nbash\nnpm install\nVariáveis de ambiente\nVocê precisará de um arquivo .env, copie o .env.example\nbash\ncp .env.example .env\nO que tem em sua env:\n\nJSON_SERVER_PORT: Porta do servidor json-server, onde é salvo as informações dos usuários.\nEXPIRE_TIME: Tempo de expiração da seção do usuário em milisse..."
+      },
+      {
+        "title": "Agora-Lab-AI/OmegaViT",
+        "content": "OmegaViT (ΩViT) is a cutting-edge vision transformer architecture that combines multi-query attention, rotary embeddings, state space modeling, and mixture of experts to achieve superior performance across various computer vision tasks. ",
+        "tags": [
+          "agora",
+          "agoralab",
+          "ai",
+          "ml",
+          "open-ai",
+          "ssm",
+          "transformer",
+          "vit"
+        ],
+        "url": "https://github.com/Agora-Lab-AI/OmegaViT",
+        "publish_date": "2024-12-19T06:33:14",
+        "readme": "OmegaViT: A State-of-the-Art Vision Transformer with Multi-Query Attention, State Space Modeling, and Mixture of Experts\n   \n\n\n\n\nOmegaViT (ΩViT) is a cutting-edge vision transformer architecture that combines multi-query attention, rotary embeddings, state space modeling, and mixture of experts to achieve superior performance across various computer vision tasks. The model can process images of any resolution while maintaining computational efficiency.\nKey Features\n\nFlexible Resolution Processin..."
+      },
+      {
+        "title": "GrandpaNutz/fafda",
+        "content": "Tasty Tasty Fafda!!",
+        "tags": [],
+        "url": "https://github.com/GrandpaNutz/fafda",
+        "publish_date": "2024-12-18T19:59:05",
+        "readme": "Fafda\nFafda Fafda Good Good!!"
+      },
+      {
+        "title": "YojanMoralesUwU/HandTrack-RehabGame",
+        "content": "Augmented Reality Drag-and-Drop Game with Hand Tracker for Rehabilitation  An interactive AR game built with Python and computer vision (CV) for hand tracking. It helps users in rehabilitation by encouraging hand movements, motor skills, and coordination through drag-and-drop mechanics, offering a fun and immersive tool for physical recovery.",
+        "tags": [],
+        "url": "https://github.com/YojanMoralesUwU/HandTrack-RehabGame",
+        "publish_date": "2024-12-19T00:49:56",
+        "readme": "HandTracker-AR-Game-for-Rehabilitation\nDescription\nAn interactive AR game built with Python and computer vision (CV) for hand tracking. It helps users in rehabilitation by encouraging hand movements, motor skills, and coordination through drag-and-drop mechanics, offering a fun and immersive tool for physical recovery.\nRequirements\nTo run the project, you will need to install the following libraries:\n\nnumpy\nopencv-python\ncvzone\n\nYou can install them using pip by running the following command in ..."
+      },
+      {
+        "title": "mdjakarianur/Beecrowd-AD-HOC-Problem-Solved-by-Cpp",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/mdjakarianur/Beecrowd-AD-HOC-Problem-Solved-by-Cpp",
+        "publish_date": "2024-12-19T12:11:43",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "parlayparlor/nba-prop-prediction-model",
+        "content": "An NBA player props prediction tool using Python and nba_api to calculate averages and project stats.",
+        "tags": [],
+        "url": "https://github.com/parlayparlor/nba-prop-prediction-model",
+        "publish_date": "2024-12-18T20:53:52",
+        "readme": "nba-prop-prediction-model\nAn NBA player props prediction tool using Python and nba_api to calculate averages and project stats.\nNBA Prop Prediction Tool 🏀\nThis Python script fetches NBA player game logs using the nba_api library and calculates projected stats for points, rebounds, assists, and their combinations. It’s ideal for NBA player props research, fantasy sports, or general analysis.\n\n🚀 Features\n\nPlayer Name Search:\nSupports partial name searches (e.g., \"Tatum\" for Jayson Tatum).\nFilters ..."
+      },
+      {
+        "title": "jiejiesks/interview",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/jiejiesks/interview",
+        "publish_date": "2024-12-19T04:38:24",
+        "readme": "背景：硕单末9，一篇 CCF-A 类系统相关的论文，主要使用 C/C++\n收获字节、百度、滴滴、华为等多家大厂 offer\n八股文主要包括：C++、操作系统、计算机网络、智力题、海量数据处理的八股整理\n操作系统和计算机网络八股推荐看小林 coding，操作系统优先看内存管理、进程管理和网络系统中的零拷贝和 I/O 多路复用，计算机网络优先看 TCP（重中之重）\nC++推荐看阿秀的学习笔记和编程指北\n面经主要包含大厂的小部分面经（懒得整理了）\n书籍推荐：《effective c++》、《more effective c++》、《effective modern c++》\n算法学习推荐：acwing.com。先学习算法基础课，打好基础。然后刷 leetcode hot100，配合 leetcode 究极班一起学习。hot100 起码刷 2 遍以上。此外，leetcode的面试经典 150 题和春招冲刺百题计划也可以刷，优先刷 150 题。另外可以做代码随想录中推荐的题目作为补充。\n推荐刷题路线：hot100 -> 150题 -> 代码随想录-> 春招冲刺百题\n飞书面试记录模板是本人在秋招时..."
+      },
+      {
+        "title": "DMU-ITREC/CSRTE-CCL2025",
+        "content": "CCL2025中文语音关系三元组抽取任务（CSRTE）的评测网站",
+        "tags": [],
+        "url": "https://github.com/DMU-ITREC/CSRTE-CCL2025",
+        "publish_date": "2024-12-19T03:24:17",
+        "readme": "CCL2025中文语音关系三元组抽取任务\n1.组织者及联系方式\n评测组织者：宁金忠（大连海事大学）、潘怡霖（大连海事大学）、张益嘉（大连海事大学教授）、帕尔哈提•吐拉江(大连理工大学/新疆师范大学)、孙媛媛（大连理工大学教授）、林鸿飞（大连理工大学教授）\n任务负责人、联系人：宁金忠（ningjinzhong@dlmu.edu.cn）\n2.任务内容\n传统的关系三元组抽取任务主要集中于书面文本，通过识别实体及其相互关系来构建结构化的知识图谱。然而，语音作为人机交互的主要形式之一，在智能助手、智能客服、语音搜索等诸多应用中发挥着日益重要的作用。因此，如何高效、准确地从语音数据中提取有价值的结构化信息成为研究的热点之一。\n中文语音关系三元组抽取任务（Chinese Speech Relation Triple Extraction Task，CSRTE）旨在从中文语音数据中端到端地自动识别并提取实体及其相互关系，构建结构化的语音关系三元组（头实体、关系、尾实体）。任务的目标在于提升中文语音关系三元组抽取的准确性和效率，增强系统在不同语境和复杂语音环境下的鲁棒性，实现从语音输入到三元组输出的全流..."
+      },
+      {
+        "title": "mdjakarianur/Beecrowd-BEGINNER-Problem-Solved-by-Cpp",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/mdjakarianur/Beecrowd-BEGINNER-Problem-Solved-by-Cpp",
+        "publish_date": "2024-12-18T15:45:00",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "let-fughes/Laboratory_work_8-",
+        "content": "Лабораторная работа №8",
+        "tags": [],
+        "url": "https://github.com/let-fughes/Laboratory_work_8-",
+        "publish_date": "2024-12-18T16:48:17",
+        "readme": "README無法訪問或未找到。"
+      },
+      {
+        "title": "ThatMadCap/mad-loot",
+        "content": "A FiveM customisable loot generation system for randomised rewards with adjustable tiers and chances, inspired by RuneScape drop tables.",
+        "tags": [],
+        "url": "https://github.com/ThatMadCap/mad-loot",
+        "publish_date": "2024-12-18T19:05:08",
+        "readme": "\n\nmad-loot\nInspired by Old School RuneScape drop tables, mad-loot is a centralised loot generation resource designed to handle all your player reward distribution needs. Whether you're running a robbery system or giving rewards for other activities, mad-loot allows you to create fully customisable and randomisable loot tables with ease.\nWhy use it?\nTraditionally, managing rewards across various activities like robberies can get complicated. mad-loot simplifies this by offering:\n\nCentralised loot..."
+      },
+      {
+        "title": "U-AMC/DiTer-plusplus-Player",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/U-AMC/DiTer-plusplus-Player",
+        "publish_date": "2024-12-18T17:55:14",
+        "readme": "DiTer++ Player\nDiTer++ Player is a utility which enables topic publish in both ROS-Noetic (EOL May 2025), and ROS-Humble\nUpdate will be coming soon... \nFor those who will to use pre-release of dataset (which are in ROS-Noetic bag format), please leave an Issue or an email for request. "
+      },
+      {
+        "title": "Ryaang/blog-ai-tool",
+        "content": "Useful AI tools for markdown blog posts, support auto seo, summary, translation, etc. Compatible with blog framework like Hexo, Hugo, etc. markdown博客文章的实用ai工具，支持自动SEO、摘要总结、翻译等。兼容Hexo、Hugo等博客框架",
+        "tags": [
+          "blog",
+          "hexo",
+          "hugo",
+          "seo",
+          "gpt",
+          "llm"
+        ],
+        "url": "https://github.com/Ryaang/blog-ai-tool",
+        "publish_date": "2024-12-19T04:00:10",
+        "readme": "🤖 Blog AI tool\n   \n🌟 Useful ai tools for blog framework like Hexo, Hugo, etc, as long as you manage your blog with markdown format. 简体中文\n✨ Features\n\n🎯 Generate seo content (title, description, keywords) for blog posts in markdown format\n📝 Generate ai summary for blog posts\n🌍 Translate blog posts to multiple languages\n🛠️ Support blog framework like Hexo, Hugo, etc.\n🌐 Support multiple language\n🧠 Support multiple AI model like OpenAI, Qwen, Llama, etc. As long as the model provides openai-compatibl..."
+      },
+      {
+        "title": "Personaldycoders/DYNET",
+        "content": "Bot Md yg di Kembangkan oleh dycoders.xyz",
+        "tags": [],
+        "url": "https://github.com/Personaldycoders/DYNET",
+        "publish_date": "2024-12-19T11:47:50",
+        "readme": "\nDEVELOPER :\n💻 dycoders.xyz\nTHANKS TO :\n- 🔥 Cattozolala\n- 🔥 Skizo\n- 🔥 Devolution\n- 🔥 RiooXdzz\n- 🔥 AxellNetwork\n- 🔥 Selxyzz"
+      },
+      {
+        "title": "Timiimiimii/Godot-Mii-3.5.2",
+        "content": "Mii Heads recreated in Godot 3.5.2 for use in games.",
+        "tags": [],
+        "url": "https://github.com/Timiimiimii/Godot-Mii-3.5.2",
+        "publish_date": "2024-12-19T04:27:41",
+        "readme": "GodotMii3.5.2\nMii Heads recreated in Godot 3.5.2 for use in games.\n Example Images below.\n\n\nDISCLAIMER\nThere are very minor amounts of WEBFISHING code inside, as these scenes were originally from a mod in WEBFISHING. I am working to remove all WEBFISHING related assets. Additionally, please use mii_head_plus.tscn. It is the most accurate I have gotten so far.\nLoading Miis\nIn the Godot 3.5.2 version, only .CHARINFO loading is supported. Mii Names also are not supported as of now. To load a Mii, u..."
+      },
+      {
+        "title": "gsabran/mcp-swift-sdk",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/gsabran/mcp-swift-sdk",
+        "publish_date": "2024-12-18T22:25:19",
+        "readme": "MCP Swift SDK (Client only for now)!\n\n\n\nSwift implementation of the Model Context Protocol (MCP), providing both client and server capabilities for integrating with LLM surfaces.\nOverview\nThe Model Context Protocol allows applications to provide context for LLMs in a standardized way, separating the concerns of providing context from the actual LLM interaction. This Swift SDK implements the full MCP specification for the client, making it easy to:\n\nBuild MCP clients that can connect to any MCP s..."
+      },
+      {
+        "title": "Kiri-Innovation/point-animate-blender-addon",
+        "content": "Point Animate by KIRI Engine",
+        "tags": [],
+        "url": "https://github.com/Kiri-Innovation/point-animate-blender-addon",
+        "publish_date": "2024-12-19T09:55:56",
+        "readme": "Point Animate by KIRI Engine\n\n\nIntroduction:\nThe add-on allows you to animate scans or models by applying custom Geometry Nodes animation modifiers, enabling users to achieve VFX and motion graphic results without requiring any prior animation experience.\nDesigned for beginners, it lets you create animations with as few as five clicks.\nFor more experienced users, full control over each modifier is provided, with the option to layer them for more complex effects.\nThe addon is inspired by the poin..."
+      },
+      {
+        "title": "proxima-os/proxima",
+        "content": null,
+        "tags": [],
+        "url": "https://github.com/proxima-os/proxima",
+        "publish_date": "2024-12-18T16:25:16",
+        "readme": "Proxima\nA monolithic Unix-like operating system\nBuild instructions\nMake sure all submodules are up-to-date before beginning.\nSimple build\nIf you just want an ISO image, run the build.sh script. It takes the target architecture as an argument, and creates\nan ISO image for you (at build/proxima.iso):\nsh\n./build.sh x86_64\nAdvanced build\nProxima is built just like any other CMake project. It is recommended to use the provided Clang-based toolchain files,\nsince that is what is used to develop the pro..."
+      },
+      {
+        "title": "Jaculabilis/nixpkgs-gold",
+        "content": "For your premium derivations",
+        "tags": [],
+        "url": "https://github.com/Jaculabilis/nixpkgs-gold",
+        "publish_date": "2024-12-18T18:00:58",
+        "readme": "✨ nixpkgs gold ✨\nAll store realizations are equal, but some are more equal than others. With the new nixpkgs gold, you can give your Nix expressions that premium shine by keeping them out of the hands of the common, vulgar nix stores.\n"
+      },
+      {
+        "title": "plyght/Voxa",
+        "content": "A sleek, native macOS Discord client built with SwiftUI. Fast, lightweight, and designed for seamless communication.",
+        "tags": [
+          "client",
+          "discord",
+          "discordclient",
+          "swift",
+          "swiftui",
+          "discord-client",
+          "native-mac-app"
+        ],
+        "url": "https://github.com/plyght/Voxa",
+        "publish_date": "2024-12-19T05:21:45",
+        "readme": "Voxa\nA sleek, native macOS Discord client built with SwiftUI. Fast, lightweight, and designed for seamless communication."
+      },
+      {
+        "title": "retodera/technologium",
+        "content": "a java mod for Mindustry. WIP.",
+        "tags": [],
+        "url": "https://github.com/retodera/technologium",
+        "publish_date": "2024-12-18T19:19:22",
+        "readme": "Technologium\na java mod for Mindustry. it'll be a huge mod. for now, WIP!\nthe mod will have 5 planets, each with its own blocks, units, items, mechanics, enemy team and story (maybe).\nhelp will be appreciated, as for now i'm the only creator, and i'm not that good at java coding"
+      },
+      {
+        "title": "cameronking4/shadcn-openai-realtime-webrtc",
+        "content": "Boilerplate Nextjs15 project to make use of the OpenAI GPT4o Realtime WebRTC API to talk with AI Voice Assistant. Fastest & latest way to do Voice AI (Dec 2024).",
+        "tags": [
+          "nextjs",
+          "openai",
+          "realtime-api",
+          "shadcn",
+          "shadcn-ui",
+          "voice-ai",
+          "webrtc",
+          "gpt4o-realtime-api"
+        ],
+        "url": "https://github.com/cameronking4/shadcn-openai-realtime-webrtc",
+        "publish_date": "2024-12-19T00:44:31",
+        "readme": "OpenAI WebRTC Shadcn Next15 Starter\nThis is a WebRTC-based audio streaming application using OpenAI's Realtime WebRTC API. Project contains /api route and UI components developed with Next.js and shadcn/ui. It supports real-time audio conversations implented in skrivov/openai-voice-webrtc-next with the addition of a hook to abstract the WebRTC handling.\nhttps://github.com/user-attachments/assets/b97f28da-734d-4165-b9b3-c3a386401198\nFeatures\n\nNext.js Framework: Built with Next.js for server-side ..."
+      },
+      {
+        "title": "Sean-on-Git/mealie-extension",
+        "content": "Extension to add recipes to your Mealie instance easily",
+        "tags": [],
+        "url": "https://github.com/Sean-on-Git/mealie-extension",
+        "publish_date": "2024-12-18T22:17:13",
+        "readme": "mealie-extension\nA Firefox extension to easily add recipes to a personal Mealie instance.\nNote: This is currently in alpha. Please use at your own risk\nHow to use\nInstall through Firefox marketplace (pending approval) or use extension debug to install manually as a temp extension.\nOnce installed, go to preferences and your Mealie URL and the API token you will be using (this needs to be generated from your account on Mealie).\nAfter that, either right-click a page or use shortcut \"Ctrl+Alt+M\"."
+      },
+      {
+        "title": "AnderGray/openmc_UQ",
+        "content": "SANDY + OpenMC + UncertaintyQuantification.jl",
+        "tags": [],
+        "url": "https://github.com/AnderGray/openmc_UQ",
+        "publish_date": "2024-12-18T23:31:42",
+        "readme": "openmc_UQ\nA fairly clunky workflow for running nuclear data Monte Carlo UQ with OpenMC. The workflow wraps the SANDY and OpenMC in UncertaintyQuantification.jl. The workflow generates nuclear data samples and runs openmc in the same slurm submission. Random seeds for SANDY are interpolated into an input file by UQ.jl.\nFeatures:\n* OpenMC configuration agnostic (can use DAGMC + libmesh)\n* Convenient HPC resource manager (can use multiple nodes for OpenMC simulations). Enabled through UQ.jl HPC sim..."
+      },
+      {
+        "title": "stong/writing",
+        "content": "Index of my personal projects and writing",
+        "tags": [],
+        "url": "https://github.com/stong/writing",
+        "publish_date": "2024-12-18T23:20:29",
+        "readme": "cts Personal Projects\nHi I'm cts aka gf_256. I'm too lazy to setup and host a blog myself, so things I make usually end up (1) on the company blog; (2) in a Github gist; (3) in a Github repo; or (4) in someone else's publication.\nA lot of the things I write are too small to deserve a spot on the CV, but I still want them to be discoverable by search engines so they can help other people.\n\nFunny tweets\nFlare-On Challenge 2024 Writeups\nHooking nvml - (Gist)\nFixing Windows Update error 0x80071AB1 (..."
+      },
+      {
+        "title": "CIntellifusion/VideoDPO",
+        "content": "Official Implementation of VideoDPO",
+        "tags": [
+          "aigc",
+          "diffusion-models",
+          "generative-ai",
+          "rlaif",
+          "rlhf",
+          "self-improvement",
+          "videogeneration"
+        ],
+        "url": "https://github.com/CIntellifusion/VideoDPO",
+        "publish_date": "2024-12-19T08:00:54",
+        "readme": "\nVideoDPO: Omni-Preference Alignment for Video Diffusion Generation\n\n\n\n\n\n\n[Runtao Liu ](https://github.com/rt219), [Haoyu Wu ](https://scholar.google.com/citations?user=kiQv84oAAAAJ&hl=zh-CN)$^{1,2 *}$ , Ziqiang Zheng $^1$, Chen Wei $^3$, [Yingqing He](https://scholar.google.com/citations?user=UDiGYN8AAAAJ&hl=en)$^1$, Renjie Pi $^1$, [Qifeng Chen](https://cqf.io/)$^1$\n\n$^1$ HKUST $^2$ Renmin University of China $^3$ Johns Hopkins University\n\n($^*$ Equal Contribution. Work completed during Haoyu'..."
+      },
+      {
+        "title": "XiaoMi/ha_xiaomi_home",
+        "content": "Xiaomi Home Integration for Home Assistant",
+        "tags": [
+          "home-assistant-integration",
+          "miot-devices",
+          "home-assistant",
+          "miot",
+          "xiaomi-smart-home",
+          "xiaomi",
+          "smart-home"
+        ],
+        "url": "https://github.com/XiaoMi/ha_xiaomi_home",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Xiaomi Home Integration for Home Assistant\nEnglish | 简体中文\nXiaomi Home Integration is an integrated component of Home Assistant supported by Xiaomi official. It allows you to use Xiaomi IoT smart devices in Home Assistant.\nInstallation\n\nHome Assistant version requirement:\n\nCore $\\geq$ 2024.11.0\nOperating System $\\geq$ 13.0\n\n\nMethod 1: Git clone from GitHub\nbash\ncd config\ngit clone https://github.com/XiaoMi/ha_xiaomi_home.git\ncd ha_xiaomi_home\n./install.sh /config\nWe recommend this installation me..."
+      },
+      {
+        "title": "comet-ml/opik",
+        "content": "Open-source end-to-end LLM Development Platform",
+        "tags": [],
+        "url": "https://github.com/comet-ml/opik",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\n\n\n\n\n\n\n        Opik\n    \n    Open-source end-to-end LLM Development Platform\n\n\nConfidently evaluate, test and monitor LLM applications. \n\n\n\n[![Python SDK](https://img.shields.io/pypi/v/opik)](https://pypi.org/project/opik/)\n[![License](https://img.shields.io/github/license/comet-ml/opik)](https://github.com/comet-ml/opik/blob/main/LICENSE)\n[![Build](https://github.com/comet-ml/opik/actions/workflows/build_apps.yml/badge.svg)](https://github.com/comet-ml/opik/actions/workflows/build_apps.yml)\n\n\n..."
+      },
+      {
+        "title": "EbookFoundation/free-programming-books",
+        "content": "📚 Freely available programming books",
+        "tags": [
+          "education",
+          "books",
+          "list",
+          "resource",
+          "hacktoberfest"
+        ],
+        "url": "https://github.com/EbookFoundation/free-programming-books",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "List of Free Learning Resources In Many Languages\n\n\n[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome) \n[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/) \n[![Hacktoberfest 2023 stats](https://img.shields.io/github/hacktoberfest/2023/EbookFoundation/free-programming-books?label=Hacktoberfest+2023)](https://gi..."
+      },
+      {
+        "title": "konfig-dev/konfig",
+        "content": "Sunset as of December 2024",
+        "tags": [
+          "api",
+          "documentation",
+          "sdks"
+        ],
+        "url": "https://github.com/konfig-dev/konfig",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Konfig\nThe monorepo that holds everything...\nGetting started\nGet the repository on your local machine. Takes a minute.\nshell\ngit clone https://github.com/konfig-dev/konfig --recursive\ncd konfig\nThis repository has submodules so pull all of them. Also take a few minutes.\nshell\ngit submodule update --init --recursive --remote --merge\nEnvironment Setup\n\nRun Postgres as a background process\n\nshell\n   # in /konfig\n   brew install postgresql\n   mkdir -p postgres/data\n   initdb -D ./postgres/data\n   pg..."
+      },
+      {
+        "title": "anoma/anoma",
+        "content": "Reference implementation of Anoma",
+        "tags": [
+          "cryptography",
+          "blockchain",
+          "protocol",
+          "consensus",
+          "distributed-systems",
+          "p2p",
+          "elixir",
+          "erlang",
+          "operating-system"
+        ],
+        "url": "https://github.com/anoma/anoma",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Anoma\nThis is an implementation of the Anoma protocol, whose specs can be\nfound here.\nDocs\n\nContributors documentation\nSpecification\nDeveloper Docs (Coming Soon™)\nUser Docs (Coming Soon™)\n\nFollowing Development\nWork is merged into base on a bi-weekly (once every two weeks)\nschedule.\nDevelopment can be followed in multiple ways:\n\nIssues are put into the project overview\nThis is a good way to see what work is assigned and the various\n     views into how goals are being met\nWhat's Cooking on Anoma\n..."
+      },
+      {
+        "title": "stripe/stripe-ios",
+        "content": "Stripe iOS SDK",
+        "tags": [
+          "stripe",
+          "stripe-sdk"
+        ],
+        "url": "https://github.com/stripe/stripe-ios",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Stripe iOS SDK\n\n\n\n\n\n[!TIP]\nWant to chat live with Stripe engineers? Join us on our Discord server.\n\nThe Stripe iOS SDK makes it quick and easy to build an excellent payment experience in your iOS app. We provide powerful and customizable UI screens and elements that can be used out-of-the-box to collect your users' payment details. We also expose the low-level APIs that power those UIs so that you can build fully custom experiences.\nGet started with our 📚 integration guides and example projects,..."
+      },
+      {
+        "title": "Guovin/iptv-api",
+        "content": "📺IPTV电视直播源更新工具🚀：✨央视、📡卫视、☘️广东及各省份地方台、🌊港·澳·台、🎬电影、🎥咪咕、🏀体育、🪁动画、🎮游戏、🎵音乐、🏛经典剧场；支持IPv4/IPv6；支持自定义增加频道；支持组播源、酒店源、订阅源、关键字搜索；每天自动更新两次，结果可用于TVBox等播放软件；支持工作流、Docker(amd64/arm64/arm v7)、命令行、GUI运行方式 | IPTV live TV source update tool",
+        "tags": [
+          "auto",
+          "iptv",
+          "tvbox",
+          "tv",
+          "ipv4",
+          "ipv6",
+          "api",
+          "amd64",
+          "arm64",
+          "armv7",
+          "docker",
+          "workflow",
+          "m3u",
+          "m3u8",
+          "diy"
+        ],
+        "url": "https://github.com/Guovin/iptv-api",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\nIPTV-API\n\n自定义频道，自动获取直播源接口，测速验效后生成可用的结果\n默认结果包含：📺央视频道、💰央视付费频道、📡卫视频道、🏠广东频道、🌊港·澳·台频道、🎬电影频道、🎥咪咕直播、🏀体育频道、🪁动画频道、🎮游戏频道、🎵音乐频道、🏛经典剧场\n\n具体频道\n\n  📺央视频道: CCTV-1, CCTV-2, CCTV-3, CCTV-4, CCTV-5, CCTV-5+, CCTV-6, CCTV-7, CCTV-8, CCTV-9, CCTV-10, CCTV-11, CCTV-12, CCTV-13, CCTV-14, CCTV-15, CCTV-16, CCTV-17, CETV1, CETV2, CETV4, CETV5\n  \n\n\n  💰央视付费频道: 文化精品, 央视台球, 风云音乐, 第一剧场, 风云剧场, 怀旧剧场, 女性时尚, 高尔夫网球, 风云足球, 电视指南, 世界地理, 兵器科技\n  \n\n\n  📡卫视频道: 广东卫视, 香港卫视, 浙江卫视, 湖南卫视, 北京卫视, 湖北卫视, 黑龙江卫视, 安徽卫视, 重庆卫视, 东方卫视, 东南卫视, 甘肃卫视, 广西卫视..."
+      },
+      {
+        "title": "facebookresearch/AnimatedDrawings",
+        "content": "Code to accompany \"A Method for Animating Children's Drawings of the Human Figure\"",
+        "tags": [],
+        "url": "https://github.com/facebookresearch/AnimatedDrawings",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Animated Drawings\n\nThis repo contains an implementation of the algorithm described in the paper, A Method for Animating Children's Drawings of the Human Figure.\nIn addition, this repo aims to be a useful creative tool in its own right, allowing you to flexibly create animations starring your own drawn characters. If you do create something fun with this, let us know! Use hashtag #FAIRAnimatedDrawings, or tag me on twitter: @hjessmith.\nProject website: http://www.fairanimateddrawings.com\nVideo ov..."
+      },
+      {
+        "title": "apache/airflow",
+        "content": "Apache Airflow - A platform to programmatically author, schedule, and monitor workflows",
+        "tags": [
+          "airflow",
+          "apache",
+          "apache-airflow",
+          "python",
+          "scheduler",
+          "workflow",
+          "automation",
+          "dag",
+          "data-engineering",
+          "data-integration",
+          "data-orchestrator",
+          "data-pipelines",
+          "data-science",
+          "elt",
+          "etl",
+          "machine-learning",
+          "mlops",
+          "orchestration",
+          "workflow-engine",
+          "workflow-orchestration"
+        ],
+        "url": "https://github.com/apache/airflow",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\nApache Airflow\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nApache Airflow (or simply Airflow) is a platform to programmatically author, schedule, and monitor workflows.\nWhen workflows are defined as code, they become more maintainable, versionable, testable, and collaborative.\nUse Airflow to author workflows as directed acyclic graphs (DAGs) of tasks. The Airflow scheduler executes your tasks on an array of workers while following the specified dependencies. Rich command line utilities make performing complex surgeries ..."
+      },
+      {
+        "title": "seleniumbase/SeleniumBase",
+        "content": "Python APIs for web automation, testing, and bypassing bot-detection.",
+        "tags": [
+          "python",
+          "selenium",
+          "webdriver",
+          "selenium-python",
+          "e2e-testing",
+          "seleniumbase",
+          "pytest-plugin",
+          "web-automation",
+          "pytest",
+          "webkit",
+          "chromedriver",
+          "anti-detection",
+          "bot-detection",
+          "cloudflare-bypass",
+          "web-scraping-python",
+          "python-scraper",
+          "web-scraping",
+          "test-automation",
+          "cdp",
+          "behave"
+        ],
+        "url": "https://github.com/seleniumbase/SeleniumBase",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\n\n\n\n\n\nSeleniumBase\n\nAll-in-one Browser Automation Framework:Web Crawling / Testing / Scraping / Stealth\n    \n\n🚀 Start |\n🏰 Features |\n🎛️ Options |\n📚 Examples |\n🌠 Scripts |\n📱 Mobile\n\n📘 APIs |\n 🔠 Formats |\n🔴 Recorder |\n📊 Dashboard |\n🗾 Locales |\n💻 Farm\n\n🎖️ GUI |\n📰 TestPage |\n👤 UC Mode |\n🐙 CDP Mode |\n📶 Charts |\n🌐 Grid\n\n👁️ How |\n🚝 Migrate |\n🗂️ CasePlans |\n♻️ Template |\n🧬 Hybrid |\n🚎 Tours\n\n🤖 CI/CD |\n🕹️ JSMgr |\n🌏 Translator |\n🎞️ Presenter |\n🛂 Dialog |\n🖼️ Visual\n\n\nSeleniumBase is the professional toolki..."
+      },
+      {
+        "title": "unitreerobotics/unitree_rl_gym",
+        "content": "無描述提供",
+        "tags": [],
+        "url": "https://github.com/unitreerobotics/unitree_rl_gym",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Unitree RL GYM\nThis is a simple example of using Unitree Robots for reinforcement learning, including Unitree Go2, H1, H1_2, G1\n| Isaac Gym | Mujoco | Physical |\n|--- | --- | --- |\n|  |  |  |\n1. Installation\n\n\nCreate a new python virtual env with python 3.8\n\n\nInstall pytorch 2.3.1 with cuda-12.1:\n\n\nbash\n   pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu121\n3. Install Isaac Gym\n\nDownload and install Isaac Gym Preview 4 from https://de..."
+      },
+      {
+        "title": "microsoft/PowerToys",
+        "content": "Windows system utilities to maximize productivity",
+        "tags": [
+          "powertoys",
+          "desktop",
+          "windows",
+          "fancyzones",
+          "microsoft-powertoys",
+          "powerrename",
+          "keyboard-manager",
+          "color-picker"
+        ],
+        "url": "https://github.com/microsoft/PowerToys",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Microsoft PowerToys\n\nHow to use PowerToys | Downloads & Release notes | Contributing to PowerToys | What's Happening | Roadmap\nAbout\nMicrosoft PowerToys is a set of utilities for power users to tune and streamline their Windows experience for greater productivity. For more info on PowerToys overviews and how to use the utilities, or any other tools and resources for Windows development environments, head over to learn.microsoft.com!\n|              | Current utilities: |              |\n|---------..."
+      },
+      {
+        "title": "luckjiawei/frpc-desktop",
+        "content": "frp跨平台桌面客户端，可视化配置，轻松实现内网穿透！ 支持所有frp版本",
+        "tags": [
+          "frp",
+          "frpc",
+          "frp-desktop",
+          "frp-linux",
+          "frp-macos",
+          "frp-window",
+          "desktop",
+          "electron",
+          "javascript",
+          "vue",
+          "tailwindcss",
+          "typescript",
+          "vite"
+        ],
+        "url": "https://github.com/luckjiawei/frpc-desktop",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\n\n\n\n\n\n\n\n\n\n\nFrpc-Desktop\n\n    🎉 FRP跨平台桌面客户端，可视化配置，轻松实现内网穿透！\n    \n    支持所有frp版本 / 开机自启 / 可视化配置 / 免费开源\n  \n使用教程\n\n\nTODO\n\n[x] 开机自启动\n[x] 适配多用户 user & meta_token\n[x] 便携版\n[x] 增加udp代理类型\n[x] 支持快速分享frps\n[x] 增加快速选择本地端口\n[x] 支持stcp代理类型\n[x] 通过镜像站下载frp\n[x] 支持所有配置的导入导出\n[x] 一键清空所有配置\n[x] 支持导入识别frpc.toml\n[x] tcp、udp协议支持批量端口\n\n常见问题\nMac提示已损坏\n执行命令：sudo xattr -cr Frpc-Desktop.app\n里程碑\n\n2024-12-04: 发布v1.1.5版本 优化体验、支持修改webport、解决github限流问题、日志优化\n2024-11-08: 发布v1.1.4版本 修复已知BUG\n2024-10-14: 发布v1.1.3版本 支持xtcp协议、优化体验\n2024-09-25:..."
+      },
+      {
+        "title": "mui/base-ui",
+        "content": "Base UI is an open-source library of accessible, unstyled UI components for React.",
+        "tags": [
+          "accessibility",
+          "design-system",
+          "react",
+          "react-components",
+          "wai-aria"
+        ],
+        "url": "https://github.com/mui/base-ui",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "Base UI\nFrom the creators of Radix, Floating UI, and Material UI, Base UI is an unstyled UI component library for building accessible user interfaces.\n\nDocumentation\nTo get started, check out the Base UI documentation.\nContributing\nRead our contributing guide to learn about our development process, how to propose bug fixes and improvements, and how to build and test your changes.\nReleases\nTo see the latest updates, check out the releases.\nCommunity\n\nDiscord For community support, questions, and ..."
+      },
+      {
+        "title": "oven-sh/bun",
+        "content": "Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one",
+        "tags": [
+          "bun",
+          "bundler",
+          "javascript",
+          "javascriptcore",
+          "jsx",
+          "nodejs",
+          "npm",
+          "react",
+          "transpiler",
+          "typescript",
+          "zig",
+          "ziglang"
+        ],
+        "url": "https://github.com/oven-sh/bun",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "\n\n\nBun\n\n\n\n\n\n\nDocumentation\n  •  \nDiscord\n  •  \nIssues\n  •  \nRoadmap\n\n\nRead the docs →\nWhat is Bun?\nBun is an all-in-one toolkit for JavaScript and TypeScript apps. It ships as a single executable called bun.\nAt its core is the Bun runtime, a fast JavaScript runtime designed as a drop-in replacement for Node.js. It's written in Zig and powered by JavaScriptCore under the hood, dramatically reducing startup times and memory usage.\nbash\nbun run index.tsx             # TS and JSX supported out-of-th..."
+      },
+      {
+        "title": "fatedier/frp",
+        "content": "A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet.",
+        "tags": [
+          "proxy",
+          "reverse-proxy",
+          "tunnel",
+          "nat",
+          "go",
+          "firewall",
+          "frp",
+          "expose",
+          "http-proxy",
+          "p2p"
+        ],
+        "url": "https://github.com/fatedier/frp",
+        "publish_date": "2024-12-18T15:29:19.161160",
+        "readme": "frp\n\n\n\n\nREADME | 中文文档\nSponsors\nfrp is an open source project with its ongoing development made possible entirely by the support of our awesome sponsors. If you'd like to join them, please consider sponsoring frp's development.\nGold Sponsors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat is frp?\nfrp is a fast reverse proxy that allows you to expose a local server located behind a NAT or firewall to the Internet. It currently supports TCP and UDP, as well as HTTP and HTTPS protocols, enabling requests to be forwarded..."
+      }
+    ],
+    "medium": [],
+    "csdn": []
+  },
+  "today_tags": {
+    "github": [
+      "chromedriver",
+      "gpt4o-realtime-api",
+      "solana",
+      "accessibility",
+      "ziglang",
+      "selenium-python",
+      "sniper-bot-solana-raydium",
+      "m3u8",
+      "design-system",
+      "cloud",
+      "resource",
+      "decrypt",
+      "postexplotation",
+      "workflow",
+      "cobalt-strike",
+      "solana-snipe",
+      "pytest",
+      "scheduler",
+      "selenium",
+      "sniper",
+      "tailwindcss",
+      "npm",
+      "smart-home",
+      "m3u",
+      "redteam-tools",
+      "formal-verification",
+      "open-ai",
+      "discordclient",
+      "shadcn",
+      "web-scraping-python",
+      "wappalyzer",
+      "ringlink",
+      "go",
+      "mpc",
+      "bun",
+      "data-orchestrator",
+      "zig",
+      "wecom",
+      "p2p",
+      "tv",
+      "web-scraping",
+      "xiaomi-smart-home",
+      "native-mac-app",
+      "auto",
+      "sph",
+      "python",
+      "openai",
+      "weixin",
+      "webkit",
+      "javascript",
+      "elt",
+      "transpiler",
+      "test-automation",
+      "craxs-rat-v7-6-latest",
+      "data-integration",
+      "craxs-rat-vip-2024",
+      "llm",
+      "diffusion-models",
+      "cryptocurrency",
+      "discord-client",
+      "fancyzones",
+      "reverse-proxy",
+      "workflow-orchestration",
+      "generative-ai",
+      "seleniumbase",
+      "http-proxy",
+      "armv7",
+      "pumpfun-sniper",
+      "anti-detection",
+      "aigc",
+      "bundler",
+      "automation",
+      "swift",
+      "gaussian-splatting",
+      "frp-macos",
+      "craxsrat-v7-6-latest",
+      "blockchain",
+      "seo",
+      "craxs-rat-android-rat",
+      "execute-assembly",
+      "education",
+      "apache-airflow",
+      "mlops",
+      "cloudflare-bypass",
+      "agoralab",
+      "client",
+      "pytest-plugin",
+      "data-engineering",
+      "trading-solana",
+      "craxsrat-source-codes",
+      "lean4",
+      "tunnel",
+      "model-context-protocol",
+      "ipv4",
+      "airflow",
+      "large-language-model",
+      "videogeneration",
+      "etl",
+      "wai-aria",
+      "apache",
+      "frp-window",
+      "documentation",
+      "craxs-rat-7-7",
+      "bot",
+      "craxsrat-update",
+      "discord",
+      "orchestration",
+      "ipv6",
+      "behave",
+      "agora",
+      "api",
+      "jsx",
+      "wechat",
+      "home-assistant-integration",
+      "cdp",
+      "gpt",
+      "machine-learning",
+      "frpc",
+      "ml",
+      "lean",
+      "dag",
+      "react-components",
+      "blog",
+      "solana-trade-bot",
+      "webdriver",
+      "proxy",
+      "fhir",
+      "books",
+      "vite",
+      "raydium-bot",
+      "nextjs",
+      "realtime-api",
+      "distributed-systems",
+      "sdks",
+      "cryptography",
+      "solana-meme",
+      "voice-ai",
+      "snark",
+      "rlaif",
+      "android-rat",
+      "chatbot",
+      "keyboard-manager",
+      "frp-desktop",
+      "firewall",
+      "list",
+      "elixir",
+      "diy",
+      "windows",
+      "zero-knowledge",
+      "iptv",
+      "python-scraper",
+      "ai",
+      "pytorch",
+      "workflow-engine",
+      "docker",
+      "transformer",
+      "react",
+      "3d-head-modeling",
+      "craxsrat-latest-update",
+      "e2e-testing",
+      "arm64",
+      "cra",
+      "craxs-rat-7-6-update",
+      "electron",
+      "craxsrat-latest-update-7",
+      "protocol",
+      "microsoft-powertoys",
+      "powertoys",
+      "craxsrat-android",
+      "amd64",
+      "tvbox",
+      "miot",
+      "finder",
+      "natural-language-processing",
+      "typescript",
+      "solana-sniper",
+      "vit",
+      "webrtc",
+      "self-improvement",
+      "wallet",
+      "stripe-sdk",
+      "bot-detection",
+      "craxsrat-7-6-latest-update",
+      "rlhf",
+      "bof",
+      "web3",
+      "operating-system",
+      "color-picker",
+      "home-assistant",
+      "frp-linux",
+      "hexo",
+      "swiftui",
+      "expose",
+      "craxsrat-source",
+      "miot-devices",
+      "erlang",
+      "nat",
+      "hacktoberfest",
+      "data-science",
+      "desktop",
+      "shadcn-ui",
+      "network",
+      "rust",
+      "stripe",
+      "ssm",
+      "sdk",
+      "web-automation",
+      "xiaomi",
+      "data-pipelines",
+      "javascriptcore",
+      "hugo",
+      "vue",
+      "powerrename",
+      "zk",
+      "consensus",
+      "nodejs",
+      "wappalyzer-cli",
+      "frp",
+      "craxs-rat-source-codes",
+      "3d-head-reconstruction"
+    ],
+    "medium": [],
+    "csdn": []
+  }
+}

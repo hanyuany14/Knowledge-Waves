@@ -22,3 +22,5 @@ VECTORSTORE_TABLE_ID = "doc_and_vectors"
 
 # Medium
 MEDIUM_TAG_BASE_URL = "https://medium.com/feed/tag/"
+# Github
+GITHUB_PERSONAL_ACCESS_TOKEN = "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"
