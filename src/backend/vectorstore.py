@@ -14,11 +14,12 @@ class VectorStore:
         self.__table_name = f"{configs.VECTORSTORE_TABLE_ID}_{today_date}"
         print(f"table_name: {self.__table_name}")
 
-        self.__vectorstore_obj = self.__get_vectorestore_obj()
-
     def embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
 
         print(f"\n\nNow embedding and uploading tags to vectorestore...")
+
+        self.__delete_existed_vectorstore_table()
+        self.__vectorstore_obj = self.__get_vectorestore_obj()
 
         all_tags = set()
         all_metadatas = []
@@ -44,13 +45,15 @@ class VectorStore:
         Returns:
             list[(str)]: A list of similar tags. e.g. ["NLP", "Natural Language Processing"]
         """
+        self.__vectorstore_obj = self.__get_vectorestore_obj()
+
         interested_tags = []
         sources = sources if sources else ["github", "medium", "csdn"]
 
         for source in sources:
             docs_for_tags = self.__vectorstore_obj.similarity_search(
                 query=query,
-                filter=[{"source": source}],
+                filter={"source": source},
                 k=10,
             )
             for doc in docs_for_tags:
@@ -64,7 +67,6 @@ class VectorStore:
         )
 
     def __get_vectorestore_obj(self):
-        self.__delete_existed_vectorstore_table()
         return BigQueryVectorStore(
             project_id=configs.PROJECT_ID,
             dataset_name=configs.DATASET_ID,

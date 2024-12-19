@@ -92,7 +92,6 @@ class Crawl:
             print(f"    The number of categories: {len(categories)}")
 
             parse_medium_result, parsed_tags = self.__crawl_medium_24hr_feed_by_categories(categories)
-            # print(f"    parse_medium_result: {parse_medium_result}, parsed_tags: {parsed_tags}")
 
             if parse_medium_result == []:  # 第一個終止條件 - 這一輪查詢沒有出現任何新的文章
                 print("parse_medium_result is empty, 結束爬蟲")
