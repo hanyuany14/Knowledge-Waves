@@ -28,12 +28,13 @@ class Crawl:
             crawl_results (dict[str, list[dict[str, str | list[str] | datetime]]): 爬取的文章內容 e.g. {"github": [{"title": "title", "content": "content", "tags": ["tag1", "tag2"], "url": "url", "publish_date": datetime}]}
             today_tags (dict[str, set[str]]): 今日爬取的 tags e.g. {"github": {"tag1", "tag2"}}
         """
-        # github_result, github_tags = self.__crawl_from_github()
-        medium_result, medium_tags = self.__crawl_from_medium()
-        # csdn_result, csdn_tags = self.__crawl_from_csdn()
+        github_result, github_tags = self.__crawl_from_github()
+        # medium_result, medium_tags = self.__crawl_from_medium()
+        csdn_result, csdn_tags = self.__crawl_from_csdn()
 
-        github_result, github_tags = [], []
-        csdn_result, csdn_tags = [], []
+        # github_result, github_tags = [], []
+        # csdn_result, csdn_tags = [], []
+        medium_result, medium_tags = [], []
 
         crawl_results = {
             "github": github_result,
