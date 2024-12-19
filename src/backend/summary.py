@@ -37,44 +37,37 @@ class Summarization:
         """
         tags = VectorStore().search_similar_tags(query=query, sources=sources)
         print(f"tags: {tags}")
-        # articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
-        # article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
-        # summary = self.llm_summary(article_titles_and_contents)
-        summary = ""
+        articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
+        print('articles success')
+        article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
+        print('content success')
+        summary = self.llm_summary(article_titles_and_contents)
+        print('summary success')
         articles = {}
         return tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
         # TODO: By 佑
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
-                ("human", "{input}"),
-            ]
-        )
+        prompt = ChatPromptTemplate.from_messages([
+        (
+            "system",
+            "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"
+        ),
+        ("human", "{input}")
+        ])
 
         chain = prompt | self.llm
         summaries = []
+        processed_titles = set()  # 用来记录已处理过的标题
 
-        # 遍历字典中的每个来源和文章
         for source, articles in target_articles.items():
             for title, content in articles:
-                # 为每篇文章生成摘要
-                response = chain.invoke({"input": content})
-                # 格式化输出
-                summary = f'"{source}" {title}: {response.content}'
-                summaries.append(summary)
+                # 如果这个标题还没处理过，才生成摘要
+                if title not in processed_titles:
+                    response = chain.invoke({"input": content})
+                    summary = f'"{source}" {title}: {response.content}'
+                    summaries.append(summary)
+                    processed_titles.add(title)  # 添加到已处理集合中
 
-        return
+        return "\n\n".join(summaries)
 
-
-# if __name__ == "__main__":
-#     query = "我想要找生成式ai"
-#     print(query)
-#     sources = ["github", "medium", "csdn"]
-#     tags = VectorStore().search_similar_tags(query=query, sources=sources)
-#     # articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
-#     # article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
-#     print('tags:',tags)
-#     # print('articles:',articles)
-#     # print('contents:',article_titles_and_contents)

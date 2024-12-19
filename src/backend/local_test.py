@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print(query)
     sources = ["github", "medium", "csdn"]
     tags, summary, articles = main.do_summarize(query=query, sources=sources)
-    print(f"tags: {tags}")
+    print(summary)
 
     # articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
     # article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
