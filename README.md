@@ -7,7 +7,7 @@
 1. 設定 poetry 的安裝虛擬環境在本專案
 poetry config virtualenvs.in-project true
 
-2. 設定 poetry 用 0ython3.11
+2. 設定 poetry 用 python3.11
 poetry env use python3.11
 
 3. 下載套件
