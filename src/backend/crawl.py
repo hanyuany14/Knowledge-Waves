@@ -371,7 +371,7 @@ class Crawl:
         tags = [tag for parse_result in parse_results_list for tag in parse_result.get("tags", [])]
         return set(tags)
 
-    def __crawl_medium_url(self, url: str) -> Dict[str, str]:
+    def __crawl_medium_url(self, url: str) -> dict:
         """
         獲取Medium文章內容
 
@@ -432,14 +432,12 @@ class Crawl:
                     try:
                         parse_result = self.__crawl_medium_url(entry.id)
                         tags = [tag.term for tag in entry.tags] if "tags" in entry else []
-                        parse_result.update(
-                            {
-                                "title": entry.title,
-                                "url": entry.id,
-                                "tags": tags,
-                                "publish_date": publish_date,  # 轉換為字符串
-                            }
-                        )
+
+                        parse_result["title"] = entry.title
+                        parse_result["url"] = entry.id
+                        parse_result["tags"] = tags
+                        parse_result["publish_date"] = publish_date  # 轉換為字符串
+
                         parse_medium_result.append(parse_result)
                         self.__medium_existed_article.add(entry.id)
                         parsed_tags = parsed_tags.union(tags)
