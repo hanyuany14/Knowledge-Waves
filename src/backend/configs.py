@@ -25,3 +25,7 @@ VECTORSTORE_TABLE_ID = "doc_and_vectors"
 MEDIUM_TAG_BASE_URL = "https://medium.com/feed/tag/"
 # Github
 GITHUB_PERSONAL_ACCESS_TOKEN = "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"
+# csdn
+CHROMEDRIVER_PATH = (
+    r"C:\Users\bugee\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 您的 ChromeDriver 路徑
+)

@@ -7,8 +7,16 @@ from typing import Set, Tuple, List, Dict
 from bs4 import BeautifulSoup
 import markdown  # 引入 markdown 庫
 import re  # 用於處理 Markdown 語法
+import time
+import random  # 用於隨機選擇User-Agent
+import logging  # 用於記錄錯誤
 
 import configs as configs  # 確保configs.py中包含必要的配置，如GITHUB_PERSONAL_ACCESS_TOKEN和MEDIUM_TAG_BASE_URL
+
+# 配置日誌
+logging.basicConfig(
+    filename="csdn_crawl_errors.log", level=logging.ERROR, format="%(asctime)s:%(levelname)s:%(message)s"
+)
 
 
 class Crawl:
@@ -23,6 +31,17 @@ class Crawl:
         # 跟踪已處理的GitHub倉庫
         self.__github_existed_repo = set()
 
+        # 跟踪已處理的CSDN文章和標籤
+        self.__csdn_existed_article = set()
+        self.__csdn_existed_tags = set()
+
+        # CSDN的User-Agent列表
+        self.HEADERS = [
+            {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+            }
+        ]
+
     def crawl(
         self,
     ) -> Tuple[
@@ -36,28 +55,40 @@ class Crawl:
             crawl_results (dict): 爬取的文章內容
             today_tags (dict): 今日爬取的標籤
         """
-        # 爬取GitHub
-        github_result, github_tags = self.__crawl_from_github()
+        # 爬取GitHub (註解掉)
+        # try:
+        #     github_result, github_tags = self.__crawl_from_github()
+        # except Exception as e:
+        #     print(f"GitHub爬取失敗：{e}")
+        #     github_result, github_tags = [], set()
 
-        # 爬取Medium (已註解)
-        # medium_result, medium_tags = self.__crawl_from_medium()
+        # 爬取Medium (註解掉)
+        # try:
+        #     medium_result, medium_tags = self.__crawl_from_medium()
+        # except Exception as e:
+        #     print(f"Medium爬取失敗：{e}")
+        #     medium_result, medium_tags = [], set()
 
-        # 爬取CSDN (已註解)
-        # csdn_result, csdn_tags = self.__crawl_from_csdn()
+        # 爬取CSDN (啟用)
+        try:
+            csdn_result, csdn_tags = self.__crawl_from_csdn()
+        except Exception as e:
+            print(f"CSDN爬取失敗：{e}")
+            csdn_result, csdn_tags = [], set()
 
         # 若需要測試其他平台，請解除以下註解並相應調整
-        medium_result, medium_tags = [], set()
-        csdn_result, csdn_tags = [], set()
+        # medium_result, medium_tags = [], set()
+        # csdn_result, csdn_tags = [], set()
 
         crawl_results = {
-            "github": github_result,
-            "medium": medium_result,
+            # "github": github_result,
+            # "medium": medium_result,
             "csdn": csdn_result,
         }
 
         today_tags = {
-            "github": github_tags,
-            "medium": medium_tags,
+            # "github": github_tags,
+            # "medium": medium_tags,
             "csdn": csdn_tags,
         }
 
@@ -84,7 +115,7 @@ class Crawl:
         # 過濾已存在的倉庫
         for repo in repos:
             if repo["url"] in self.__github_existed_repo:
-                print(f"倉庫 `{repo['title']}` 已存在。")
+                print(f"倉庫 {repo['title']} 已存在。")
                 continue
             result_list.append(repo)
             self.__github_existed_repo.add(repo["url"])
@@ -99,7 +130,7 @@ class Crawl:
 
         for repo in trending_repos:
             if repo["url"] in self.__github_existed_repo:
-                print(f"熱門倉庫 `{repo['title']}` 已存在。")
+                print(f"熱門倉庫 {repo['title']} 已存在。")
                 continue
             result_list.append(repo)
             self.__github_existed_repo.add(repo["url"])
@@ -198,7 +229,7 @@ class Crawl:
                     return "README內容為空。"
 
                 # 判斷是否為Markdown格式（簡單判斷是否包含Markdown語法）
-                if re.search(r"[#*_\-`~]", readme_content):
+                if re.search(r"[#*_\-~]", readme_content):
                     # 將 Markdown 轉換為 HTML
                     readme_html = markdown.markdown(readme_content)
                     # 使用 BeautifulSoup 解析 HTML
@@ -265,7 +296,7 @@ class Crawl:
                 continue
             owner, repo_title = repo_name.split("/")
 
-            # 構建倉庫URL
+            # 构建仓库URL
             repo_url = f"https://github.com/{repo_name}"
 
             # 提取倉庫描述
@@ -351,12 +382,221 @@ class Crawl:
         return gloabl_medium_result, tags
 
     def __crawl_from_csdn(self) -> Tuple[List[Dict[str, object]], Set[str]]:
-        """ """
-        # 這裡可以根據CSDN的爬蟲實現進行填充
-        # 目前返回一個空列表和空集合
+        """爬取CSDN的文章
+
+        Returns:
+            tuple: (文章列表, 標籤集合)
+        """
+        print("\n現在正在從CSDN爬取\n")
+        max_pages = 3
+        csdn_articles = self.scrape_csdn_articles(max_pages)
+
         result_list = []
-        tags = set()
-        return result_list, tags
+        tags_set = set()
+
+        for article in csdn_articles:
+            publish_time_str = article["publish_time"]
+            if self.is_within_24_hours(publish_time_str):
+                if article["link"] in self.__csdn_existed_article:
+                    print(f"文章 {article['title']} 已存在。")
+                    continue
+                repo_data = {
+                    "title": article["title"],
+                    "content": article["content"],
+                    "tags": article["tags"],
+                    "url": article["link"],
+                    "publish_date": self.parse_publish_time(publish_time_str).isoformat(),
+                }
+                result_list.append(repo_data)
+                self.__csdn_existed_article.add(article["link"])
+                tags_set.update(article["tags"])
+            else:
+                print(f"文章 {article['title']} 不在24小時內，跳過。")
+
+        print(f"    爬取的CSDN文章數量：{len(result_list)}")
+        return result_list, tags_set
+
+    def is_within_24_hours(self, publish_time: str) -> bool:
+        """
+        檢查發布時間是否在過去24小時內
+
+        Args:
+            publish_time (str): 發布時間字符串
+
+        Returns:
+            bool: 是否在24小時內
+        """
+        now = datetime.now()
+        if "小時前" in publish_time:
+            hours = int(re.search(r"(\d+)小時前", publish_time).group(1))
+            publish_time_obj = now - timedelta(hours=hours)
+        elif "分鐘前" in publish_time:
+            minutes = int(re.search(r"(\d+)分鐘前", publish_time).group(1))
+            publish_time_obj = now - timedelta(minutes=minutes)
+        elif "昨天" in publish_time:
+            publish_time_obj = now - timedelta(days=1)
+        else:
+            # 假設為標準日期格式 "%Y-%m-%d %H:%M:%S"
+            try:
+                publish_time_obj = datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                print(f"無法解析的發布時間格式：{publish_time}")
+                return False
+        return now - publish_time_obj <= timedelta(days=1)
+
+    def parse_publish_time(self, publish_time: str) -> datetime:
+        """
+        將發布時間字符串轉換為datetime對象
+
+        Args:
+            publish_time (str): 發布時間字符串
+
+        Returns:
+            datetime: 發布時間的datetime對象
+        """
+        now = datetime.now()
+        if "小時前" in publish_time:
+            hours = int(re.search(r"(\d+)小時前", publish_time).group(1))
+            return now - timedelta(hours=hours)
+        elif "分鐘前" in publish_time:
+            minutes = int(re.search(r"(\d+)分鐘前", publish_time).group(1))
+            return now - timedelta(minutes=minutes)
+        elif "昨天" in publish_time:
+            return now - timedelta(days=1)
+        else:
+            try:
+                return datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                return self.yesterday  # 返回昨天的時間
+
+    def scrape_article_details(self, url: str) -> Tuple[str, List[str], str]:
+        """
+        爬取CSDN文章詳情頁面
+
+        Args:
+            url (str): CSDN文章URL
+
+        Returns:
+            Tuple[str, List[str], str]: (發布時間, 標籤列表, 內容)
+        """
+        try:
+            response = requests.get(url, headers=random.choice(self.HEADERS))
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, "html.parser")
+
+                # 嘗試多種選擇器
+                publish_time = "N/A"
+                possible_time_tags = [
+                    soup.find("div", class_="up-time"),
+                    soup.find("span", class_="time blog-postTime"),
+                    soup.find("meta", attrs={"name": "publish-date"}),
+                    # 可以根據實際情況添加更多選擇器
+                ]
+
+                for tag in possible_time_tags:
+                    if tag:
+                        if tag.name == "meta":
+                            publish_time = tag.get("content", "N/A")
+                        else:
+                            publish_time = tag.get_text(strip=True)
+                        # 使用正則表達式提取時間
+                        match = re.search(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", publish_time)
+                        if match:
+                            publish_time = match.group(1)
+                            break
+                        else:
+                            # 處理相對時間格式，如 "3小時前"
+                            if "小時前" in publish_time or "分鐘前" in publish_time or "昨天" in publish_time:
+                                break
+
+                if publish_time == "N/A":
+                    logging.error(f"無法解析發布時間的文章 URL: {url}")
+
+                # 提取文章標籤
+                tags = []
+                tag_container = soup.find("div", class_="tags-box artic-tag-box")
+                if tag_container:
+                    tags = [tag.get_text(strip=True) for tag in tag_container.find_all("a", class_="tag-link")]
+
+                # 提取文章部分內容
+                content = ""
+                content_container = soup.find("div", id="content_views")
+                if content_container:
+                    content = content_container.get_text(strip=True)[:200]  # 取前 200 字
+
+                print(f"發布時間: {publish_time}")
+                return publish_time, tags, content
+            else:
+                print(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
+                return "N/A", [], "N/A"
+        except Exception as e:
+            print(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
+            logging.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
+            return "N/A", [], "N/A"
+
+    def scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
+        """
+        爬取CSDN的文章
+
+        Args:
+            max_pages (int): 要爬取的頁數
+
+        Returns:
+            List[Dict[str, object]]: 文章列表
+        """
+        base_url = "https://blog.csdn.net/nav/home?page={}"
+        articles = []
+
+        for page in range(1, max_pages + 1):
+            url = base_url.format(page)
+            print(f"正在爬取CSDN第 {page} 頁...")
+            try:
+                response = requests.get(url, headers=random.choice(self.HEADERS))
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text, "html.parser")
+                    articles_list = soup.find_all("div", class_="Community-item blog")
+                    for article in articles_list:
+                        try:
+                            # 提取標題和連結
+                            title_tag = article.find("a", class_="blog")
+                            title = (
+                                title_tag.find("span", class_="blog-text").get_text(strip=True) if title_tag else None
+                            )
+                            link = title_tag["href"] if title_tag else None
+
+                            if not title or not link:
+                                print(f"跳過無效的文章：{article}")
+                                continue
+
+                            # 確保連結是完整 URL
+                            if not link.startswith("http"):
+                                link = f"https://blog.csdn.net{link}"
+                            print(f"正在處理文章：{title} - {link}")
+
+                            # 爬取文章詳情頁面的數據
+                            publish_time, tags, content = self.scrape_article_details(link)
+
+                            articles.append(
+                                {
+                                    "title": title,
+                                    "link": link,
+                                    "publish_time": publish_time,
+                                    "tags": tags,
+                                    "content": content,
+                                }
+                            )
+                        except Exception as e:
+                            print(f"處理文章時出錯：{e}")
+                            logging.error(f"處理文章時出錯：{e}")
+                else:
+                    print(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
+                    logging.error(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
+            except Exception as e:
+                print(f"請求CSDN第 {page} 頁失敗：{e}")
+                logging.error(f"請求CSDN第 {page} 頁失敗：{e}")
+            time.sleep(5)  # 避免過多請求
+
+        return articles
 
     def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
         """
@@ -371,85 +611,6 @@ class Crawl:
         tags = [tag for parse_result in parse_results_list for tag in parse_result.get("tags", [])]
         return set(tags)
 
-    def __crawl_medium_url(self, url: str) -> dict:
-        """
-        獲取Medium文章內容
-
-        Args:
-            url (str): Medium文章URL
-
-        Returns:
-            Dict[str, str]: 文章內容
-        """
-        url = f"{url}?format=json"
-
-        response = requests.get(url)
-        if response.status_code == 200:
-            if response.text.startswith("])}"):
-                json_data = response.text[16:]
-                data = json.loads(json_data)
-                paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
-
-                return {
-                    # "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
-                    "content": "".join(paragraph["text"] for paragraph in paragraphs),
-                }
-
-        else:
-            raise Exception(f"無法獲取資料：{response.status_code}")
-
-        return {"content": ""}
-
-    def __crawl_medium_24hr_feed_by_categories(self, categories: List[str]) -> Tuple[List[Dict[str, object]], Set[str]]:
-        """
-        爬取Medium特定類別的24小時內發布的文章
-
-        Args:
-            categories (List[str]): 類別列表
-
-        Returns:
-            Tuple: (文章列表, 標籤集合)
-        """
-        parsed_tags: Set[str] = set()
-        parse_medium_result = []
-
-        for category in categories:
-            print(f"處理類別：{category}")
-            feed = feedparser.parse(f"{configs.MEDIUM_TAG_BASE_URL}{category}")
-
-            for entry in feed.entries:
-                # 解析發布時間
-                published_time = datetime(*entry.published_parsed[:6])
-                publish_date = published_time.isoformat()
-
-                if published_time > self.yesterday:
-
-                    if entry.id in self.__medium_existed_article:
-                        print(f"文章 `{entry.title}` 已存在")
-                        continue
-
-                    print(f"處理文章：{entry.title}")
-                    try:
-                        parse_result = self.__crawl_medium_url(entry.id)
-                        tags = [tag.term for tag in entry.tags] if "tags" in entry else []
-
-                        parse_result["title"] = entry.title
-                        parse_result["url"] = entry.id
-                        parse_result["tags"] = tags
-                        parse_result["publish_date"] = publish_date  # 轉換為字符串
-
-                        parse_medium_result.append(parse_result)
-                        self.__medium_existed_article.add(entry.id)
-                        parsed_tags = parsed_tags.union(tags)
-
-                    except Exception as e:
-                        print(f"解析文章失敗：{e}")
-                        # parse_result = "failed"  # 這裡不需要賦值，因為不會被使用
-
-            print(f"類別：{category}, 計數：{len(parse_medium_result)}")
-
-        return parse_medium_result, parsed_tags
-
 
 if __name__ == "__main__":
     crawl = Crawl()
@@ -460,6 +621,13 @@ if __name__ == "__main__":
     combined_results = {"crawl_results": crawl_results, "today_tags": {k: list(v) for k, v in today_tags.items()}}
 
     # 保存到一個 JSON 文件
-    with open("combined_crawl_results.json", "w", encoding="utf-8") as f:
+    with open("combined_crawl_results_csdn.json", "w", encoding="utf-8") as f:
         json.dump(combined_results, f, ensure_ascii=False, indent=2)
-    print("Combined crawl results 已保存到 combined_crawl_results.json")
+    print("Combined crawl results 已保存到 combined_crawl_results_csdn.json")
+
+    # 另外保存CSDN的結果
+    csdn_results = crawl_results.get("csdn", [])
+    # 由於__crawl_from_csdn已經過濾了24小時內的文章，直接保存
+    with open("csdn_crawl_results.json", "w", encoding="utf-8") as f:
+        json.dump(csdn_results, f, ensure_ascii=False, indent=2)
+    print("CSDN crawl results 已保存到 csdn_crawl_results.json")

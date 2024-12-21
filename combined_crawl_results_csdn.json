@@ -1,0 +1,98 @@
+{
+  "crawl_results": {
+    "csdn": [
+      {
+        "title": "【功能安全】硬件架构度量",
+        "content": "目录01 硬件架构度量介绍02 硬件架构度量相关说明03 硬件架构度量示例04 硬件架构度量模板01 硬件架构度量介绍GBT 34590 2022 part5",
+        "tags": [
+          "汽车功能安全",
+          "汽车功能安全学习资料",
+          "算法"
+        ],
+        "url": "https://blog.csdn.net/weixin_36460584/article/details/144530297",
+        "publish_date": "2024-12-20T21:25:56"
+      },
+      {
+        "title": "无人机视频传输系统的通信能耗优化",
+        "content": "1 问题提出无人机（Unmanned Aerial Vehicles, UAVs）凭借其卓越的机动性和灵活部署能力，已广泛应用于空中基站，以支持与地面用户（Ground Users, GUs）之间的高质量无线通信连接。与传统地面通信网络相比，UAV能够提供更为优质的通信链路质量，并根据用户需求提供灵活的按需服务。UAV在多个领域具有重要应用，如天然气管道巡检、应急救援和火灾监控等，这些应用场景要求",
+        "tags": [
+          "MATLAB",
+          "通信能耗",
+          "无人机通信",
+          "MATLAB",
+          "matlab"
+        ],
+        "url": "https://blog.csdn.net/weixin_47510497/article/details/144606007",
+        "publish_date": "2024-12-20T21:51:15"
+      },
+      {
+        "title": "w25q128实验封装命令接口（二）",
+        "content": "正常来讲我们发送90后会接收什么样的数据呢（MF7 - MF0）接收到EFh会接收到EF17没写的验证1---擦除之后不写东西读出的地方都是1验证2---不擦除也不写东西读出来的是什么东西证明flash断电不丢失/--------------------------------w25q128.h-------------------------------------------------/#i",
+        "tags": [
+          "stm32笔记",
+          "单片机",
+          "嵌入式硬件"
+        ],
+        "url": "https://blog.csdn.net/qq_65524926/article/details/144618075",
+        "publish_date": "2024-12-20T23:45:27"
+      },
+      {
+        "title": "单片机与MQTT协议",
+        "content": "MQTT 协议简述MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布 / 订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，由 IBM 在 1999 年发布。它有着诸多显著特点，首先是轻量级，协议设计简洁，消息头部较小，传输的数据量不大，很适合在带宽有限的网络环境中进行传",
+        "tags": [
+          "单片机",
+          "物联网",
+          "stm32",
+          "51单片机",
+          "嵌入式硬件"
+        ],
+        "url": "https://blog.csdn.net/2403_86849624/article/details/144537413",
+        "publish_date": "2024-12-20T23:45:27"
+      },
+      {
+        "title": "路径规划之启发式算法之二十：麻雀搜索算法（Sparrow Search Algorithm，SSA）",
+        "content": "麻雀搜索算法（Sparrow Search Algorithm，SSA）是一种受麻雀觅食和反捕食行为启发的新型的群智能优化算法，它模拟了麻雀种群的觅食行为和反捕食行为的生物学群体特征。该算法由薛建凯在2020年首次提出，旨在解决全局优化问题，具有求解精度高、效率高等特点。一、算法原理SSA中的麻雀群体分为发现者（Discoverers）和乞讨者（Beggars）两类。发现者负责寻找新的食物源（即搜",
+        "tags": [
+          "算法",
+          "启发式算法",
+          "算法"
+        ],
+        "url": "https://blog.csdn.net/lzm12278828/article/details/144621852",
+        "publish_date": "2024-12-20T23:29:28"
+      },
+      {
+        "title": "数据挖掘与机器学习（part 9） 规则挖掘Rules Mining&关联规则（Association Rules）& Apriori算法",
+        "content": "基于规则的分类器：Classification using rule based classifier互斥规则（Mutually exclusive rules）：分类器包含互斥规则，如果这些规则彼此独立。每条记录最多被一条规则覆盖。穷尽规则（Exhaustive rules）：如果分类器能够考虑到属性值的所有可能组合，那么它具有穷尽的覆盖。每条记录至少被一条规则覆盖。这些概念在设计和评估分类系统",
+        "tags": [
+          "数据挖掘",
+          "机器学习",
+          "人工智能",
+          "算法"
+        ],
+        "url": "https://blog.csdn.net/m0_74400863/article/details/144469068",
+        "publish_date": "2024-12-20T21:30:31"
+      }
+    ]
+  },
+  "today_tags": {
+    "csdn": [
+      "嵌入式硬件",
+      "人工智能",
+      "算法",
+      "汽车功能安全学习资料",
+      "MATLAB",
+      "matlab",
+      "汽车功能安全",
+      "stm32笔记",
+      "物联网",
+      "机器学习",
+      "启发式算法",
+      "单片机",
+      "通信能耗",
+      "stm32",
+      "51单片机",
+      "无人机通信",
+      "数据挖掘"
+    ]
+  }
+}
