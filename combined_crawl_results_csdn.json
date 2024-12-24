@@ -2,97 +2,412 @@
   "crawl_results": {
     "csdn": [
       {
-        "title": "【功能安全】硬件架构度量",
-        "content": "目录01 硬件架构度量介绍02 硬件架构度量相关说明03 硬件架构度量示例04 硬件架构度量模板01 硬件架构度量介绍GBT 34590 2022 part5",
+        "title": "Java CPU飙升 排查",
+        "content": "一、概述CPU 是整个电脑的核心计算资源，CPU的最小执行单元是线程；在现代操作系统中，进程和线程是两种主要的调度单位；进程是程序中正在运行的一个应用程序，而线程是系统分配处理器时间资源的基本单位。一个进程至少包括一个线程，通常称为主线程，而操作系统通过调度线程来高效地分配和管理CPU资源‌；进程‌：进程是操作系统进行资源分配和调度的基本单位，是一个具有一定独立功能的程序在数据集上的一次动态执行过",
         "tags": [
-          "汽车功能安全",
-          "汽车功能安全学习资料",
-          "算法"
+          "Java日常总结",
+          "java"
         ],
-        "url": "https://blog.csdn.net/weixin_36460584/article/details/144530297",
-        "publish_date": "2024-12-20T21:25:56"
+        "url": "https://blog.csdn.net/hfaflanf/article/details/144607524",
+        "publish_date": "2024-12-24T22:26:22"
       },
       {
-        "title": "无人机视频传输系统的通信能耗优化",
-        "content": "1 问题提出无人机（Unmanned Aerial Vehicles, UAVs）凭借其卓越的机动性和灵活部署能力，已广泛应用于空中基站，以支持与地面用户（Ground Users, GUs）之间的高质量无线通信连接。与传统地面通信网络相比，UAV能够提供更为优质的通信链路质量，并根据用户需求提供灵活的按需服务。UAV在多个领域具有重要应用，如天然气管道巡检、应急救援和火灾监控等，这些应用场景要求",
+        "title": "Spring Boot注解总结大全【案例详解，一眼秒懂】",
+        "content": "@SpringBootApplication功能：这是Spring Boot应用的核心注解，它是一个组合注解，实际上相当于同时使用了@Configuration、@EnableAutoConfiguration和@ComponentScan。它标记在主应用类上，用于开启Spring Boot的自动配置功能，扫描组件并加载应用程序上下文。示例：importorg.springframework.bo",
         "tags": [
-          "MATLAB",
-          "通信能耗",
-          "无人机通信",
-          "MATLAB",
-          "matlab"
+          "新项目",
+          "spring boot",
+          "后端",
+          "java"
         ],
-        "url": "https://blog.csdn.net/weixin_47510497/article/details/144606007",
-        "publish_date": "2024-12-20T21:51:15"
+        "url": "https://blog.csdn.net/Tommy_____/article/details/144672370",
+        "publish_date": "2024-12-24T10:44:38"
       },
       {
-        "title": "w25q128实验封装命令接口（二）",
-        "content": "正常来讲我们发送90后会接收什么样的数据呢（MF7 - MF0）接收到EFh会接收到EF17没写的验证1---擦除之后不写东西读出的地方都是1验证2---不擦除也不写东西读出来的是什么东西证明flash断电不丢失/--------------------------------w25q128.h-------------------------------------------------/#i",
+        "title": "IntelliJ IDEA 快捷键大全：提升开发效率的利器",
+        "content": "目录一、基础快捷键1. 文件操作快捷键2. 编辑（Editing）2.1 代码补全与导航2.2 代码编辑2.3 代码折叠与展开3. 查找与替换4. 调试5. 版本控制高级快捷键重构快捷键：让代码更加优雅导航快捷键：快速定位代码Git 快捷键：版本控制更高效其他快捷键：更多高效操作快捷键图片结语IntelliJ IDEA 作为一款强大的 Java 集成开发环境（IDE），凭借其丰富的功能和易用性，赢",
         "tags": [
-          "stm32笔记",
-          "单片机",
-          "嵌入式硬件"
+          "笔记",
+          "intellij-idea",
+          "java",
+          "快捷键",
+          "键盘",
+          "快速开发"
         ],
-        "url": "https://blog.csdn.net/qq_65524926/article/details/144618075",
-        "publish_date": "2024-12-20T23:45:27"
+        "url": "https://blog.csdn.net/qq_66848092/article/details/144674026",
+        "publish_date": "2024-12-24T08:53:46"
       },
       {
-        "title": "单片机与MQTT协议",
-        "content": "MQTT 协议简述MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布 / 订阅（publish/subscribe）模式的 “轻量级” 通讯协议，该协议构建于 TCP/IP 协议上，由 IBM 在 1999 年发布。它有着诸多显著特点，首先是轻量级，协议设计简洁，消息头部较小，传输的数据量不大，很适合在带宽有限的网络环境中进行传",
+        "title": "目标检测-R-CNN",
+        "content": "R-CNN在2014年被提出，算法流程可以概括如下：候选区域生成：利用选择性搜索(selective search)方法找出图片中可能存在目标的候选区域(region proposal)CNN网络提取特征：对候选区域进行特征提取(可以使用AlexNet、VGG等网络)目标分类：训练分类模型(如svm等)识别目标物体和背景，对于每个类别都会有一个二元SVM目标定位：训练回归模型，预测每个被识别物体的",
         "tags": [
-          "单片机",
-          "物联网",
-          "stm32",
-          "51单片机",
-          "嵌入式硬件"
-        ],
-        "url": "https://blog.csdn.net/2403_86849624/article/details/144537413",
-        "publish_date": "2024-12-20T23:45:27"
-      },
-      {
-        "title": "路径规划之启发式算法之二十：麻雀搜索算法（Sparrow Search Algorithm，SSA）",
-        "content": "麻雀搜索算法（Sparrow Search Algorithm，SSA）是一种受麻雀觅食和反捕食行为启发的新型的群智能优化算法，它模拟了麻雀种群的觅食行为和反捕食行为的生物学群体特征。该算法由薛建凯在2020年首次提出，旨在解决全局优化问题，具有求解精度高、效率高等特点。一、算法原理SSA中的麻雀群体分为发现者（Discoverers）和乞讨者（Beggars）两类。发现者负责寻找新的食物源（即搜",
-        "tags": [
-          "算法",
-          "启发式算法",
-          "算法"
-        ],
-        "url": "https://blog.csdn.net/lzm12278828/article/details/144621852",
-        "publish_date": "2024-12-20T23:29:28"
-      },
-      {
-        "title": "数据挖掘与机器学习（part 9） 规则挖掘Rules Mining&关联规则（Association Rules）& Apriori算法",
-        "content": "基于规则的分类器：Classification using rule based classifier互斥规则（Mutually exclusive rules）：分类器包含互斥规则，如果这些规则彼此独立。每条记录最多被一条规则覆盖。穷尽规则（Exhaustive rules）：如果分类器能够考虑到属性值的所有可能组合，那么它具有穷尽的覆盖。每条记录至少被一条规则覆盖。这些概念在设计和评估分类系统",
-        "tags": [
-          "数据挖掘",
           "机器学习",
-          "人工智能",
-          "算法"
+          "目标检测",
+          "r语言",
+          "cnn"
         ],
-        "url": "https://blog.csdn.net/m0_74400863/article/details/144469068",
-        "publish_date": "2024-12-20T21:30:31"
+        "url": "https://blog.csdn.net/qq_22337877/article/details/144679823",
+        "publish_date": "2024-12-23T23:22:19"
+      },
+      {
+        "title": "【pytorch】循环神经网络",
+        "content": "文章目录1. 序列模型序列信息是带顺序的数据。循环神经网络可以更好地处理序列信息。它通过引入状态变量存储过去的信息和当前的输入，从而可以确定当前的输出。1. 序列模型问题模型：根据历史值x \n          \n          \n          \n            t \n           \n          \n            − \n           \n      ",
+        "tags": [
+          "深度学习",
+          "pytorch",
+          "人工智能"
+        ],
+        "url": "https://blog.csdn.net/weixin_45725295/article/details/144654086",
+        "publish_date": "2024-12-23T23:30:00"
+      },
+      {
+        "title": "32岁前端干了8年，是继续做前端开发，还是转其它工作",
+        "content": "前端发展有瓶颈，变来变去都是那一套，只是换了框架换了环境。换了框架后又得去学习，虽然很快上手，但是那些刚毕业的也很快上手了，入门门槛越来越低，想转行或继续卷，该如何破圈这是一位网友的自述，做了几年前端开发，不知该如何破圈，笔者身边有很多成功转行网络安全，接下来笔者给大家讲解一下前端程序员转行网络安全的优势！前端程序员转行学习网络安全是一个比较常见的职业发展路径。这是因为前端开发与网络安全之间存在一",
+        "tags": [
+          "面试",
+          "学习路线",
+          "阿里巴巴",
+          "前端"
+        ],
+        "url": "https://blog.csdn.net/ekskef_sef/article/details/144679258",
+        "publish_date": "2024-12-23T22:37:17"
+      },
+      {
+        "title": "Ai编程从零开始全栈开发一个后台管理系统之用户登录、权限控制、用户管理-前端部分（十二）",
+        "content": "云风网云风笔记云风知识库一、创建前端部分1、vite初始化项目npm create vite@latest admin-frontend – --template vue-ts2、安装必要的依赖npm install vue-router pinia axios element-plus @element-plus/icons-vue安装完成后package.json如下：{\n  \"name\": ",
+        "tags": [
+          "面试",
+          "学习路线",
+          "阿里巴巴",
+          "AI编程",
+          "前端"
+        ],
+        "url": "https://blog.csdn.net/m0_74825699/article/details/144679337",
+        "publish_date": "2024-12-23T22:43:16"
+      },
+      {
+        "title": "再服务器上建立新的编译环境",
+        "content": "文章目录前言一、建立新的环境1.1使用压缩包建立python环境1.2创建环境1.3查看所有环境的路径1.4查看当前激活环境的路径：1.5删除虚拟环境命令二、检索服务器的硬件信息三、配置torch三、其他3.1降级numpy3.2清除缓存3.3设置镜像地址3.4关闭环境总结前言基于pyenv建立环境配置pyenv_博客阿里资源库一、建立新的环境1.1使用压缩包建立python环境步骤 1: 确认文",
+        "tags": [
+          "服务器"
+        ],
+        "url": "https://blog.csdn.net/weixin_44253237/article/details/144650077",
+        "publish_date": "2024-12-23T22:41:03"
+      },
+      {
+        "title": "deepin 安装 zookeeper",
+        "content": "deepin 安装 zookeeper1、升级软件sudoaptupdatesudoapt-ydist-upgrade2、安装常用软件sudoapt-yinstallgccmakeopenssl libssl-dev libpcre3 libpcre3-dev libgd-dev\\rsyncopenssh-servervimmanzipunzipnet-tools tcpdump lrzsztar",
+        "tags": [
+          "Deepin",
+          "大数据",
+          "数据分析",
+          "debian",
+          "运维",
+          "hbase",
+          "大数据",
+          "zookeeper"
+        ],
+        "url": "https://blog.csdn.net/qq_24330181/article/details/144667911",
+        "publish_date": "2024-12-24T09:20:50"
+      },
+      {
+        "title": "项目代码第6讲：UpdownController.cs；理解 工艺/工序 流程、机台信息；前端的“历史 警报/工艺 记录”",
+        "content": "一、UpdownController.cs1、前端传入当用户在下图的“记录查询”中的 两个界面选项 中，点击“导出”功能时，向后端发起请求，请求服务器下载文件的权限【权限是在Program.cs中检测的，这个控制器里只需要进行“谁在哪个接口下载了文件”的日志记录】【导出：是用户把当前界面上的东西导出为xlsx文件，不用存到数据库，只需要进行日志记录就行了】2、该控制器的作用1>在Logger日志中",
+        "tags": [
+          "项目后端代码详解",
+          "c#",
+          ".netcore",
+          ".net core"
+        ],
+        "url": "https://blog.csdn.net/weixin_54966200/article/details/144589453",
+        "publish_date": "2024-12-24T17:20:16"
+      },
+      {
+        "title": "easyExcel导出大数据量EXCEL文件，前端实现进度条或者遮罩层",
+        "content": "需求：页面点击导出，先按照页面条件去数据库查询，然后将查询到的数据导出。问题：由于查询特别耗时，所以点击之后页面会看上去没有反应方案1：就在点击之后在页面增加了一个进度条，等待后端查询结束之后，导出时，进度条会显示导出进度，导出结束之后进度条会消失。效果如下：方案2：点击导出时前端增加一个遮罩层，遮罩层中间显示正在下载，导出完成后遮罩层消失，好处是可以既给用户提示，还可以阻止用户再次点击导出按钮。",
+        "tags": [
+          "excel",
+          "前端"
+        ],
+        "url": "https://blog.csdn.net/m0_74825526/article/details/144680045",
+        "publish_date": "2024-12-23T23:33:41"
+      },
+      {
+        "title": "32. 线程、进程与协程",
+        "content": "一、什么是多任务如果一个操作系统上同时运行了多个程序，那么称这个操作系统就是多任务的操作系统，例如：Windows、Mac、Android、IOS、Harmony 等。如果是一个程序，它可以同时执行多个事情，那么就称为多任务的程序。一个 CPU 默认可以执行一个程序，如果想要多个程序一起执行，理论上就需要多个 CPU 来执行。如果一个 CPU 是一个核心，理论上只能同时运行一个任务，但是事实上却可",
+        "tags": [
+          "Python程序设计",
+          "python"
+        ],
+        "url": "https://blog.csdn.net/flurry_heart/article/details/144679464",
+        "publish_date": "2024-12-23T22:52:42"
+      },
+      {
+        "title": "《点点之歌》“意外”诞生记",
+        "content": "世界是“点点”的，“点点”是世界的。(笔记模板由python脚本于2024年12月23日 19:28:25创建，本篇笔记适合喜欢诗文的coder翻阅)【学习的细节是欢悦的历程】Python官网：https://www.python.org/Free：大咖免费“圣经”教程《python 完全自学教程》，不仅仅是基础那么简单……地址：https://lqpybook.readthedocs.io/自学",
+        "tags": [
+          "笔记",
+          "python"
+        ],
+        "url": "https://blog.csdn.net/m0_57158496/article/details/144675711",
+        "publish_date": "2024-12-23T22:42:27"
+      },
+      {
+        "title": "计算机网络基础知识",
+        "content": "（图片取自湖科大教书匠）计算网络的两个部分：核心部分：网络链路，路由器边缘部分：电脑主机计算机网络的三种交换方式：电路交换：1.建立连接（分配通信资源）2.通话（一只占用通信资源）3.释放链接（归还通信资源）分组交换：发送方：构造分组，发送分组路由器：缓存分组，转发分组接收方：接收分组，还原报文报文交换：分组交换的基础上报文的大小不做限制三种方式的对比计算机网络的定义计算机网络是一些互相连接的，自",
+        "tags": [
+          "计算机网络",
+          "计算机网络"
+        ],
+        "url": "https://blog.csdn.net/m0_62569064/article/details/144677872",
+        "publish_date": "2024-12-24T15:35:07"
+      },
+      {
+        "title": "FPGA（一）verilog语句基础",
+        "content": "Verilog是一种硬件描述语言（HDL），常用于数字电路的设计、模拟和验证，特别是用于FPGA和ASIC的设计。Verilog 让设计者能够描述和模拟硬件系统的行为和结构，最终将其转化为硬件电路。一、模块结构Verilog 中的设计是基于模块的，一个模块可以代表一个电路单元、一个功能模块或者整个系统。模块的基本结构如下：/*\n    module_name：模块的名称，自定义。\n    inpu",
+        "tags": [
+          "FPGA",
+          "fpga开发",
+          "Verilog描述"
+        ],
+        "url": "https://blog.csdn.net/qq_48361010/article/details/144664027",
+        "publish_date": "2024-12-24T11:43:50"
+      },
+      {
+        "title": "AI绘图开源工具Stable Diffusion WebUI前端API调用",
+        "content": "背景本文主要介绍AI绘图开源工具Stable Diffusion WebUI的API开启和基本调用方法，通过本文的阅读，你将了解到stable-diffusion-webui的基本介绍、安装及API环境配置；文生图、图生图、局部重绘、后期处理等API接口调用；图像处理开发中常用到一些方法如Base64、PNG、Canvas及URL相互转换、Canvas颜色转换等。AI绘图工具目前市面上比较广泛使用",
+        "tags": [
+          "面试",
+          "学习路线",
+          "阿里巴巴",
+          "人工智能",
+          "stable diffusion",
+          "前端"
+        ],
+        "url": "https://blog.csdn.net/web13688565871/article/details/144679314",
+        "publish_date": "2024-12-23T22:41:53"
+      },
+      {
+        "title": "全国青少年信息学奥林匹克竞赛（信奥赛）备考实战之分支结构（switch语句）",
+        "content": "if语句处理多个分支时需要用if-else if结构，分支越多，嵌套的if语句层就越多，程序不但庞大、复杂，理解起来也比较困难。在C++编程中，针对有些问题除了使用if-else if结构之外，还有switch语句也可以实现，并且switch语句更加简洁易懂。switch语句的格式：switch语句是适用于实现多分支选择的语句。swith语句在执行时，先计算表达式的值，然后按顺序与case子句中所",
+        "tags": [
+          "信奥赛",
+          "算法",
+          "数据结构"
+        ],
+        "url": "https://blog.csdn.net/ALISHENGYA/article/details/144679369",
+        "publish_date": "2024-12-23T22:47:24"
+      },
+      {
+        "title": "Python 标准库：string——字符串操作",
+        "content": "文章目录模块介绍主要常量主要类- Formatter- Template主要函数- capwords()- Template.substitute()- Formatter.format()模块介绍string 模块提供了许多与字符串操作相关的常量和函数。它主要用于处理字符串，包括字符集合、格式化操作和其他与字符串相关的功能。主要常量常量描述string.ascii_letters包含所有的 AS",
+        "tags": [
+          "Python",
+          "python"
+        ],
+        "url": "https://blog.csdn.net/JokerLJG/article/details/144614070",
+        "publish_date": "2024-12-23T22:47:09"
+      },
+      {
+        "title": "蓝桥杯嵌入式备赛教程(1、led，2、lcd，3、key)",
+        "content": "一、工程模版创建流程第一步 创建新项目第二步 选择型号和管脚封装第三步 RCC使能   外部时钟，高速外部时钟第四步晶振时钟配置由数据手册7.1可知外部晶振频率为24MHz  最后一项设置为80按下回车他会自动配置时钟第五步，如果不勾选可能程序只会下载一次到时候不好找问题第6步 名字和路径不能有中文第七步bsp为创建的程序存放的文件八创建一个新组注意程序只能写在USER CODE ＢＥＧＩＮ　in",
+        "tags": [
+          "蓝桥杯嵌入式",
+          "蓝桥杯",
+          "嵌入式硬件",
+          "stm32"
+        ],
+        "url": "https://blog.csdn.net/qq_65524926/article/details/144661900",
+        "publish_date": "2024-12-23T22:37:56"
+      },
+      {
+        "title": "Android webview 打开本地H5项目(Cocos游戏以及Unity游戏)",
+        "content": "webview打开本地Html文件1.在路径前面加上file://String filePath=\"file://\"+path;\n            webView.loadUrl( filePath);2.打开权限<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />3.启用JavaScript ",
+        "tags": [
+          "面试",
+          "学习路线",
+          "阿里巴巴",
+          "android",
+          "游戏",
+          "unity"
+        ],
+        "url": "https://blog.csdn.net/m0_74825172/article/details/144679376",
+        "publish_date": "2024-12-23T22:45:51"
+      },
+      {
+        "title": "Python 练习",
+        "content": "一、列表练习1、求偶数元素的和[1,2,1,2,3,3,6,5,8]123456list01=[1,2,1,2,3,3,6,5,8]sum=0foriinlist01:ifint(i)%2==0:sum=sum+iprint(f\"列表中所有偶数和是: {sum}\")2、计算 1 - 2 + 3 - 4 + ... + 99 中除88以外所有数总和12345678910111213141516###",
+        "tags": [
+          "Python",
+          "python",
+          "开发语言"
+        ],
+        "url": "https://blog.csdn.net/shlei5580/article/details/144679358",
+        "publish_date": "2024-12-23T22:44:49"
+      },
+      {
+        "title": "从零创建一个 Django 项目",
+        "content": "1. 准备环境在开始之前，确保你的开发环境满足以下要求：安装了 Python (推荐 3.8 或更高版本)。安装pip包管理工具。如果要使用 MySQL 或 PostgreSQL，确保对应的数据库已安装。创建虚拟环境在项目目录中创建并激活虚拟环境，保证项目依赖隔离：# 创建虚拟环境python-mvenvenv# 激活虚拟环境# Windowsenv\\Scripts\\activate# Linux",
+        "tags": [
+          "django",
+          "python",
+          "后端"
+        ],
+        "url": "https://blog.csdn.net/A13526_/article/details/144671743",
+        "publish_date": "2024-12-24T15:58:21"
+      },
+      {
+        "title": "大模型（LLM）提示工程（Prompt Engineering）初识",
+        "content": "大模型提示工程（Prompt Engineering）是指设计和优化给定任务的输入提示，以便从大型语言模型（如GPT-4、GPT-3等）中获得最佳输出。其核心目标是通过合理设计输入内容（提示词或提示结构），引导模型产生符合预期的响应。大模型提示工程不仅是一个技术问题，还需要一定的创意和对模型行为的理解。下面是一个详细的解释，结合具体的使用示例来说明如何进行大模型提示工程。1.基础概念大模型提示工程",
+        "tags": [
+          "AI技术",
+          "prompt",
+          "语言模型",
+          "人工智能"
+        ],
+        "url": "https://blog.csdn.net/cuijiying/article/details/144656659",
+        "publish_date": "2024-12-24T21:49:31"
+      },
+      {
+        "title": "RabbitMQ",
+        "content": "RabbitMQ官网网址：RabbitMQ背景：RabbitMQ知识框架：消息代理同步调用：异步调用：异步调用优势与问题：Broker即消息代理的中间件，可以理解为MQ。MQ技术选型：RabbitMQ登录页面：RabbitMQ控制台页面RabbitMQ整体架构：RabbitMQ实践：在控制台创建队列：在控制台创建交换机Pauload：负载，即消息的内容。routed：路由交换机（Exchanges",
+        "tags": [
+          "第二大脑",
+          "rabbitmq",
+          "分布式",
+          "java"
+        ],
+        "url": "https://blog.csdn.net/A_m_of_m/article/details/144640987",
+        "publish_date": "2024-12-23T22:38:46"
+      },
+      {
+        "title": "如何与AI对话，写好Prompt",
+        "content": "如何与AI对话，写好Prompt在与人工智能的互动中，Prompt的作用就如同一把开启智慧之门的钥匙。你或许不知道，一个简单的指令就能引导AI为你创造出想要的结果。因此，理解Prompt的定义与重要性是你与AI对话的第一步。Prompt的定义与重要性什么是Prompt简单来说，Prompt是给AI的“任务书”。当你向AI发出信号时，AI就像接到信号的军人，准备执行命令。无论是提问、创作还是生成内容",
+        "tags": [
+          "IT技术",
+          "人工智能",
+          "prompt"
+        ],
+        "url": "https://blog.csdn.net/weixin_44626085/article/details/144628622",
+        "publish_date": "2024-12-24T16:31:35"
+      },
+      {
+        "title": "rk3568制冷项目驱动开发流程汇总（只适用于部分模块CIF DVP等，自用）",
+        "content": "采用fpga输入，3568采集并显示至hdmiRKVICAP 驱动框架说明RKVICAP驱动主要是基于v4l2 / media框架实现硬件的配置、中断处理、控制buffer轮转，以及控制 subdevice(如mipi dphy及sensor)的上下电等功能。对于RK356X芯片而言，VICAP只有单核，同时拥有dvp/mipi两种接口，dvp接口对应一个rkvicap_dvp 节点，mipi接口",
+        "tags": [
+          "驱动开发"
+        ],
+        "url": "https://blog.csdn.net/hhhhhhh_hhhhhh_/article/details/144658495",
+        "publish_date": "2024-12-24T13:47:13"
+      },
+      {
+        "title": "Idea 将多个module显示在同一个project",
+        "content": "Idea 将多个maven项目显示在同一个project下1、选择菜单 File-》New -》Module from Existing Sources ->2、在弹出的界面选中对应的Module的pom.xml,然后点击OK按钮就行了(弹出框上面也提示了Eclipse 项目选中.project文件；Maven 项目选中pom.xml; )最终显示界面如下",
+        "tags": [
+          "idea",
+          "intellij-idea"
+        ],
+        "url": "https://blog.csdn.net/music0ant/article/details/144646163",
+        "publish_date": "2024-12-23T22:49:53"
+      },
+      {
+        "title": "计算机基础复习12.23",
+        "content": "ThreadLocal线程隔离：ThreadLocal为每个线程提供了独立的变量副本，意味着线程之间不会相互影响，可以安全的在多线程环境中使用这些变量而不必担心数据竞争或同步问题ThreadLocal的实现依赖于Thread类中的一个ThreadLocalMap字段，这个存储ThreadLocal变量本身和对应值的映射。需要显示调用remove方法，每个线程维护一个名为ThreadLocalMap",
+        "tags": [
+          "计算机基础知识",
+          "java",
+          "开发语言",
+          "学习",
+          "笔记",
+          "后端"
+        ],
+        "url": "https://blog.csdn.net/m0_68177611/article/details/144661727",
+        "publish_date": "2024-12-23T22:41:58"
+      },
+      {
+        "title": "图像配准有哪些技术？",
+        "content": "目录图像配准技术1.基于特征的图像配准2.基于强度的图像配准3.基于模型的图像配准4.基于学习的图像配准5.混合方法图像配准的应用图像配准技术入门常见问题解答图像配准是计算机视觉和医学成像中的一项关键技术，用于将多幅图像对齐到一个共同的坐标系中。这种对齐对于组合来自不同来源的图像、监控随时间的变化或分析多模态图像等任务至关重要。以下是图像配准技术的全面概述，包括其方法、应用和优势。图像配准技术1.",
+        "tags": [
+          "registration_配准",
+          "计算机视觉",
+          "人工智能",
+          "深度学习"
+        ],
+        "url": "https://blog.csdn.net/qq_45913945/article/details/144679418",
+        "publish_date": "2024-12-23T22:55:35"
       }
     ]
   },
   "today_tags": {
     "csdn": [
+      "java",
+      "unity",
+      "信奥赛",
+      "django",
+      "深度学习",
+      ".netcore",
+      "hbase",
+      "蓝桥杯",
+      "后端",
       "嵌入式硬件",
-      "人工智能",
+      "蓝桥杯嵌入式",
+      "面试",
+      "运维",
+      "Deepin",
+      "数据分析",
+      "excel",
+      "开发语言",
+      ".net core",
+      "stable diffusion",
+      "c#",
+      "IT技术",
       "算法",
-      "汽车功能安全学习资料",
-      "MATLAB",
-      "matlab",
-      "汽车功能安全",
-      "stm32笔记",
-      "物联网",
-      "机器学习",
-      "启发式算法",
-      "单片机",
-      "通信能耗",
+      "阿里巴巴",
+      "语言模型",
+      "计算机基础知识",
       "stm32",
-      "51单片机",
-      "无人机通信",
-      "数据挖掘"
+      "机器学习",
+      "prompt",
+      "python",
+      "目标检测",
+      "前端",
+      "r语言",
+      "快捷键",
+      "大数据",
+      "笔记",
+      "Java日常总结",
+      "AI编程",
+      "fpga开发",
+      "debian",
+      "游戏",
+      "新项目",
+      "计算机视觉",
+      "计算机网络",
+      "第二大脑",
+      "Python程序设计",
+      "rabbitmq",
+      "分布式",
+      "idea",
+      "registration_配准",
+      "服务器",
+      "zookeeper",
+      "spring boot",
+      "人工智能",
+      "项目后端代码详解",
+      "快速开发",
+      "数据结构",
+      "android",
+      "学习路线",
+      "Python",
+      "intellij-idea",
+      "Verilog描述",
+      "AI技术",
+      "FPGA",
+      "pytorch",
+      "键盘",
+      "驱动开发",
+      "学习",
+      "cnn"
     ]
   }
 }

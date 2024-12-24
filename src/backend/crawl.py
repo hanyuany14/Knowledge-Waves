@@ -10,13 +10,19 @@ import re  # 用於處理 Markdown 語法
 import time
 import random  # 用於隨機選擇User-Agent
 import logging  # 用於記錄錯誤
+from logging.handlers import RotatingFileHandler
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 import configs as configs  # 確保configs.py中包含必要的配置，如GITHUB_PERSONAL_ACCESS_TOKEN和MEDIUM_TAG_BASE_URL
 
 # 配置日誌
-logging.basicConfig(
-    filename="csdn_crawl_errors.log", level=logging.ERROR, format="%(asctime)s:%(levelname)s:%(message)s"
-)
+logger = logging.getLogger()
+logger.setLevel(logging.ERROR)
+handler = RotatingFileHandler("csdn_crawl_errors.log", maxBytes=5 * 1024 * 1024, backupCount=5)
+formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 class Crawl:
@@ -39,8 +45,22 @@ class Crawl:
         self.HEADERS = [
             {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-            }
+            },
+            {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15"
+            },
+            {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+            },
+            # 可以根據需要增加更多的 User-Agent
         ]
+
+        # 初始化Session和重試策略
+        self.session = requests.Session()
+        retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retries)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
 
     def crawl(
         self,
@@ -166,7 +186,7 @@ class Crawl:
             "Accept": "application/vnd.github.v3+json",
         }
 
-        response = requests.get(base_url, headers=headers, params=query_params)
+        response = self.session.get(base_url, headers=headers, params=query_params, timeout=10)
         if response.status_code != 200:
             raise Exception(f"抓取GitHub倉庫失敗：{response.status_code}, {response.json().get('message', '')}")
 
@@ -218,7 +238,7 @@ class Crawl:
             str: README內容（前500字符）
         """
         readme_url = f"https://api.github.com/repos/{repo_full_name}/readme"
-        response = requests.get(readme_url, headers=headers)
+        response = self.session.get(readme_url, headers=headers, timeout=10)
         if response.status_code == 200:
             readme_data = response.json()
             try:
@@ -258,7 +278,7 @@ class Crawl:
         """
         topics_url = f"https://api.github.com/repos/{repo_full_name}/topics"
         topics_headers = {**headers, "Accept": "application/vnd.github.mercy-preview+json"}
-        response = requests.get(topics_url, headers=topics_headers)
+        response = self.session.get(topics_url, headers=topics_headers, timeout=10)
         if response.status_code == 200:
             topics_data = response.json()
             return topics_data.get("names", [])
@@ -273,7 +293,7 @@ class Crawl:
             List[Dict]: 包含Trending倉庫資訊的字典列表
         """
         trending_url = "https://github.com/trending?since=daily"
-        response = requests.get(trending_url)
+        response = self.session.get(trending_url, timeout=10)
         if response.status_code != 200:
             raise Exception(f"抓取GitHub Trending頁面失敗：{response.status_code}")
 
@@ -388,7 +408,7 @@ class Crawl:
             tuple: (文章列表, 標籤集合)
         """
         print("\n現在正在從CSDN爬取\n")
-        max_pages = 3
+        max_pages = 10  # 修改為爬取10頁
         csdn_articles = self.scrape_csdn_articles(max_pages)
 
         result_list = []
@@ -480,37 +500,64 @@ class Crawl:
             Tuple[str, List[str], str]: (發布時間, 標籤列表, 內容)
         """
         try:
-            response = requests.get(url, headers=random.choice(self.HEADERS))
+            response = self.session.get(url, headers=random.choice(self.HEADERS), timeout=10)
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, "html.parser")
 
-                # 嘗試多種選擇器
+                # 嘗試多種選擇器來提取發布時間
                 publish_time = "N/A"
-                possible_time_tags = [
-                    soup.find("div", class_="up-time"),
-                    soup.find("span", class_="time blog-postTime"),
-                    soup.find("meta", attrs={"name": "publish-date"}),
-                    # 可以根據實際情況添加更多選擇器
+                possible_time_selectors = [
+                    {"name": "div", "class_": "time-box"},
+                    {"name": "span", "class_": "time blog-postTime"},
+                    {"name": "meta", "attrs": {"name": "publish-date"}},
+                    {"name": "span", "class_": "date"},  # 新增的選擇器範例
+                    {"name": "div", "class_": "article-header__publish-time"},  # 另一個可能的選擇器
+                    {"name": "span", "class_": "publish-time"},  # 另一個可能的選擇器
+                    # 根據實際情況添加更多選擇器
                 ]
 
-                for tag in possible_time_tags:
+                for selector in possible_time_selectors:
+                    if "attrs" in selector:
+                        tag = soup.find(selector["name"], attrs=selector["attrs"])
+                    else:
+                        tag = soup.find(selector["name"], class_=selector["class_"])
                     if tag:
                         if tag.name == "meta":
                             publish_time = tag.get("content", "N/A")
                         else:
                             publish_time = tag.get_text(strip=True)
+
                         # 使用正則表達式提取時間
                         match = re.search(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", publish_time)
                         if match:
                             publish_time = match.group(1)
-                            break
+                        # 處理相對時間格式，如 "3小時前"
+                        elif "小時前" in publish_time or "分鐘前" in publish_time or "昨天" in publish_time:
+                            pass  # 保留原始相對時間格式
                         else:
-                            # 處理相對時間格式，如 "3小時前"
-                            if "小時前" in publish_time or "分鐘前" in publish_time or "昨天" in publish_time:
-                                break
+                            publish_time = "N/A"
+
+                        break  # 成功找到發布時間後退出循環
 
                 if publish_time == "N/A":
-                    logging.error(f"無法解析發布時間的文章 URL: {url}")
+                    # 嘗試通過正則表達式在整個頁面中搜索日期
+                    date_patterns = [
+                        r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})",  # 2024-12-23 21:22:43
+                        r"(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})",  # 2024/12/23 21:22:43
+                        r"(\d{4}-\d{2}-\d{2})",  # 2024-12-23
+                        r"(\d{4}/\d{2}/\d{2})",  # 2024/12/23
+                        r"(\d{2}:\d{2}:\d{2})",  # 21:22:43
+                        # 添加更多日期格式
+                    ]
+                    for pattern in date_patterns:
+                        match = re.search(pattern, response.text)
+                        if match:
+                            publish_time = match.group(1)
+                            break
+
+                if publish_time == "N/A":
+                    logger.error(f"無法解析發布時間的文章 URL: {url}")
+                    print(f"無法解析發布時間的文章 URL: {url}")
 
                 # 提取文章標籤
                 tags = []
@@ -528,10 +575,11 @@ class Crawl:
                 return publish_time, tags, content
             else:
                 print(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
+                logger.error(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
                 return "N/A", [], "N/A"
         except Exception as e:
             print(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
-            logging.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
+            logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             return "N/A", [], "N/A"
 
     def scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
@@ -551,7 +599,7 @@ class Crawl:
             url = base_url.format(page)
             print(f"正在爬取CSDN第 {page} 頁...")
             try:
-                response = requests.get(url, headers=random.choice(self.HEADERS))
+                response = self.session.get(url, headers=random.choice(self.HEADERS), timeout=10)
                 if response.status_code == 200:
                     soup = BeautifulSoup(response.text, "html.parser")
                     articles_list = soup.find_all("div", class_="Community-item blog")
@@ -576,6 +624,11 @@ class Crawl:
                             # 爬取文章詳情頁面的數據
                             publish_time, tags, content = self.scrape_article_details(link)
 
+                            # 檢查發布時間是否為 "N/A"，如果是則跳過
+                            if publish_time == "N/A":
+                                print(f"文章 {title} 的發布時間無效，跳過。")
+                                continue
+
                             articles.append(
                                 {
                                     "title": title,
@@ -587,14 +640,18 @@ class Crawl:
                             )
                         except Exception as e:
                             print(f"處理文章時出錯：{e}")
-                            logging.error(f"處理文章時出錯：{e}")
+                            logger.error(f"處理文章時出錯：{e}")
                 else:
                     print(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
-                    logging.error(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
-            except Exception as e:
+                    logger.error(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
+            except requests.exceptions.RequestException as e:
                 print(f"請求CSDN第 {page} 頁失敗：{e}")
-                logging.error(f"請求CSDN第 {page} 頁失敗：{e}")
-            time.sleep(5)  # 避免過多請求
+                logger.error(f"請求CSDN第 {page} 頁失敗：{e}")
+            except Exception as e:
+                print(f"處理CSDN第 {page} 頁時出現未知錯誤：{e}")
+                logger.error(f"處理CSDN第 {page} 頁時出現未知錯誤：{e}")
+            finally:
+                time.sleep(random.uniform(3, 6))  # 隨機休眠以避免被封禁
 
         return articles
 
@@ -628,6 +685,6 @@ if __name__ == "__main__":
     # 另外保存CSDN的結果
     csdn_results = crawl_results.get("csdn", [])
     # 由於__crawl_from_csdn已經過濾了24小時內的文章，直接保存
-    with open("csdn_crawl_results.json", "w", encoding="utf-8") as f:
+    with open("csdn_crawl_results_24.json", "w", encoding="utf-8") as f:
         json.dump(csdn_results, f, ensure_ascii=False, indent=2)
-    print("CSDN crawl results 已保存到 csdn_crawl_results.json")
+    print("CSDN crawl results 已保存到 csdn_crawl_results_24.json")
