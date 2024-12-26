@@ -261,7 +261,7 @@ class Crawl:
                     # 直接解析 HTML
                     readme_text = BeautifulSoup(readme_content, "html.parser").get_text()
 
-                return readme_text[:500] + "..." if len(readme_text) > 500 else readme_text
+                return readme_text
             except Exception as e:
                 print(f"解碼 {repo_full_name} 的README失敗：{e}")
                 return "無法解碼README內容。"
@@ -288,12 +288,38 @@ class Crawl:
         else:
             return ["無法訪問或未找到主題"]
 
-    def fetch_github_trending(self) -> List[Dict[str, object]]:
+    def fetch_repo_creation_date(self, full_name: str, headers: Dict[str, str]) -> str:
         """
-        使用BeautifulSoup爬取GitHub Trending頁面
+        取得指定 repo 的建立時間 (created_at)，並轉為 ISO 格式字串
+        Args:
+            full_name (str): repo 全名，格式為 "owner/repo"
+            headers (Dict[str, str]): 用於呼叫 GitHub API 的 headers
 
         Returns:
-            List[Dict]: 包含Trending倉庫資訊的字典列表
+            str: repo 的建立時間 (ISO 格式)，若失敗則回傳 self.yesterday
+        """
+        url = f"https://api.github.com/repos/{full_name}"
+        try:
+            response = self.session.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                created_at_str = data.get("created_at", "")
+                if created_at_str:
+                    try:
+                        created_at_dt = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M:%SZ")
+                        return created_at_dt.isoformat()
+                    except ValueError:
+                        pass
+            # 若上述流程失敗，則改用「昨天」做為 fallback
+            return self.yesterday.isoformat()
+        except Exception as e:
+            print(f"取得 {full_name} 的建立時間發生錯誤：{e}")
+            return self.yesterday.isoformat()
+
+    def fetch_github_trending(self) -> List[Dict[str, object]]:
+        """
+        使用BeautifulSoup爬取GitHub Trending頁面，並額外透過 GitHub API
+        取得每個 repo 的建立時間 (created_at)，把它設為 publish_date
         """
         trending_url = "https://github.com/trending?since=daily"
         response = self.session.get(trending_url, timeout=10)
@@ -304,6 +330,7 @@ class Crawl:
         repo_elements = soup.find_all("article", class_="Box-row")
         trending_repos = []
 
+        # 注意：在呼叫 GitHub API 時一樣要帶上 headers（含 token）
         headers = {
             "Authorization": f"token {configs.GITHUB_PERSONAL_ACCESS_TOKEN}",
             "Accept": "application/vnd.github.v3+json",
@@ -314,12 +341,14 @@ class Crawl:
             repo_name_tag = repo.find("h2", class_="h3")
             if not repo_name_tag:
                 continue
+
+            # 取得像 "owner / repo" 這樣的字串，把空白符號移除。
             repo_name = repo_name_tag.text.strip().replace("\n", "").replace(" ", "")
             if "/" not in repo_name:
                 continue
             owner, repo_title = repo_name.split("/")
 
-            # 构建仓库URL
+            # 構建倉庫URL
             repo_url = f"https://github.com/{repo_name}"
 
             # 提取倉庫描述
@@ -338,21 +367,21 @@ class Crawl:
             except ValueError:
                 star_count = 0
 
-            # 獲取倉庫主題（topics）
+            # 透過 GitHub API 取得 repo 的主題（topics）
             topics = self.fetch_topics(repo_name, headers)
 
-            # 獲取README內容
+            # 透過 GitHub API 取得 README 內容
             readme_content = self.fetch_readme(repo_name, headers)
 
-            # 處理 publish_date 為字符串
-            publish_date = self.yesterday.isoformat()  # 由於Trending頁面沒有創建日期，設置為昨天並轉換為字符串
+            # **透過我們剛新增的函式取得實際建立時間**
+            publish_date = self.fetch_repo_creation_date(repo_name, headers)
 
             repo_data = {
                 "title": repo_name,
                 "content": f"This is repo_description:\n{repo_description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,
+                "publish_date": publish_date,  # 使用實際建立時間
                 "language": repo_language,
                 "likes": star_count,
             }
@@ -532,7 +561,7 @@ class Crawl:
                 content = ""
                 content_container = soup.find("div", id="content_views")
                 if content_container:
-                    content = content_container.get_text(strip=True)[:200]  # 取前 200 字
+                    content = content_container.get_text(strip=True)
 
                 print(f"發布時間: {publish_time}")
 
