@@ -424,7 +424,7 @@ class Crawl:
                 language = data["payload"]["value"]["detectedLanguage"]
 
                 return {
-                    "hotness": clap_count,
+                    "likes": clap_count,
                     "language": language,
                     "content": "".join(paragraph["text"] for paragraph in paragraphs),
                 }
