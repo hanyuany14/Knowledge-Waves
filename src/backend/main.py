@@ -48,7 +48,7 @@ class Main:
 
         crawl_results, today_tags = Crawl().crawl()
         BigQueryOperation().upload(crawl_results=crawl_results)
-        # GCSOperation().upload(crawl_results=crawl_results)
-        # VectorStore().embedding_and_upload(today_tags=today_tags)
+        GCSOperation().upload(crawl_results=crawl_results)
+        VectorStore().embedding_and_upload(today_tags=today_tags)
 
         return True

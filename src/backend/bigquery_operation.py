@@ -14,7 +14,6 @@ class BigQueryOperation:
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
 
         self.__create_dataset_if_not_exists()
-        self.__create_table()
 
     def upload(self, crawl_results: dict[str, list[dict[str, str | list[str] | datetime]]]):
         """
@@ -27,6 +26,7 @@ class BigQueryOperation:
         Returns:
             bool: True if upload succeeds, False otherwise.
         """
+        self.__create_table()
         print(f"\nNow uploading articles to BigQuery...")
         try:
             for source, articles in crawl_results.items():

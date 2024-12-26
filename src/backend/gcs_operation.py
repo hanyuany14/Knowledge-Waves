@@ -25,24 +25,23 @@ class GCSOperation:
             bool: True if upload succeeds, False otherwise.
         """
         print(f"\nNow uploading content to GCS...")
-        try:
-            for source, articles in crawl_results.items():
-                for article in articles:
+
+        for source, articles in crawl_results.items():
+            for article in articles:
+                try:
                     file_path = f"{self.__datetime_str}/{source}/{article['title']}.txt"
                     bucket = utils.GCS_CLIENT.bucket(configs.GCS_BUCKET_ID)
 
                     blob = bucket.blob(file_path)
                     blob.upload_from_string(article["content"], content_type="text/plain")
                     print(f"Content uploaded to {file_path} in bucket {configs.GCS_BUCKET_ID}.")
+                except Exception as e:
+                    print(f"Failed to upload content to GCS: {e}")
 
-            return True
-
-        except Exception as e:
-            print(f"Failed to upload content to GCS: {e}")
-            return False
+        return True
 
     def fetch_articles_by_title(
-        self, source_and_titles_and_url: dict[str, list[tuple[str, str]]]
+        self, source_and_titles_and_url: dict[str, list[tuple[str, str, int, str]]]
     ) -> dict[str, list[tuple[str, str]]]:
         """Fetches articles from the bucket based on source and titles.
 
@@ -66,7 +65,8 @@ class GCSOperation:
         try:
             for source, titles_and_urls in source_and_titles_and_url.items():
                 article_titles_and_contents[source] = []
-                for title, url in titles_and_urls:
+                print(f"titles_and_urls: {titles_and_urls}")
+                for title, url, _, _ in titles_and_urls:
                     file_path = f"{self.__datetime_str}/{source}/{title}.txt"
 
                     bucket = utils.GCS_CLIENT.bucket(configs.GCS_BUCKET_ID)

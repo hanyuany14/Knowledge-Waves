@@ -104,6 +104,19 @@ class Crawl:
 
         return crawl_results, today_tags
 
+    def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
+        """
+        提取所有唯一標籤
+
+        Args:
+            parse_results_list (List[Dict]): 解析後的結果列表
+
+        Returns:
+            Set[str]: 唯一標籤集合
+        """
+        tags = [tag for parse_result in parse_results_list for tag in parse_result.get("tags", [])]
+        return set(tags)
+
     def __crawl_from_github(self) -> Tuple[List[Dict[str, object]], Set[str]]:
         """
         爬取GitHub倉庫資訊
@@ -348,50 +361,6 @@ class Crawl:
 
         return trending_repos
 
-    def __crawl_from_medium(self) -> Tuple[List[Dict[str, object]], Set[str]]:
-        """爬取medium.com的文章
-
-        Returns:
-            tuple: (文章列表, 標籤集合)
-        """
-
-        print(f"\n現在正在從medium.com爬取\n")
-
-        max_times = 3
-        gloabl_medium_result = []
-        categories = ["technology"]
-        self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
-        print(f"已存在的標籤：{self.__medium_existed_tags}")
-
-        for i in range(max_times):
-            print(f"\n----------------處理輪次：{i+1}----------------\n")
-
-            categories = categories[:1]  # 用於測試
-
-            print(f"    類別數量：{len(categories)}")
-
-            parse_medium_result, parsed_tags = self.__crawl_medium_24hr_feed_by_categories(categories)
-
-            if parse_medium_result == []:  # 第一個終止條件 - 這一輪查詢沒有出現任何新的文章
-                print("parse_medium_result 為空，結束爬蟲")
-                break
-            else:
-                gloabl_medium_result.extend(parse_medium_result)
-
-            if set(parsed_tags).issubset(
-                self.__medium_existed_tags
-            ):  # 第二個終止條件 - 本輪新的 tags 都已經存在於 existed_tags 中
-                print("所有標籤都已經存在於 existed_tags 中，結束爬蟲")
-                break
-            else:
-                categories = [tag for tag in parsed_tags if tag not in self.__medium_existed_tags]
-                self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
-
-        print(f"    爬取的文章數量：{len(gloabl_medium_result)}")
-        tags = self.__get_tags(gloabl_medium_result)
-
-        return gloabl_medium_result, tags
-
     def __crawl_from_csdn(self) -> Tuple[List[Dict[str, object]], Set[str]]:
         """爬取CSDN的文章
 
@@ -399,7 +368,7 @@ class Crawl:
             tuple: (文章列表, 標籤集合)
         """
         print("\n現在正在從CSDN爬取\n")
-        max_pages = 10  # 修改為爬取10頁
+        max_pages = 5  # 修改為爬取10頁
         csdn_articles = self.__scrape_csdn_articles(max_pages)
 
         result_list = []
@@ -675,18 +644,49 @@ class Crawl:
 
         return articles
 
-    def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
-        """
-        提取所有唯一標籤
-
-        Args:
-            parse_results_list (List[Dict]): 解析後的結果列表
+    def __crawl_from_medium(self) -> Tuple[List[Dict[str, object]], Set[str]]:
+        """爬取medium.com的文章
 
         Returns:
-            Set[str]: 唯一標籤集合
+            tuple: (文章列表, 標籤集合)
         """
-        tags = [tag for parse_result in parse_results_list for tag in parse_result.get("tags", [])]
-        return set(tags)
+
+        print(f"\n現在正在從medium.com爬取\n")
+
+        max_times = 3
+        gloabl_medium_result = []
+        categories = ["technology"]
+        self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
+        print(f"已存在的標籤：{self.__medium_existed_tags}")
+
+        for i in range(max_times):
+            print(f"\n----------------處理輪次：{i+1}----------------\n")
+
+            categories = categories[:5]  # 用於測試
+
+            print(f"    類別數量：{len(categories)}")
+
+            parse_medium_result, parsed_tags = self.__crawl_medium_24hr_feed_by_categories(categories)
+
+            if parse_medium_result == []:  # 第一個終止條件 - 這一輪查詢沒有出現任何新的文章
+                print("parse_medium_result 為空，結束爬蟲")
+                break
+            else:
+                gloabl_medium_result.extend(parse_medium_result)
+
+            if set(parsed_tags).issubset(
+                self.__medium_existed_tags
+            ):  # 第二個終止條件 - 本輪新的 tags 都已經存在於 existed_tags 中
+                print("所有標籤都已經存在於 existed_tags 中，結束爬蟲")
+                break
+            else:
+                categories = [tag for tag in parsed_tags if tag not in self.__medium_existed_tags]
+                self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
+
+        print(f"    爬取的文章數量：{len(gloabl_medium_result)}")
+        tags = self.__get_tags(gloabl_medium_result)
+
+        return gloabl_medium_result, tags
 
     def __crawl_medium_url(self, url: str) -> dict:
         """
