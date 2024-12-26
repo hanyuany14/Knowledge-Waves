@@ -420,8 +420,12 @@ class Crawl:
                 data = json.loads(json_data)
 
                 paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
+                clap_count = data["payload"]["value"]["virtuals"]["totalClapCount"]
+                language = data["payload"]["value"]["detectedLanguage"]
 
                 return {
+                    "hotness": clap_count,
+                    "language": language,
                     "content": "".join(paragraph["text"] for paragraph in paragraphs),
                 }
 
