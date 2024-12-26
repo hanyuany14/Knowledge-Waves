@@ -13,8 +13,6 @@ if __name__ == "__main__":
     # main.prepare_news()
     # print("Done!")
 
-    # TODO: 佑，上面的程式碼是初始化，每天要記得用一下，下面的程式碼是用來測試的，可以去修改 main 把不需要的程式碼註解掉
-
     query = "我想要找生成式ai"
     print(query)
     sources = ["github", "medium"]
