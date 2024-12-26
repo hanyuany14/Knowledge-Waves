@@ -7,6 +7,7 @@ from langchain_google_community import BigQueryVectorStore
 import configs as configs
 import utils as utils
 
+# TODO: 查詢跟搜資料的時間軸都要一致，例如 25 早上 8:00~ 26 早上 8:00 抓好的資料，我在明天 27 8:00 之前的查詢都是查詢 25~26 的資料
 
 class VectorStore:
     def __init__(self):

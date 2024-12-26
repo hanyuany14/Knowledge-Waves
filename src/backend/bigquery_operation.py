@@ -6,6 +6,7 @@ import utils as utils
 import configs as configs
 
 
+
 class BigQueryOperation:
     def __init__(self):
         self.today = datetime.now()
@@ -46,6 +47,7 @@ class BigQueryOperation:
                         "language": article["language"],
                         "likes": article["likes"],
                         "source": source,
+                        "created_time": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"),
                     }
                     for article in articles
                 ]
@@ -126,6 +128,7 @@ class BigQueryOperation:
             bigquery.SchemaField("url", "STRING", mode="REQUIRED", description="文章網址"),
             bigquery.SchemaField("likes", "INTEGER", mode="NULLABLE", description="文章的點讚數"),
             bigquery.SchemaField("language", "STRING", mode="NULLABLE", description="文章語言"),
+            bigquery.SchemaField("created_time", "TIMESTAMP", mode="REQUIRED", description="資料存入的時間"),
         ]
 
         try:

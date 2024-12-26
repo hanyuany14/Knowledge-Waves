@@ -24,6 +24,8 @@ formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+# TODO: 抓取資料要限定是現在日期的早上 8:00 去抓資料
+
 
 class Crawl:
     def __init__(self) -> None:
@@ -416,7 +418,6 @@ class Crawl:
                     "url": article["link"],
                     "publish_date": self.parse_publish_time(publish_time_str).isoformat(),
                     "likes": article["likes"],
-                    # "views": article["views_count"],
                     "language": "ch",
                 }
                 result_list.append(repo_data)
