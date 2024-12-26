@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.backend.crawl import Crawl
+from backend.crawl.main import Crawl
 
 """
 2. 資料層：爬蟲、embedding、上傳資料

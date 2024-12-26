@@ -4,7 +4,7 @@ from summary import Summarization
 from vectorstore import VectorStore
 from bigquery_operation import BigQueryOperation
 from gcs_operation import GCSOperation
-from crawl import Crawl
+from backend.crawl.main import Crawl
 
 
 class Main:
