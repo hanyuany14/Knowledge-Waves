@@ -401,6 +401,85 @@ class Crawl:
 
         return gloabl_medium_result, tags
 
+    def __crawl_medium_url(self, url: str) -> dict:
+        """
+        獲取Medium文章內容
+
+        Args:
+            url (str): Medium文章URL
+
+        Returns:
+            Dict[str, str]: 文章內容
+        """
+        url = f"{url}?format=json"
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            if response.text.startswith("])}"):
+                json_data = response.text[16:]
+                data = json.loads(json_data)
+                paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
+
+                return {
+                    # "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
+                    "content": "".join(paragraph["text"] for paragraph in paragraphs),
+                }
+
+        else:
+            raise Exception(f"無法獲取資料：{response.status_code}")
+
+        return {"content": ""}
+
+    def __crawl_medium_24hr_feed_by_categories(self, categories: List[str]) -> Tuple[List[Dict[str, object]], Set[str]]:
+        """
+        爬取Medium特定類別的24小時內發布的文章
+
+        Args:
+            categories (List[str]): 類別列表
+
+        Returns:
+            Tuple: (文章列表, 標籤集合)
+        """
+        parsed_tags: Set[str] = set()
+        parse_medium_result = []
+
+        for category in categories:
+            print(f"處理類別：{category}")
+            feed = feedparser.parse(f"{configs.MEDIUM_TAG_BASE_URL}{category}")
+
+            for entry in feed.entries:
+                # 解析發布時間
+                published_time = datetime(*entry.published_parsed[:6])
+                publish_date = published_time.isoformat()
+
+                if published_time > self.yesterday:
+
+                    if entry.id in self.__medium_existed_article:
+                        print(f"文章 `{entry.title}` 已存在")
+                        continue
+
+                    print(f"處理文章：{entry.title}")
+                    try:
+                        parse_result = self.__crawl_medium_url(entry.id)
+                        tags = [tag.term for tag in entry.tags] if "tags" in entry else []
+
+                        parse_result["title"] = entry.title
+                        parse_result["url"] = entry.id
+                        parse_result["tags"] = tags
+                        parse_result["publish_date"] = publish_date  # 轉換為字符串
+
+                        parse_medium_result.append(parse_result)
+                        self.__medium_existed_article.add(entry.id)
+                        parsed_tags = parsed_tags.union(tags)
+
+                    except Exception as e:
+                        print(f"解析文章失敗：{e}")
+                        # parse_result = "failed"  # 這裡不需要賦值，因為不會被使用
+
+            print(f"類別：{category}, 計數：{len(parse_medium_result)}")
+
+        return parse_medium_result, parsed_tags
+
     def __crawl_from_csdn(self) -> Tuple[List[Dict[str, object]], Set[str]]:
         """爬取CSDN的文章
 
