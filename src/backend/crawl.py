@@ -149,7 +149,12 @@ class Crawl:
             if response.text.startswith("])}"):
                 json_data = response.text[16:]
                 data = json.loads(json_data)
+
+                print(f"\n\ndata:\n{data}")
+
                 paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
+                clap_count = data["payload"]["value"]["virtuals"]["totalClapCount"]
+                language = data["payload"]["value"]["detectedLanguage"]
 
                 return {
                     # "sub_titles": data["payload"]["value"]["content"].get("subtitle", "No Subtitle"),
