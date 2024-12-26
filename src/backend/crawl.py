@@ -352,16 +352,6 @@ class Crawl:
 
             owner_country = lookup_country_by_location(location_text)
 
-            # Print repository details
-            print(f"Repository: {repo_name}")
-            print(f"URL: {repo_url}")
-            print(f"Description: {repo_description}")
-            print(f"Language: {repo_language}")
-            print(f"Stars: {star_count}")
-            print(f"Owner Country: {owner_country}")  # 新增
-            print(f"Topics: {[f'[{topic}]' for topic in topics]}")
-            print(f"README Content: {readme_text[:500]}...")
-            print("-" * 80)
     else:
         print(f"Failed to fetch trending repositories. Status code: {response.status_code}")
 
@@ -425,7 +415,7 @@ class Crawl:
                     # 直接解析 HTML
                     readme_text = BeautifulSoup(readme_content, "html.parser").get_text()
 
-                return readme_text[:500] + "..." if len(readme_text) > 500 else readme_text
+                return readme_text
             except Exception as e:
                 print(f"解碼 {repo_full_name} 的README失敗：{e}")
                 return "無法解碼README內容。"
