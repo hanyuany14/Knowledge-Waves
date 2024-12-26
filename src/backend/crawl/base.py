@@ -19,7 +19,7 @@ class CrawlBase:
     def __init__(self):
         self.yesterday = datetime.utcnow() - timedelta(days=1)
 
-    def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
+    def __get_tags(self, parse_results_list: List[dict]) -> Set[str]:
         """
         提取所有唯一標籤
 

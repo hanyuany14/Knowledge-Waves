@@ -5,7 +5,8 @@ from datetime import datetime, timedelta
 from typing import Set, Tuple, List, Dict
 
 from base import CrawlBase
-from ..configs import configs
+
+from src.backend.configs import MEDIUM_TAG_BASE_URL
 
 
 class MediumCrawl(CrawlBase):
@@ -106,7 +107,7 @@ class MediumCrawl(CrawlBase):
 
         for category in categories:
             print(f"處理類別：{category}")
-            feed = feedparser.parse(f"{configs.MEDIUM_TAG_BASE_URL}{category}")
+            feed = feedparser.parse(f"{MEDIUM_TAG_BASE_URL}{category}")
 
             for entry in feed.entries:
                 # 解析發布時間
