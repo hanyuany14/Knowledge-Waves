@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     query = "我想要找生成式ai"
     print(query)
-    sources = ["github", "medium", "csdn"]
+    sources = ["github", "medium"]
     tags, summary, articles = main.do_summarize(query=query, sources=sources)
     print(summary)
 

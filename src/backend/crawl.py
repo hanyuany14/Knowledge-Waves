@@ -24,7 +24,7 @@ formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-
+#目前csdn爬取前10頁，每篇文章只爬取前200字
 class Crawl:
     def __init__(self) -> None:
         # 使用timedelta確保日期處理正確
@@ -426,6 +426,8 @@ class Crawl:
                     "tags": article["tags"],
                     "url": article["link"],
                     "publish_date": self.parse_publish_time(publish_time_str).isoformat(),
+                    "likes": article["likes"],
+                    "views": article["views_count"]
                 }
                 result_list.append(repo_data)
                 self.__csdn_existed_article.add(article["link"])
@@ -489,7 +491,7 @@ class Crawl:
             except ValueError:
                 return self.yesterday  # 返回昨天的時間
 
-    def scrape_article_details(self, url: str) -> Tuple[str, List[str], str]:
+    def scrape_article_details(self, url: str) -> Tuple[str, List[str], str, int, int]:
         """
         爬取CSDN文章詳情頁面
 
@@ -497,7 +499,7 @@ class Crawl:
             url (str): CSDN文章URL
 
         Returns:
-            Tuple[str, List[str], str]: (發布時間, 標籤列表, 內容)
+            Tuple[str, List[str], str, int, int]: (發布時間, 標籤列表, 內容, 點讚數, 瀏覽數)
         """
         try:
             response = self.session.get(url, headers=random.choice(self.HEADERS), timeout=10)
@@ -572,15 +574,39 @@ class Crawl:
                     content = content_container.get_text(strip=True)[:200]  # 取前 200 字
 
                 print(f"發布時間: {publish_time}")
-                return publish_time, tags, content
+
+                # 提取點讚數
+                likes_count = 0
+                likes_element = soup.find("span", class_="read-count", id="blog-digg-num")
+                if likes_element:
+                    likes_text = likes_element.get_text(strip=True)
+                    number_match = re.search(r'\d+', likes_text)
+                    if number_match:
+                        likes_count = int(number_match.group())
+
+                # 提取瀏覽數
+                views_count = 0
+                views_element = soup.find("span", class_="read-count", id=None)  # 排除點讚數的span
+                if views_element:
+                    views_text = views_element.get_text(strip=True)
+                    number_match = re.search(r'(\d+\.?\d*)([k])?', views_text.lower())
+                    if number_match:
+                        number = float(number_match.group(1))
+                        unit = number_match.group(2)
+                        if unit == 'k':
+                            views_count = int(number * 1000)
+                        else:
+                            views_count = int(number)
+
+                return publish_time, tags, content, likes_count, views_count
             else:
                 print(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
                 logger.error(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
-                return "N/A", [], "N/A"
+                return "N/A", [], "N/A",0,0
         except Exception as e:
             print(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
-            return "N/A", [], "N/A"
+            return "N/A", [], "N/A",0,0
 
     def scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
         """
@@ -622,7 +648,7 @@ class Crawl:
                             print(f"正在處理文章：{title} - {link}")
 
                             # 爬取文章詳情頁面的數據
-                            publish_time, tags, content = self.scrape_article_details(link)
+                            publish_time, tags, content,likes,views = self.scrape_article_details(link)
 
                             # 檢查發布時間是否為 "N/A"，如果是則跳過
                             if publish_time == "N/A":
@@ -636,6 +662,8 @@ class Crawl:
                                     "publish_time": publish_time,
                                     "tags": tags,
                                     "content": content,
+                                    "likes": likes,
+                                    "views_count": views
                                 }
                             )
                         except Exception as e:
