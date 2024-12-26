@@ -24,7 +24,8 @@ formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-#目前csdn爬取前10頁，每篇文章只爬取前200字
+
+# 目前csdn爬取前10頁，每篇文章只爬取前200字
 class Crawl:
     def __init__(self) -> None:
         # 使用timedelta確保日期處理正確
@@ -76,12 +77,19 @@ class Crawl:
             today_tags (dict): 今日爬取的標籤
         """
         # 爬取GitHub (註解掉)
-        # try:
-        #     github_result, github_tags = self.__crawl_from_github()
-        # except Exception as e:
-        #     print(f"GitHub爬取失敗：{e}")
-        #     github_result, github_tags = [], set()
+        try:
+            github_result, github_tags = self.__crawl_from_github()
+        except Exception as e:
+            print(f"GitHub爬取失敗：{e}")
+            github_result, github_tags = [], set()
+        crawl_results = {
+            "github": github_result,
+        }
+        today_tags = {
+            "github": github_tags,
+        }
 
+        return crawl_results, today_tags
         # 爬取Medium (註解掉)
         # try:
         #     medium_result, medium_tags = self.__crawl_from_medium()
@@ -90,11 +98,11 @@ class Crawl:
         #     medium_result, medium_tags = [], set()
 
         # 爬取CSDN (啟用)
-        try:
-            csdn_result, csdn_tags = self.__crawl_from_csdn()
-        except Exception as e:
-            print(f"CSDN爬取失敗：{e}")
-            csdn_result, csdn_tags = [], set()
+        # try:
+        #     csdn_result, csdn_tags = self.__crawl_from_csdn()
+        # except Exception as e:
+        #     print(f"CSDN爬取失敗：{e}")
+        #     csdn_result, csdn_tags = [], set()
 
         # 若需要測試其他平台，請解除以下註解並相應調整
         # medium_result, medium_tags = [], set()
@@ -117,15 +125,13 @@ class Crawl:
     def __crawl_from_github(self) -> Tuple[List[Dict[str, object]], Set[str]]:
         """
         爬取GitHub倉庫資訊
-
-        Returns:
-            Tuple: (倉庫資訊列表, 標籤集合)
+        並將stars數量放到likes欄位
         """
         print("\n現在正在從GitHub爬取\n")
         result_list = []
 
+        # 使用GitHub API爬取過去24小時內創建的倉庫
         try:
-            # 使用GitHub API爬取過去24小時內創建的倉庫
             repos = self.fetch_github_repos()
             print(f"從GitHub API抓取了 {len(repos)} 個倉庫。")
         except Exception as e:
@@ -148,6 +154,7 @@ class Crawl:
             print(f"抓取GitHub Trending倉庫失敗：{e}")
             trending_repos = []
 
+        # 過濾已存在的倉庫
         for repo in trending_repos:
             if repo["url"] in self.__github_existed_repo:
                 print(f"熱門倉庫 {repo['title']} 已存在。")
@@ -163,12 +170,9 @@ class Crawl:
     def fetch_github_repos(self) -> List[Dict[str, object]]:
         """
         使用GitHub API抓取過去24小時內創建的倉庫
-
-        Returns:
-            List[Dict]: 包含倉庫資訊的字典列表
+        並把 stars 數量放到 likes 欄位
         """
         base_url = "https://api.github.com/search/repositories"
-        # 定義過去24小時的時間範圍
         now = datetime.utcnow()
         yesterday = now - timedelta(days=1)
         time_range = yesterday.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -182,49 +186,212 @@ class Crawl:
         }
 
         headers = {
-            "Authorization": f"token {configs.GITHUB_PERSONAL_ACCESS_TOKEN}",  # 從configs導入
+            "Authorization": f"token {configs.GITHUB_PERSONAL_ACCESS_TOKEN}",
             "Accept": "application/vnd.github.v3+json",
         }
 
         response = self.session.get(base_url, headers=headers, params=query_params, timeout=10)
         if response.status_code != 200:
-            raise Exception(f"抓取GitHub倉庫失敗：{response.status_code}, {response.json().get('message', '')}")
+            raise Exception(f"抓取GitHub倉庫失敗：{response.status_code}, " f"{response.json().get('message', '')}")
 
         repos = response.json().get("items", [])
         result = []
         for repo in repos:
-            # 提取倉庫詳情
+            # 提取倉庫基本資訊
             title = repo.get("full_name", "無標題")
             repo_url = repo.get("html_url", "無URL")
             description = repo.get("description", "無描述")
-            language = repo.get("language", "無語言指定")
-            stars = repo.get("stargazers_count", 0)
-            forks = repo.get("forks_count", 0)
+            stars = repo.get("stargazers_count", 0)  # 以 stars 當做 likes
             created_at_str = repo.get("created_at", "無創建日期")
+
+            # 拿到 "owner" 資訊
+            owner_info = repo.get("owner", {})
+            owner_name = owner_info.get("login", "")
+            # 將「擁有者的所在國家」也加進來
+            country_of_owner = self.fetch_repo_owner_country(owner_name, headers)
+
+            # 解析發佈日期
             try:
                 created_at = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M:%SZ")
-                publish_date = created_at.isoformat()  # 轉換為字符串
+                publish_date = created_at.isoformat()
             except ValueError:
-                publish_date = self.yesterday.isoformat()  # 如果日期格式不正確，設置為昨天並轉換為字符串
+                publish_date = self.yesterday.isoformat()
 
-            # 獲取README內容
+            # 獲取 README
             readme_content = self.fetch_readme(title, headers)
-
-            # 獲取倉庫主題（topics）
+            # 獲取 topics
             topics = self.fetch_topics(title, headers)
 
             repo_data = {
                 "title": title,
                 "content": description,
-                "tags": topics,  # 使用topics作為tags
+                "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 轉換為字符串
-                "readme": readme_content,  # 可選：添加README內容
+                "publish_date": publish_date,
+                "readme": readme_content,
+                "likes": stars,  # Star 數
+                "country_of_owner": country_of_owner,  # 這裡記錄國家資訊
             }
-
             result.append(repo_data)
 
         return result
+
+    def fetch_repo_owner_country(self, owner_name: str, headers: Dict[str, str]) -> str:
+        """
+        根據 repo 的擁有者 (owner)，去抓取他/她在 GitHub profile 上的 `location`，
+        再嘗試用 restcountries.com 查詢相應國家。
+
+        - 若 location 為空或查無資料，就回傳 "Unknown Country"。
+        """
+        if not owner_name:
+            return "Unknown Country"
+
+        # Step1: 從 GitHub API 拿到使用者檔案
+        user_url = f"https://api.github.com/users/{owner_name}"
+        resp = self.session.get(user_url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            return "Unknown Country"  # 無法取得使用者資訊
+
+        user_data = resp.json()
+        location = user_data.get("location", None)
+
+        if not location or not location.strip():
+            return "Unknown Country"
+
+        # Step2: 使用 restcountries 的 API 做「模糊」查詢
+        # 因為 location 可能寫 "Taipei, Taiwan" 或 "Somewhere in China" 等，所以只做簡單嘗試
+        # 如果查不到，就回傳 "Unknown Country"
+        # 如果回傳多筆，我們只取第一筆
+        return self.lookup_country_by_location(location)
+
+    #############################
+    # 1. 新增：查詢國家的輔助函式
+    #############################
+    def lookup_country_by_location(location_text: str) -> str:
+        """
+        使用 restcountries.com 來做簡易『國家名稱』查詢。
+        若無法匹配，就回傳 'Unknown Country'。
+        """
+        if not location_text or not location_text.strip():
+            return "Unknown Country"
+
+        guess_country = location_text.split(",")[-1].strip()
+        url = f"https://restcountries.com/v3.1/name/{guess_country}"
+        try:
+            resp = requests.get(url, timeout=5)
+            if resp.status_code != 200:
+                return "Unknown Country"
+            data = resp.json()
+            if not data or len(data) == 0:
+                return "Unknown Country"
+
+            first_country = data[0]
+            return first_country.get("name", {}).get("common", "Unknown Country")
+        except:
+            return "Unknown Country"
+
+    # GitHub Trending URL
+    trending_url = "https://github.com/trending?since=daily"
+
+    # Send a GET request to the GitHub Trending page
+    response = requests.get(trending_url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        # Find all repository elements
+        repo_elements = soup.find_all("article", class_="Box-row")
+
+        for repo in repo_elements:
+            repo_name = repo.find("h2", class_="h3").text.strip().replace("\n", "").replace(" ", "")
+            owner, repo_title = repo_name.split("/")
+
+            repo_url = f"https://github.com/{repo_name}"
+
+            repo_description = repo.find("p", class_="col-9 color-fg-muted my-1 pr-4")
+            repo_description = repo_description.text.strip() if repo_description else "No description provided"
+
+            repo_language = repo.find("span", itemprop="programmingLanguage")
+            repo_language = repo_language.text.strip() if repo_language else "No language specified"
+
+            star_element = repo.find("a", class_="Link--muted d-inline-block mr-3")
+            star_count = star_element.text.strip().replace(",", "") if star_element else "0"
+
+            # Fetch topics from GitHub API
+            topics_url = f"https://api.github.com/repos/{owner}/{repo_title}/topics"
+            headers = {"Accept": "application/vnd.github.mercy-preview+json"}
+            topics_response = requests.get(topics_url, headers=headers)
+            if topics_response.status_code == 200:
+                topics_data = topics_response.json()
+                topics = topics_data.get("names", [])
+            else:
+                topics = ["Topics not accessible or not found"]
+
+            # Fetch README content
+            readme_url = f"https://api.github.com/repos/{owner}/{repo_title}/readme"
+            readme_response = requests.get(readme_url, headers=headers)
+            if readme_response.status_code == 200:
+                readme_data = readme_response.json()
+                try:
+                    readme_content = base64.b64decode(readme_data.get("content", "")).decode("utf-8", errors="ignore")
+                    readme_text = BeautifulSoup(readme_content, "html.parser").get_text()
+                except Exception:
+                    readme_text = "Failed to decode README content"
+            else:
+                readme_text = "README not accessible or not found"
+
+            #############################
+            # 2. 取得 Owner 的國家資訊
+            #############################
+            user_url = f"https://api.github.com/users/{owner}"
+            user_resp = requests.get(user_url)
+            if user_resp.status_code == 200:
+                user_data = user_resp.json()
+                location_text = user_data.get("location", "")
+            else:
+                location_text = ""
+
+            owner_country = lookup_country_by_location(location_text)
+
+            # Print repository details
+            print(f"Repository: {repo_name}")
+            print(f"URL: {repo_url}")
+            print(f"Description: {repo_description}")
+            print(f"Language: {repo_language}")
+            print(f"Stars: {star_count}")
+            print(f"Owner Country: {owner_country}")  # 新增
+            print(f"Topics: {[f'[{topic}]' for topic in topics]}")
+            print(f"README Content: {readme_text[:500]}...")
+            print("-" * 80)
+    else:
+        print(f"Failed to fetch trending repositories. Status code: {response.status_code}")
+
+    def lookup_country_by_location(self, location_text: str) -> str:
+        """
+        將使用者的 location 文字，嘗試用 restcountries.com 做模糊查詢：
+        e.g. "Taipei, Taiwan" -> 可能會找到 "Taiwan"
+        若找不到就回傳 "Unknown Country"
+
+        注意：本函式只做非常基礎的示範，實務上可再優化。
+        """
+        # 先試著把逗號後的東西取出 (假設最後一段是國家)
+        # 例如 "Taipei, Taiwan" -> "Taiwan"
+        # 如果不存在逗號，就直接帶入整串
+        guess_country = location_text.split(",")[-1].strip()
+
+        url = f"https://restcountries.com/v3.1/name/{guess_country}"
+        try:
+            r = self.session.get(url, timeout=5)
+            if r.status_code != 200:
+                return "Unknown Country"
+            data = r.json()
+            if not data or len(data) == 0:
+                return "Unknown Country"
+            # 只取第一筆
+            first_country = data[0]
+            # 例如 data[0]["name"]["common"] -> "Taiwan"
+            return first_country.get("name", {}).get("common", "Unknown Country")
+        except:
+            return "Unknown Country"
 
     def fetch_readme(self, repo_full_name: str, headers: Dict[str, str]) -> str:
         """
@@ -288,9 +455,9 @@ class Crawl:
     def fetch_github_trending(self) -> List[Dict[str, object]]:
         """
         使用BeautifulSoup爬取GitHub Trending頁面
-
-        Returns:
-            List[Dict]: 包含Trending倉庫資訊的字典列表
+        並把stars數量放到likes欄位
+        不再把時間硬設成昨天，而是"No creation date from trending"
+        並且補上「owner 的國家」country_of_owner
         """
         trending_url = "https://github.com/trending?since=daily"
         response = self.session.get(trending_url, timeout=10)
@@ -314,18 +481,13 @@ class Crawl:
             repo_name = repo_name_tag.text.strip().replace("\n", "").replace(" ", "")
             if "/" not in repo_name:
                 continue
-            owner, repo_title = repo_name.split("/")
 
-            # 构建仓库URL
+            owner, repo_title = repo_name.split("/")
             repo_url = f"https://github.com/{repo_name}"
 
             # 提取倉庫描述
             repo_description_tag = repo.find("p", class_="col-9 color-fg-muted my-1 pr-4")
             repo_description = repo_description_tag.text.strip() if repo_description_tag else "無描述提供"
-
-            # 提取編程語言
-            repo_language_tag = repo.find("span", itemprop="programmingLanguage")
-            repo_language = repo_language_tag.text.strip() if repo_language_tag else "無語言指定"
 
             # 提取星標數量
             star_element = repo.find("a", class_="Link--muted d-inline-block mr-3")
@@ -335,27 +497,48 @@ class Crawl:
             except ValueError:
                 star_count = 0
 
+            # 補抓「owner 的國家」
+            user_url = f"https://api.github.com/users/{owner}"
+            user_resp = self.session.get(user_url, headers=headers)
+            if user_resp.status_code == 200:
+                user_data = user_resp.json()
+                location_text = user_data.get("location", "")
+            else:
+                location_text = ""
+
+            # 用 lookup_country_by_location 取得國家
+            owner_country = self.lookup_country_by_location(location_text)
+
             # 獲取倉庫主題（topics）
             topics = self.fetch_topics(repo_name, headers)
 
             # 獲取README內容
             readme_content = self.fetch_readme(repo_name, headers)
 
-            # 處理 publish_date 為字符串
-            publish_date = self.yesterday.isoformat()  # 由於Trending頁面沒有創建日期，設置為昨天並轉換為字符串
+            # 這邊不硬設昨天
+            publish_date = "No creation date from trending"
 
             repo_data = {
                 "title": repo_name,
                 "content": repo_description,
                 "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 轉換為字符串
+                "publish_date": publish_date,
                 "readme": readme_content,
+                "likes": star_count,
+                "country_of_owner": owner_country,  # 補上owner_country
             }
 
             trending_repos.append(repo_data)
 
         return trending_repos
+
+    def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
+        """
+        提取所有唯一標籤
+        """
+        tags = [tag for parse_result in parse_results_list for tag in parse_result.get("tags", [])]
+        return set(tags)
 
     def __crawl_from_medium(self) -> Tuple[List[Dict[str, object]], Set[str]]:
         """爬取medium.com的文章
@@ -427,7 +610,7 @@ class Crawl:
                     "url": article["link"],
                     "publish_date": self.parse_publish_time(publish_time_str).isoformat(),
                     "likes": article["likes"],
-                    "views": article["views_count"]
+                    "views": article["views_count"],
                 }
                 result_list.append(repo_data)
                 self.__csdn_existed_article.add(article["link"])
@@ -571,7 +754,7 @@ class Crawl:
                 content = ""
                 content_container = soup.find("div", id="content_views")
                 if content_container:
-                    content = content_container.get_text(strip=True)[:200]  # 取前 200 字
+                    content = content_container.get_text(strip=True)
 
                 print(f"發布時間: {publish_time}")
 
@@ -580,7 +763,7 @@ class Crawl:
                 likes_element = soup.find("span", class_="read-count", id="blog-digg-num")
                 if likes_element:
                     likes_text = likes_element.get_text(strip=True)
-                    number_match = re.search(r'\d+', likes_text)
+                    number_match = re.search(r"\d+", likes_text)
                     if number_match:
                         likes_count = int(number_match.group())
 
@@ -589,11 +772,11 @@ class Crawl:
                 views_element = soup.find("span", class_="read-count", id=None)  # 排除點讚數的span
                 if views_element:
                     views_text = views_element.get_text(strip=True)
-                    number_match = re.search(r'(\d+\.?\d*)([k])?', views_text.lower())
+                    number_match = re.search(r"(\d+\.?\d*)([k])?", views_text.lower())
                     if number_match:
                         number = float(number_match.group(1))
                         unit = number_match.group(2)
-                        if unit == 'k':
+                        if unit == "k":
                             views_count = int(number * 1000)
                         else:
                             views_count = int(number)
@@ -602,11 +785,11 @@ class Crawl:
             else:
                 print(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
                 logger.error(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
-                return "N/A", [], "N/A",0,0
+                return "N/A", [], "N/A", 0, 0
         except Exception as e:
             print(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
-            return "N/A", [], "N/A",0,0
+            return "N/A", [], "N/A", 0, 0
 
     def scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
         """
@@ -648,7 +831,7 @@ class Crawl:
                             print(f"正在處理文章：{title} - {link}")
 
                             # 爬取文章詳情頁面的數據
-                            publish_time, tags, content,likes,views = self.scrape_article_details(link)
+                            publish_time, tags, content, likes, views = self.scrape_article_details(link)
 
                             # 檢查發布時間是否為 "N/A"，如果是則跳過
                             if publish_time == "N/A":
@@ -663,7 +846,7 @@ class Crawl:
                                     "tags": tags,
                                     "content": content,
                                     "likes": likes,
-                                    "views_count": views
+                                    "views_count": views,
                                 }
                             )
                         except Exception as e:
@@ -697,22 +880,49 @@ class Crawl:
         return set(tags)
 
 
+# if __name__ == "__main__":
+#     crawl = Crawl()
+#     crawl_results, today_tags = crawl.crawl()
+
+#     # 合併 crawl_results 和 today_tags 到一個字典中
+#     # 將 today_tags 中的 set 轉換為 list，以便 JSON 序列化
+#     combined_results = {"crawl_results": crawl_results, "today_tags": {k: list(v) for k, v in today_tags.items()}}
+
+#     # 保存到一個 JSON 文件
+#     with open("combined_crawl_results_csdn.json", "w", encoding="utf-8") as f:
+#         json.dump(combined_results, f, ensure_ascii=False, indent=2)
+#     print("Combined crawl results 已保存到 combined_crawl_results_csdn.json")
+
+#     # 另外保存CSDN的結果
+#     csdn_results = crawl_results.get("csdn", [])
+#     # 由於__crawl_from_csdn已經過濾了24小時內的文章，直接保存
+#     with open("csdn_crawl_results_24.json", "w", encoding="utf-8") as f:
+#         json.dump(csdn_results, f, ensure_ascii=False, indent=2)
+#     print("CSDN crawl results 已保存到 csdn_crawl_results_24.json")
 if __name__ == "__main__":
     crawl = Crawl()
     crawl_results, today_tags = crawl.crawl()
 
-    # 合併 crawl_results 和 today_tags 到一個字典中
-    # 將 today_tags 中的 set 轉換為 list，以便 JSON 序列化
-    combined_results = {"crawl_results": crawl_results, "today_tags": {k: list(v) for k, v in today_tags.items()}}
+    # 取得 GitHub 結果
+    github_list = crawl_results.get("github", [])
 
-    # 保存到一個 JSON 文件
-    with open("combined_crawl_results_csdn.json", "w", encoding="utf-8") as f:
+    # 印出前幾個結果
+    print("\n=== GitHub Crawler Results (部分) ===")
+    for idx, repo in enumerate(github_list[:3]):
+        print(f"[{idx+1}] Title: {repo['title']}")
+        print(f"    Likes (Stars): {repo['likes']}")
+        print(f"    URL: {repo['url']}")
+        print(f"    Country: {repo['country_of_owner']}")
+        print(f"    Publish Date: {repo['publish_date']}")
+        print(f"    Tags: {repo['tags']}")
+        print("    ---")
+
+    # 輸出到 JSON
+    combined_results = {
+        "crawl_results": crawl_results,
+        "today_tags": {k: list(v) for k, v in today_tags.items()},
+    }
+
+    with open("combined_crawl_results_github_24.json", "w", encoding="utf-8") as f:
         json.dump(combined_results, f, ensure_ascii=False, indent=2)
-    print("Combined crawl results 已保存到 combined_crawl_results_csdn.json")
-
-    # 另外保存CSDN的結果
-    csdn_results = crawl_results.get("csdn", [])
-    # 由於__crawl_from_csdn已經過濾了24小時內的文章，直接保存
-    with open("csdn_crawl_results_24.json", "w", encoding="utf-8") as f:
-        json.dump(csdn_results, f, ensure_ascii=False, indent=2)
-    print("CSDN crawl results 已保存到 csdn_crawl_results_24.json")
+    print("\n已將爬取結果輸出到 combined_crawl_results_github_24.json")
