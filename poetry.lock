@@ -1915,6 +1915,21 @@ requests = ">=2.22"
 typing-extensions = ">=4.1.1"
 
 [[package]]
+name = "markdown"
+version = "3.7"
+description = "Python implementation of John Gruber's Markdown."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "Markdown-3.7-py3-none-any.whl", hash = "sha256:7eb6df5690b81a1d7942992c97fad2938e956e79df20cbc6186e9c3a77b1c803"},
+    {file = "markdown-3.7.tar.gz", hash = "sha256:2ae2471477cfd02dbbf038d5d9bc226d40def84b4fe2986e49b59b6b472bbed2"},
+]
+
+[package.extras]
+docs = ["mdx-gh-links (>=0.2)", "mkdocs (>=1.5)", "mkdocs-gen-files", "mkdocs-literate-nav", "mkdocs-nature (>=0.6)", "mkdocs-section-index", "mkdocstrings[python]"]
+testing = ["coverage", "pyyaml"]
+
+[[package]]
 name = "marshmallow"
 version = "3.23.1"
 description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
@@ -4045,4 +4060,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "07bcda8aad3d7e4cc86563db6d0f484a017036eede8ad7d5c85764d9c259e0b2"
+content-hash = "cade517ce9761917858d0ae78f274ce7c44948ea3da508ee9851aa96045ce35d"
