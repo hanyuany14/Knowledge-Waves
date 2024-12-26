@@ -76,30 +76,30 @@ class Crawl:
             print(f"Medium爬取失敗：{e}")
             medium_result, medium_tags = [], set()
 
-        # # 爬取GitHub
-        # try:
-        #     github_result, github_tags = self.__crawl_from_github()
-        # except Exception as e:
-        #     print(f"GitHub爬取失敗：{e}")
-        #     github_result, github_tags = [], set()
+        # 爬取GitHub
+        try:
+            github_result, github_tags = self.__crawl_from_github()
+        except Exception as e:
+            print(f"GitHub爬取失敗：{e}")
+            github_result, github_tags = [], set()
 
-        # # 爬取CSDN
-        # try:
-        #     csdn_result, csdn_tags = self.__crawl_from_csdn()
-        # except Exception as e:
-        #     print(f"CSDN爬取失敗：{e}")
-        #     csdn_result, csdn_tags = [], set()
+        # 爬取CSDN
+        try:
+            csdn_result, csdn_tags = self.__crawl_from_csdn()
+        except Exception as e:
+            print(f"CSDN爬取失敗：{e}")
+            csdn_result, csdn_tags = [], set()
 
         crawl_results = {
-            # "github": github_result,
+            "github": github_result,
             "medium": medium_result,
-            # "csdn": csdn_result,
+            "csdn": csdn_result,
         }
 
         today_tags = {
-            # "github": github_tags,
+            "github": github_tags,
             "medium": medium_tags,
-            # "csdn": csdn_tags,
+            "csdn": csdn_tags,
         }
 
         return crawl_results, today_tags
@@ -204,11 +204,12 @@ class Crawl:
 
             repo_data = {
                 "title": title,
-                "content": description,
+                "content": f"This is description:\n{description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,  # 使用topics作為tags
                 "url": repo_url,
                 "publish_date": publish_date,  # 轉換為字符串
-                "readme": readme_content,  # 可選：添加README內容
+                "language": language,
+                "likes": stars,
             }
 
             result.append(repo_data)
@@ -335,11 +336,12 @@ class Crawl:
 
             repo_data = {
                 "title": repo_name,
-                "content": repo_description,
+                "content": f"This is repo_description:\n{repo_description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 轉換為字符串
-                "readme": readme_content,
+                "publish_date": publish_date,
+                "language": repo_language,
+                "likes": star_count,
             }
 
             trending_repos.append(repo_data)
@@ -398,7 +400,7 @@ class Crawl:
         """
         print("\n現在正在從CSDN爬取\n")
         max_pages = 10  # 修改為爬取10頁
-        csdn_articles = self.scrape_csdn_articles(max_pages)
+        csdn_articles = self.__scrape_csdn_articles(max_pages)
 
         result_list = []
         tags_set = set()
@@ -416,7 +418,8 @@ class Crawl:
                     "url": article["link"],
                     "publish_date": self.parse_publish_time(publish_time_str).isoformat(),
                     "likes": article["likes"],
-                    "views": article["views_count"],
+                    # "views": article["views_count"],
+                    "language": "ch",
                 }
                 result_list.append(repo_data)
                 self.__csdn_existed_article.add(article["link"])
@@ -597,7 +600,7 @@ class Crawl:
             logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             return "N/A", [], "N/A", 0, 0
 
-    def scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
+    def __scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
         """
         爬取CSDN的文章
 

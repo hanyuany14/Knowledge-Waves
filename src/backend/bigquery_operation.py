@@ -43,6 +43,8 @@ class BigQueryOperation:
                             if isinstance(article["publish_date"], datetime)
                             else article["publish_date"]
                         ),
+                        "language": article["language"],
+                        "likes": article["likes"],
                         "source": source,
                     }
                     for article in articles
@@ -58,7 +60,7 @@ class BigQueryOperation:
         except Exception as e:
             raise Exception(f"Failed to upload articles to BQ. {e}")
 
-    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str]]]:
+    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str]]]:
         """
         Fetches articles from BigQuery based on tags and organizes the results by source.
 
@@ -66,17 +68,18 @@ class BigQueryOperation:
             interested_tags (list[str]): A list of tags to filter articles.
 
         Returns:
-            dict[str, list[tuple[str, str]]]: A dictionary where the key is the source and the value
-                                            is a list of tuples containing the title and URL of matching articles.
-                                            e.g. {
-                                                "github": [("title1", "url1"), ("title2", "url2")],
-                                                "medium": [("title3", "url3")],
-                                                "csdn": [("title4", "url4"), ("title5", "url5")]
-                                            }
+            dict[str, list[tuple[str, str, int, str]]]: A dictionary where the key is the source and the value
+                                                        is a list of tuples containing the title, URL, likes, and language
+                                                        of matching articles.
+                                                        e.g. {
+                                                            "github": [("title1", "url1", 15, "en")],
+                                                            "medium": [("title3", "url3", 10, "en")],
+                                                            "csdn": [("title4", "url4", 18, "ch")]
+                                                        }
         """
         try:
             query = f"""
-                SELECT source, title, url
+                SELECT source, title, url, likes, language
                 FROM `{self.article_table_ref}`
                 WHERE EXISTS (
                     SELECT 1 FROM UNNEST(tags) AS tag
@@ -99,7 +102,7 @@ class BigQueryOperation:
             articles_by_source = {}
             for row in results:
                 source = row["source"]
-                title_url_tuple = (row["title"], row["url"])
+                title_url_tuple = (row["title"], row["url"], row["likes"], row["language"])
                 if source not in articles_by_source:
                     articles_by_source[source] = []
                 articles_by_source[source].append(title_url_tuple)
@@ -121,6 +124,8 @@ class BigQueryOperation:
             bigquery.SchemaField("publish_date", "TIMESTAMP", mode="REQUIRED", description="文章發佈時間"),
             bigquery.SchemaField("tags", "STRING", mode="REPEATED", description="文章種類（多個）"),
             bigquery.SchemaField("url", "STRING", mode="REQUIRED", description="文章網址"),
+            bigquery.SchemaField("likes", "INTEGER", mode="NULLABLE", description="文章的點讚數"),
+            bigquery.SchemaField("language", "STRING", mode="NULLABLE", description="文章語言"),
         ]
 
         try:
