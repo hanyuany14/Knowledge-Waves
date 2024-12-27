@@ -12,21 +12,33 @@ BQ_CLIENT = bigquery.Client(project=configs.PROJECT_ID, credentials=CREDENTIAL_O
 GCS_CLIENT = storage.Client(project=configs.PROJECT_ID, credentials=CREDENTIAL_OBJ)
 
 
-def get_time_range():
+def get_time_range(base_time=None):
     """
-    返回基於指定時間段（每天早上 8:00）計算的資料範圍。
+    返回基於每天早上 8:00 計算的資料範圍。
+    情境一：如果當前時間在今天 8:00 之前，返回前兩天 8:00 到前一天 8:00；
+    情境二：如果當前時間在今天 8:00 之後，返回前一天 8:00 到今天 8:00。
+
+    Args:
+        base_time (datetime, optional): 指定的基準時間，默認為當前時間。
 
     Returns:
         tuple: (start_time, end_time) 分別表示資料的開始和結束時間。
     """
-    now = datetime.now()
-    base_time = now.replace(hour=8, minute=0, second=0, microsecond=0)
+    if base_time is None:
+        base_time = datetime.now()
 
-    if now < base_time:  # 如果當前時間早於今天 8:00，則查詢前一天的資料範圍
-        end_time = base_time
-        start_time = base_time - timedelta(days=1)
-    else:  # 當前時間晚於或等於今天 8:00
-        start_time = base_time
-        end_time = base_time + timedelta(days=1)
+    today_8am = base_time.replace(hour=8, minute=0, second=0, microsecond=0)
+
+    if base_time < today_8am:  # 情境一
+        start_time = today_8am - timedelta(days=2)
+        end_time = today_8am - timedelta(days=1)
+    else:  # 情境二
+        start_time = today_8am - timedelta(days=1)
+        end_time = today_8am
+
+    print(f"Currrnt Time: {base_time}")
+    print(f"Currrnt Time 8 am: {today_8am}")
+    print(f"start_time: {start_time}")
+    print(f"end_time: {end_time}")
 
     return start_time, end_time

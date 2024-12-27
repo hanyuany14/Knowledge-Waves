@@ -7,11 +7,13 @@ from langchain_google_community import BigQueryVectorStore
 import configs as configs
 import utils as utils
 
-# TODO: 查詢跟搜資料的時間軸都要一致，例如 25 早上 8:00~ 26 早上 8:00 抓好的資料，我在明天 27 8:00 之前的查詢都是查詢 25~26 的資料
 
 class VectorStore:
     def __init__(self):
-        today_date = datetime.now().strftime("%Y%m%d")
+
+        self.yesterday, self.today = utils.get_time_range()
+
+        today_date = self.today.strftime("%Y%m%d")
         self.__table_name = f"{configs.VECTORSTORE_TABLE_ID}_{today_date}"
         print(f"table_name: {self.__table_name}")
 

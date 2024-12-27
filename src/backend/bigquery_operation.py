@@ -6,11 +6,9 @@ import utils as utils
 import configs as configs
 
 
-
 class BigQueryOperation:
     def __init__(self):
-        self.today = datetime.now()
-        self.yesterday = datetime.now().replace(day=datetime.now().day - 1)
+        self.yesterday, self.today = utils.get_time_range()
 
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
 
@@ -47,7 +45,7 @@ class BigQueryOperation:
                         "language": article["language"],
                         "likes": article["likes"],
                         "source": source,
-                        "created_time": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"),
+                        "created_time": self.today.strftime("%Y-%m-%dT%H:%M:%S"),
                     }
                     for article in articles
                 ]
@@ -87,9 +85,8 @@ class BigQueryOperation:
                     SELECT 1 FROM UNNEST(tags) AS tag
                     WHERE tag IN UNNEST(@interested_tags)
                 )
-                AND publish_date BETWEEN @yesterday AND @today
+                AND publish_date BETWEEN TIMESTAMP('{self.yesterday}') AND TIMESTAMP('{self.today}')
             """
-
             job_config = bigquery.QueryJobConfig(
                 query_parameters=[
                     bigquery.ArrayQueryParameter("interested_tags", "STRING", interested_tags),
@@ -134,8 +131,8 @@ class BigQueryOperation:
         try:
             table = bigquery.Table(self.article_table_ref, schema=schema)
             utils.BQ_CLIENT.create_table(table, exists_ok=True)
-            time.sleep(5)
             print(f"Table {self.article_table_ref} created successfully.")
+            time.sleep(10)
         except Exception as e:
             print(f"Failed to create table {self.article_table_ref}: {e}")
 

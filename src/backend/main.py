@@ -1,5 +1,3 @@
-import datetime
-
 from summary import Summarization
 from vectorstore import VectorStore
 from bigquery_operation import BigQueryOperation

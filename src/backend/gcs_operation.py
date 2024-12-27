@@ -7,7 +7,8 @@ import configs as configs
 
 class GCSOperation:
     def __init__(self):
-        self.__datetime_str = datetime.now().strftime("%Y-%m-%d")
+        self.yesterday, self.today = utils.get_time_range()
+        self.__datetime_str = self.today.strftime("%Y-%m-%d")
         self.__create_bucket()
 
     def upload(

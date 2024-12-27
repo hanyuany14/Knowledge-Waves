@@ -13,10 +13,12 @@ import logging
 from logging.handlers import RotatingFileHandler
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from urllib.parse import quote
+import feedparser
 
 import configs as configs
+import utils as utils
 
-# 配置日誌
 logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
 handler = RotatingFileHandler("csdn_crawl_errors.log", maxBytes=5 * 1024 * 1024, backupCount=5)
@@ -24,12 +26,10 @@ formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# TODO: 抓取資料要限定是現在日期的早上 8:00 去抓資料
-
 
 class Crawl:
     def __init__(self) -> None:
-        self.yesterday = datetime.utcnow() - timedelta(days=1)
+        self.yesterday, self.today = utils.get_time_range()
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
@@ -39,7 +39,6 @@ class Crawl:
         self.__csdn_existed_article = set()
         self.__csdn_existed_tags = set()
 
-        # CSDN的User-Agent列表
         self.HEADERS = [
             {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
@@ -130,7 +129,6 @@ class Crawl:
         result_list = []
 
         try:
-            # 使用GitHub API爬取過去24小時內創建的倉庫
             repos = self.fetch_github_repos()
             print(f"從GitHub API抓取了 {len(repos)} 個倉庫。")
         except Exception as e:
@@ -173,16 +171,15 @@ class Crawl:
             List[Dict]: 包含倉庫資訊的字典列表
         """
         base_url = "https://api.github.com/search/repositories"
-        now = datetime.utcnow()
-        yesterday = now - timedelta(days=1)
-        time_range = yesterday.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        # 查詢參數：過去24小時內創建的倉庫，按星標降序排序
+        yesterday_str = self.yesterday.strftime("%Y-%m-%dT%H:%M:%SZ")
+        today_str = self.today.strftime("%Y-%m-%dT%H:%M:%SZ")
+
         query_params = {
-            "q": f"created:>{time_range}",
+            "q": f"created:{yesterday_str}..{today_str}",
             "sort": "stars",
             "order": "desc",
-            "per_page": 100,  # GitHub API每頁最大100
+            "per_page": 100,
         }
 
         headers = {
@@ -197,7 +194,6 @@ class Crawl:
         repos = response.json().get("items", [])
         result = []
         for repo in repos:
-            # 提取倉庫詳情
             title = repo.get("full_name", "無標題")
             repo_url = repo.get("html_url", "無URL")
             description = repo.get("description", "無描述")
@@ -207,22 +203,19 @@ class Crawl:
             created_at_str = repo.get("created_at", "無創建日期")
             try:
                 created_at = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M:%SZ")
-                publish_date = created_at.isoformat()  # 轉換為字符串
+                publish_date = created_at.isoformat()
             except ValueError:
                 publish_date = self.yesterday.isoformat()  # 如果日期格式不正確，設置為昨天並轉換為字符串
 
-            # 獲取README內容
             readme_content = self.fetch_readme(title, headers)
-
-            # 獲取倉庫主題（topics）
             topics = self.fetch_topics(title, headers)
 
             repo_data = {
                 "title": title,
                 "content": f"This is description:\n{description}.\n This is readme of the repo:{readme_content}",
-                "tags": topics,  # 使用topics作為tags
+                "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 轉換為字符串
+                "publish_date": publish_date,
                 "language": language,
                 "likes": stars,
             }
@@ -253,14 +246,10 @@ class Crawl:
                     print(f"Readme for {repo_full_name} is empty.")
                     return "README內容為空。"
 
-                # 判斷是否為Markdown格式（簡單判斷是否包含Markdown語法）
                 if re.search(r"[#*_\-~]", readme_content):
-                    # 將 Markdown 轉換為 HTML
                     readme_html = markdown.markdown(readme_content)
-                    # 使用 BeautifulSoup 解析 HTML
                     readme_text = BeautifulSoup(readme_html, "html.parser").get_text()
                 else:
-                    # 直接解析 HTML
                     readme_text = BeautifulSoup(readme_content, "html.parser").get_text()
 
                 return readme_text
@@ -312,7 +301,6 @@ class Crawl:
                         return created_at_dt.isoformat()
                     except ValueError:
                         pass
-            # 若上述流程失敗，則改用「昨天」做為 fallback
             return self.yesterday.isoformat()
         except Exception as e:
             print(f"取得 {full_name} 的建立時間發生錯誤：{e}")
@@ -399,7 +387,7 @@ class Crawl:
             tuple: (文章列表, 標籤集合)
         """
         print("\n現在正在從CSDN爬取\n")
-        max_pages = 5  # 修改為爬取10頁
+        max_pages = 1  # 修改為爬取10頁
         csdn_articles = self.__scrape_csdn_articles(max_pages)
 
         result_list = []
@@ -431,13 +419,13 @@ class Crawl:
 
     def is_within_24_hours(self, publish_time: str) -> bool:
         """
-        檢查發布時間是否在過去24小時內
+        檢查發布時間是否在 self.yesterday 和 self.today 的範圍內
 
         Args:
-            publish_time (str): 發布時間字符串
+            publish_time (str): 發布時間字符串 (相對時間或絕對時間)
 
         Returns:
-            bool: 是否在24小時內
+            bool: 是否在範圍內
         """
         now = datetime.now()
         if "小時前" in publish_time:
@@ -448,14 +436,16 @@ class Crawl:
             publish_time_obj = now - timedelta(minutes=minutes)
         elif "昨天" in publish_time:
             publish_time_obj = now - timedelta(days=1)
+            if "昨天" == publish_time.strip():  # 如果發布時間是"昨天"，但沒有具體的時分，假設為昨天的正午
+                publish_time_obj = publish_time_obj.replace(hour=12, minute=0, second=0)
         else:
-            # 假設為標準日期格式 "%Y-%m-%d %H:%M:%S"
             try:
                 publish_time_obj = datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
             except ValueError:
                 print(f"無法解析的發布時間格式：{publish_time}")
                 return False
-        return now - publish_time_obj <= timedelta(days=1)
+
+        return self.yesterday <= publish_time_obj < self.today
 
     def parse_publish_time(self, publish_time: str) -> datetime:
         """
@@ -475,12 +465,15 @@ class Crawl:
             minutes = int(re.search(r"(\d+)分鐘前", publish_time).group(1))
             return now - timedelta(minutes=minutes)
         elif "昨天" in publish_time:
-            return now - timedelta(days=1)
+            publish_time_obj = now - timedelta(days=1)
+            if "昨天" == publish_time.strip():  # 如果發布時間是"昨天"，但沒有具體的時分，假設為昨天的正午
+                publish_time_obj = publish_time_obj.replace(hour=12, minute=0, second=0)
+            return publish_time_obj
         else:
             try:
                 return datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
             except ValueError:
-                return self.yesterday  # 返回昨天的時間
+                return self.yesterday
 
     def scrape_article_details(self, url: str) -> Tuple[str, List[str], str, int, int]:
         """
@@ -497,7 +490,6 @@ class Crawl:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, "html.parser")
 
-                # 嘗試多種選擇器來提取發布時間
                 publish_time = "N/A"
                 possible_time_selectors = [
                     {"name": "div", "class_": "time-box"},
@@ -506,7 +498,6 @@ class Crawl:
                     {"name": "span", "class_": "date"},  # 新增的選擇器範例
                     {"name": "div", "class_": "article-header__publish-time"},  # 另一個可能的選擇器
                     {"name": "span", "class_": "publish-time"},  # 另一個可能的選擇器
-                    # 根據實際情況添加更多選擇器
                 ]
 
                 for selector in possible_time_selectors:
@@ -533,14 +524,12 @@ class Crawl:
                         break  # 成功找到發布時間後退出循環
 
                 if publish_time == "N/A":
-                    # 嘗試通過正則表達式在整個頁面中搜索日期
                     date_patterns = [
                         r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})",  # 2024-12-23 21:22:43
                         r"(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})",  # 2024/12/23 21:22:43
                         r"(\d{4}-\d{2}-\d{2})",  # 2024-12-23
                         r"(\d{4}/\d{2}/\d{2})",  # 2024/12/23
                         r"(\d{2}:\d{2}:\d{2})",  # 21:22:43
-                        # 添加更多日期格式
                     ]
                     for pattern in date_patterns:
                         match = re.search(pattern, response.text)
@@ -685,14 +674,14 @@ class Crawl:
 
         max_times = 3
         gloabl_medium_result = []
-        categories = ["technology"]
+        categories = ["work", "technology", "data science", "programming", "develop"]
         self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
         print(f"已存在的標籤：{self.__medium_existed_tags}")
 
         for i in range(max_times):
             print(f"\n----------------處理輪次：{i+1}----------------\n")
 
-            categories = categories[:5]  # 用於測試
+            categories = categories[:3]  # 用於測試
 
             print(f"    類別數量：{len(categories)}")
 
@@ -766,14 +755,17 @@ class Crawl:
 
         for category in categories:
             print(f"處理類別：{category}")
-            feed = feedparser.parse(f"{configs.MEDIUM_TAG_BASE_URL}{category}")
+            encoded_category = quote(category)
+            feed_url = f"{configs.MEDIUM_TAG_BASE_URL}{encoded_category}"
+            feed = feedparser.parse(feed_url)
 
             for entry in feed.entries:
-                # 解析發布時間
                 published_time = datetime(*entry.published_parsed[:6])
                 publish_date = published_time.isoformat()
 
-                if published_time > self.yesterday:
+                print(f"published_time: {published_time}")
+
+                if self.yesterday <= published_time < self.today:
 
                     if entry.id in self.__medium_existed_article:
                         print(f"文章 `{entry.title}` 已存在")
@@ -795,7 +787,7 @@ class Crawl:
 
                     except Exception as e:
                         print(f"解析文章失敗：{e}")
-                        # parse_result = "failed"  # 這裡不需要賦值，因為不會被使用
+                        parse_result = "failed"
 
             print(f"類別：{category}, 計數：{len(parse_medium_result)}")
 
