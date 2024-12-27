@@ -13,7 +13,7 @@ PROJECT_ID = "final-project-1-444506"
 DATASET_ID = "final_project_poc"
 ARTICLE_INFO_TABLE_ID = "article_collection"
 BIGQUERY_REGION = "US"
-
+TRANSLATION_LOCATION = "global"
 # GCS
 GCS_BUCKET_ID = "article-collection-storage"
 
