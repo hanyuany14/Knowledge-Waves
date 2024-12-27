@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from google.cloud import bigquery
 import time
+
 from google.cloud import translate_v3 as translate
-from google.cloud import translate_v2 as translate
+
 import utils as utils
 import configs as configs
 import re
@@ -15,7 +16,8 @@ class BigQueryOperation:
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
 
         self.__create_dataset_if_not_exists()
-        self.translate_client = translate.TranslationServiceClient()
+        self.translate_client = translate.TranslationServiceClient(credentials=utils.CREDENTIAL_OBJ)
+        # self.translate_client = translate.Client(credentials=utils.CREDENTIAL_OBJ)
         self.parent = f"projects/{configs.PROJECT_ID}/locations/{configs.TRANSLATION_LOCATION}"
         self.translation_cache = {}
 
