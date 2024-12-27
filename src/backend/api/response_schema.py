@@ -6,8 +6,3 @@ class SummarizeResponse(BaseModel):
     interested_tags: List[str]
     summarized_content: str
     article_titles: Dict[str, List[Tuple[str, str, int, str]]]
-
-
-class PrepareNewsResponse(BaseModel):
-    status: str
-    message: str

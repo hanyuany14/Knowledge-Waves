@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from src.backend.api.response_schema import SummarizeResponse, PrepareNewsResponse
+from src.backend.api.response_schema import SummarizeResponse
 from src.backend.api.request_schema import SummarizeRequest
 from src.backend.main import Main
 
@@ -41,28 +41,5 @@ def do_summarize(request: SummarizeRequest):
         return SummarizeResponse(
             interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles
         )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/prepare-news", response_model=PrepareNewsResponse)
-def prepare_news():
-    """
-    Prepare daily news: crawling, uploading, and embedding.
-
-    資料層：爬蟲、embedding、上傳資料
-    每天早上固定執行
-    - 爬蟲：爬取三個網站的文章內容
-        - 包含：文章標題、文章內容、tags、文章網址、文章時間
-    - 上傳到 BigQuery：將爬取的資料上傳到 BigQuery
-        - 包含：文章標題、tags、文章網址、文章時間、文章來源
-    - 上傳到 GCS：將爬取的資料上傳到 GCS
-        - 包含：文章內容、文章標題
-    - Embedding 上傳到 vectorestore：將 tags 進行 embedding 並存在 google vectorestore
-        - 包含：tags、embedding
-    """
-    try:
-        main_service.prepare_news()
-        return PrepareNewsResponse(status="success", message="News preparation completed successfully.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
