@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from google.cloud import bigquery
 import time
+import re
 
 from google.cloud import translate_v3 as translate
 
