@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 from google.cloud import bigquery
 import time
+import re
+
+from google.cloud import translate_v3 as translate
 
 import src.backend.utils as utils
 import src.backend.configs as configs
@@ -13,17 +16,68 @@ class BigQueryOperation:
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
 
         self.__create_dataset_if_not_exists()
+        self.translate_client = translate.TranslationServiceClient(credentials=utils.CREDENTIAL_OBJ)
+        # self.translate_client = translate.Client(credentials=utils.CREDENTIAL_OBJ)
+        self.parent = f"projects/{configs.PROJECT_ID}/locations/{configs.TRANSLATION_LOCATION}"
+        self.translation_cache = {}
 
-    def upload(self, crawl_results: dict[str, list[dict]]):
+    def __is_chinese(self, text: str) -> bool:
         """
-        Uploads a list of articles to BigQuery.
+        檢查字符串中是否包含中文字符。
 
         Args:
-            articles (list[dict]): A list of dictionaries, each representing an article with keys like
-                                'title', 'content', 'tags', 'url', and 'publish_date'.
+            text (str): 要檢查的字符串。
 
         Returns:
-            bool: True if upload succeeds, False otherwise.
+            bool: 如果包含中文字符，返回 True，否則返回 False。
+        """
+        # 使用正則表達式檢測中文字符範圍
+        return bool(re.search(r"[\u4e00-\u9fff]", text))
+
+    def __translate(self, tags_list: list[str]) -> list[str]:
+        translated_tags_list = []
+        tags_to_translate = [tag for tag in tags_list if self.__is_chinese(tag) and tag not in self.translation_cache]
+        tags_original = [tag for tag in tags_list]
+
+        if tags_to_translate:
+            try:
+                response = self.translate_client.translate_text(
+                    request={
+                        "parent": self.parent,
+                        "contents": tags_to_translate,
+                        "mime_type": "text/plain",
+                        "source_language_code": "zh",
+                        "target_language_code": "en",
+                    }
+                )
+                for original, translation in zip(tags_to_translate, response.translations):
+                    self.translation_cache[original] = translation.translated_text
+                    print(f"翻譯標籤: '{original}' -> '{translation.translated_text}'")  # 添加打印語句
+            except Exception as e:
+                print(f"翻譯標籤時出錯: {e}")
+                for tag in tags_to_translate:
+                    self.translation_cache[tag] = tag  # 保留原始標籤
+
+        for tag in tags_original:
+            if self.__is_chinese(tag):
+                translated_tag = self.translation_cache.get(tag, tag)
+                translated_tags_list.append(translated_tag)
+                print(f"最終標籤: '{tag}' -> '{translated_tag}'")  # 添加打印語句
+            else:
+                translated_tags_list.append(tag)
+                print(f"標籤不需要翻譯: '{tag}'")  # 添加打印語句
+
+        return translated_tags_list
+
+    def upload(self, crawl_results: dict[str, list[dict[str, str | list[str] | datetime]]]) -> bool:
+        """
+        上傳文章到 BigQuery。
+
+        Args:
+            crawl_results (dict): 每個來源對應的一組文章數據。
+
+        Returns:
+            bool: 上傳成功返回 True，否則拋出異常。
         """
         self.__create_table()
         print(f"\nNow uploading articles to BigQuery...")
@@ -35,7 +89,7 @@ class BigQueryOperation:
                 rows_to_insert = [
                     {
                         "title": article["title"],
-                        "tags": article["tags"],
+                        "tags": self.__translate(article["tags"]),  # 調用翻譯方法
                         "url": article["url"],
                         "publish_date": (
                             article["publish_date"].strftime("%Y-%m-%dT%H:%M:%S")
@@ -50,17 +104,24 @@ class BigQueryOperation:
                     for article in articles
                 ]
 
+                # 打印即將上傳的數據
+                print(f"準備上傳 {len(articles)} 篇文章來自來源: {source}")
+                for row in rows_to_insert:
+                    print(f"上傳數據: {row}")
+
                 errors = utils.BQ_CLIENT.insert_rows_json(self.article_table_ref, rows_to_insert)
                 if errors:
+                    print(f"上傳時發生錯誤: {errors}")
                     raise ValueError(f"Failed to upload articles: {errors}")
 
                 print(f"Successfully uploaded {len(articles)} articles to {self.article_table_ref}.")
 
             return True
         except Exception as e:
+            print(f"Failed to upload articles to BQ. {e}")
             raise Exception(f"Failed to upload articles to BQ. {e}")
 
-    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str]]]:
+    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str | None]]]:
         """
         Fetches articles from BigQuery based on tags and organizes the results by source.
 
