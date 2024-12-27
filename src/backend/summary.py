@@ -5,9 +5,7 @@ import os
 from src.backend.vectorstore import VectorStore
 from src.backend.bigquery_operation import BigQueryOperation
 from src.backend.gcs_operation import GCSOperation
-
-
-os.environ["GOOGLE_API_KEY"] = "AIzaSyBN7sjpwTrMZjdKzVtE5E1jzzZu7__nLT0"
+from src.backend.configs import GOOGLE_API_KEY
 
 
 class Summarization:
@@ -19,6 +17,7 @@ class Summarization:
         max_tokens=None,
         timeout=None,
         max_retries=2,
+        api_key=GOOGLE_API_KEY,  # type: ignore
     )
 
     def do_summary(
@@ -49,7 +48,6 @@ class Summarization:
         return tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
-        # TODO: By 佑
         prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
@@ -63,7 +61,6 @@ class Summarization:
 
         for source, articles in target_articles.items():
             for title, content in articles:
-                # 如果这个标题还没处理过，才生成摘要
                 if title not in processed_titles:
                     response = chain.invoke({"input": content})
                     summary = f'"{source}" {title}: {response.content}'

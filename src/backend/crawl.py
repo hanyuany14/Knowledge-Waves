@@ -19,17 +19,14 @@ import feedparser
 import src.backend.configs as configs
 import src.backend.utils as utils
 
-logger = logging.getLogger()
-logger.setLevel(logging.ERROR)
-handler = RotatingFileHandler("csdn_crawl_errors.log", maxBytes=5 * 1024 * 1024, backupCount=5)
-formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
 
 class Crawl:
     def __init__(self) -> None:
         self.yesterday, self.today = utils.get_time_range()
+
+        self.__medium_max_times = 3
+        self.__medium_categories = 3
+        self.__csdn_max_pages = 2
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
@@ -384,8 +381,7 @@ class Crawl:
             tuple: (文章列表, 標籤集合)
         """
         print("\n現在正在從CSDN爬取\n")
-        max_pages = 1  # 修改為爬取10頁
-        csdn_articles = self.__scrape_csdn_articles(max_pages)
+        csdn_articles = self.__scrape_csdn_articles(self.__csdn_max_pages)
 
         result_list = []
         tags_set = set()
@@ -535,7 +531,6 @@ class Crawl:
                             break
 
                 if publish_time == "N/A":
-                    logger.error(f"無法解析發布時間的文章 URL: {url}")
                     print(f"無法解析發布時間的文章 URL: {url}")
 
                 # 提取文章標籤
@@ -578,11 +573,9 @@ class Crawl:
                 return publish_time, tags, content, likes_count, views_count
             else:
                 print(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
-                logger.error(f"無法獲取文章詳情：{url}, 狀態碼：{response.status_code}")
                 return "N/A", [], "N/A", 0, 0
         except Exception as e:
             print(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
-            logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             return "N/A", [], "N/A", 0, 0
 
     def __scrape_csdn_articles(self, max_pages: int) -> List[dict]:
@@ -645,16 +638,12 @@ class Crawl:
                             )
                         except Exception as e:
                             print(f"處理文章時出錯：{e}")
-                            logger.error(f"處理文章時出錯：{e}")
                 else:
                     print(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
-                    logger.error(f"無法獲取CSDN第 {page} 頁，狀態碼：{response.status_code}")
             except requests.exceptions.RequestException as e:
                 print(f"請求CSDN第 {page} 頁失敗：{e}")
-                logger.error(f"請求CSDN第 {page} 頁失敗：{e}")
             except Exception as e:
                 print(f"處理CSDN第 {page} 頁時出現未知錯誤：{e}")
-                logger.error(f"處理CSDN第 {page} 頁時出現未知錯誤：{e}")
             finally:
                 time.sleep(random.uniform(3, 6))  # 隨機休眠以避免被封禁
 
@@ -669,16 +658,15 @@ class Crawl:
 
         print(f"\n現在正在從medium.com爬取\n")
 
-        max_times = 3
         gloabl_medium_result = []
         categories = ["work", "technology", "data science", "programming", "develop"]
         self.__medium_existed_tags = self.__medium_existed_tags.union(categories)
         print(f"已存在的標籤：{self.__medium_existed_tags}")
 
-        for i in range(max_times):
+        for i in range(self.__medium_max_times):
             print(f"\n----------------處理輪次：{i+1}----------------\n")
 
-            categories = categories[:3]  # 用於測試
+            categories = categories[: self.__medium_categories]  # 用於測試
 
             print(f"    類別數量：{len(categories)}")
 

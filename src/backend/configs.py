@@ -8,6 +8,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CREDENTIAL_PATH = "final-project-vectorestore_credentials.json"
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
 # BigQuery
 PROJECT_ID = "final-project-1-444506"
 DATASET_ID = "final_project_poc"
@@ -24,8 +25,6 @@ VECTORSTORE_TABLE_ID = "doc_and_vectors"
 # Medium
 MEDIUM_TAG_BASE_URL = "https://medium.com/feed/tag/"
 # Github
-GITHUB_PERSONAL_ACCESS_TOKEN = "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"
+GITHUB_PERSONAL_ACCESS_TOKEN = os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN")
 # csdn
-CHROMEDRIVER_PATH = (
-    r"C:\Users\bugee\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 您的 ChromeDriver 路徑
-)
+CHROMEDRIVER_PATH = r"C:\Users\bugee\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"

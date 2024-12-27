@@ -21,3 +21,7 @@ pip uninstall == poetry remove
 python xxx.py
 -> 要改成
 poetry run python xxx.py
+
+
+6. 執行 api server
+poetry run uvicorn src.backend.app:app --reload
