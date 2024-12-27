@@ -46,7 +46,7 @@ class BigQueryOperation:
                         "parent": self.parent,
                         "contents": tags_to_translate,
                         "mime_type": "text/plain",
-                        "source_language_code": "zh",
+                        # "source_language_code": "zh",
                         "target_language_code": "en",
                     }
                 )
