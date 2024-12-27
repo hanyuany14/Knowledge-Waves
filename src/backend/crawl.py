@@ -215,7 +215,7 @@ class Crawl:
 
             # 獲取擁有者的位置信息
             country = self.get_owner_country(owner_url, headers)
-
+            print(f"處理倉庫: {title}, 所有者國家: {country}")
             repo_data = {
                 "title": title,
                 "content": f"This is description:\n{description}.\n This is readme of the repo:{readme_content}",
@@ -231,6 +231,9 @@ class Crawl:
         return result
 
     def get_owner_country(self, owner_url: str, headers: Dict[str, str]) -> str:
+        """
+        獲取 GitHub 用戶的國家信息，優先使用 Geopy，備用 Restcountries API。
+        """
         if owner_url in self.location_cache:
             return self.location_cache[owner_url]
 
@@ -238,38 +241,46 @@ class Crawl:
             response = self.session.get(owner_url, headers=headers, timeout=10)
             if response.status_code == 200:
                 owner_data = response.json()
-                location = owner_data.get("location", "").strip()
-                if not location:
+                location = owner_data.get("location", "")
+                if location is None or not location.strip():
                     self.location_cache[owner_url] = "未知"
                     return "未知"
 
-                # 正規化與分割位置字符串
-                location = self.normalize_location(location)
-                locations = self.parse_multiple_locations(location)
+                # 處理多地點，逐一嘗試
+                locations = [loc.strip() for loc in location.split(",")]
 
                 for loc in locations:
+                    # Step 1: 嘗試使用 Geopy
                     try:
                         geocode = self.geolocator.geocode(loc, language="en")
                         if geocode and geocode.raw.get("address", {}).get("country"):
                             country = geocode.raw["address"]["country"]
                             self.location_cache[owner_url] = country
                             return country
-                    except GeocoderServiceError:
-                        continue  # 嘗試下一個位置
+                    except Exception as geopy_error:
+                        print(f"Geopy 無法解析 {loc}：{geopy_error}")
 
-                # 嘗試從用戶名推測
-                username = owner_data.get("login", "")
-                inferred_country = self.infer_country_from_username(username)
-                if inferred_country != "未知":
-                    self.location_cache[owner_url] = inferred_country
-                    return inferred_country
+                    # Step 2: 使用 Restcountries API
+                    try:
+                        restcountries_url = f"https://restcountries.com/v3.1/name/{loc}"
+                        rest_response = self.session.get(restcountries_url, timeout=5)
+                        if rest_response.status_code == 200:
+                            rest_data = rest_response.json()
+                            if rest_data and len(rest_data) > 0:
+                                country = rest_data[0].get("name", {}).get("common", "未知")
+                                self.location_cache[owner_url] = country
+                                return country
+                    except Exception as restcountries_error:
+                        print(f"Restcountries 無法解析 {loc}：{restcountries_error}")
 
+                # 如果仍然失敗
                 self.location_cache[owner_url] = "未知"
                 return "未知"
             else:
                 self.location_cache[owner_url] = "未知"
                 return "未知"
         except Exception as e:
+            print(f"無法獲取擁有者信息，URL: {owner_url}, 錯誤: {e}")
             self.location_cache[owner_url] = "未知"
             return "未知"
 
