@@ -22,7 +22,7 @@ class Summarization:
 
     def do_summary(
         self, query: str, sources: list[str] | None = None
-    ) -> tuple[list[str], str, dict[str, list[tuple[str, str]]]]:
+    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str]]]]:
         """The function to summarize the articles based on the user query.
 
         Args:
@@ -44,8 +44,9 @@ class Summarization:
         print("content success")
         summary = self.llm_summary(article_titles_and_contents)
         print("summary success")
-        articles = {}
-        return tags, summary, articles
+        interested_tags = [tag[0] for tag in tags]
+
+        return interested_tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
         prompt = ChatPromptTemplate.from_messages(
