@@ -13,10 +13,10 @@ def root():
     API 首頁，提供歡迎訊息。
     """
     return {
-        "message": "歡迎來到 Stream-Assistant API！",
+        "message": "朱茂茂要丟下咱們脫單了，大家一同祝賀他",
         "routes": [
+            {"path": "/docs", "description": "進入了解 api 文件"},
             {"path": "/summarize", "description": "使用者輸入主題，獲取文章總結"},
-            {"path": "/prepare-news", "description": "每日執行爬蟲、上傳資料、Embedding"},
         ],
     }
 

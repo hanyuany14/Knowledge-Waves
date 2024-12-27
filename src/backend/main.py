@@ -10,7 +10,7 @@ class Main:
 
     def do_summarize(
         self, query: str, sources: list[str] | None = None
-    ) -> tuple[list[str], str, dict[str, list[tuple[str, str]]]]:
+    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str]]]]:
         """
         使用者層：接收使用者 query 今日有興趣主題
         - 使用者輸入：今日有興趣主題的自然語言
