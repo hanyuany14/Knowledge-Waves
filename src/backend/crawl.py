@@ -38,6 +38,8 @@ class Crawl:
 
         self.__csdn_existed_article = set()
         self.__csdn_existed_tags = set()
+        self.geolocator = Nominatim(user_agent="github_crawler")
+        self.location_cache = {}  # 緩存已解析的位置信息以減少API調用
 
         self.HEADERS = [
             {
@@ -201,14 +203,22 @@ class Crawl:
             stars = repo.get("stargazers_count", 0)
             forks = repo.get("forks_count", 0)
             created_at_str = repo.get("created_at", "無創建日期")
+            owner = repo.get("owner", {})
+            owner_login = owner.get("login", "")
+            owner_url = owner.get("url", "")
+
             try:
                 created_at = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M:%SZ")
                 publish_date = created_at.isoformat()
             except ValueError:
                 publish_date = self.yesterday.isoformat()  # 如果日期格式不正確，設置為昨天並轉換為字符串
 
+            # 獲取README內容和主題
             readme_content = self.fetch_readme(title, headers)
             topics = self.fetch_topics(title, headers)
+
+            # 獲取擁有者的位置信息
+            country = self.get_owner_country(owner_url, headers)
 
             repo_data = {
                 "title": title,
@@ -218,11 +228,57 @@ class Crawl:
                 "publish_date": publish_date,
                 "language": language,
                 "likes": stars,
+                "country": country,  # 新增的國家欄位
             }
 
             result.append(repo_data)
 
         return result
+
+    def get_owner_country(self, owner_url: str, headers: Dict[str, str]) -> str:
+        """
+        獲取倉庫擁有者的國家資訊
+
+        Args:
+            owner_url (str): 擁有者的API URL
+            headers (Dict[str, str]): HTTP請求頭
+
+        Returns:
+            str: 國家名稱或"未知"
+        """
+        if owner_url in self.location_cache:
+            return self.location_cache[owner_url]
+
+        try:
+            response = self.session.get(owner_url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                owner_data = response.json()
+                location = owner_data.get("location", "").strip()
+                if not location:
+                    self.location_cache[owner_url] = "未知"
+                    return "未知"
+
+                # 嘗試將位置轉換為國家名稱
+                try:
+                    geocode = self.geolocator.geocode(location, language="en")
+                    if geocode and geocode.raw.get("address", {}).get("country"):
+                        country = geocode.raw["address"]["country"]
+                    else:
+                        country = "未知"
+                except GeocoderServiceError as ge:
+                    logger.error(f"地理編碼服務錯誤：{ge} for location: {location}")
+                    country = "未知"
+
+                self.location_cache[owner_url] = country
+                return country
+            else:
+                logger.error(f"無法獲取擁有者信息：{owner_url}, 狀態碼：{response.status_code}")
+                self.location_cache[owner_url] = "未知"
+                return "未知"
+        except Exception as e:
+            logger.error(f"獲取擁有者位置信息失敗：{owner_url}, 錯誤：{e}")
+            self.location_cache[owner_url] = "未知"
+            return "未知"
 
     def fetch_readme(self, repo_full_name: str, headers: Dict[str, str]) -> str:
         """
