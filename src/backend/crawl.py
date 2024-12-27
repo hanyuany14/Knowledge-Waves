@@ -3,7 +3,7 @@ import json
 import base64
 import feedparser
 from datetime import datetime, timedelta
-from typing import Set, Tuple, List, Dict
+from typing import Set, Tuple, List, Dict, Any
 from bs4 import BeautifulSoup
 import markdown
 import re
@@ -16,8 +16,8 @@ from urllib3.util.retry import Retry
 from urllib.parse import quote
 import feedparser
 
-import configs as configs
-import utils as utils
+import src.backend.configs as configs
+import src.backend.utils as utils
 
 logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
@@ -59,10 +59,7 @@ class Crawl:
 
     def crawl(
         self,
-    ) -> Tuple[
-        Dict[str, List[Dict[str, object]]],
-        Dict[str, Set[str]],
-    ]:
+    ) -> Tuple[dict, dict]:
         """
         爬蟲：爬取三個網站的文章內容
 
@@ -105,7 +102,7 @@ class Crawl:
 
         return crawl_results, today_tags
 
-    def __get_tags(self, parse_results_list: List[Dict[str, object]]) -> Set[str]:
+    def __get_tags(self, parse_results_list: List[dict]) -> Set[str]:
         """
         提取所有唯一標籤
 
@@ -380,7 +377,7 @@ class Crawl:
 
         return trending_repos
 
-    def __crawl_from_csdn(self) -> Tuple[List[Dict[str, object]], Set[str]]:
+    def __crawl_from_csdn(self) -> Tuple[list[dict], Set[str]]:
         """爬取CSDN的文章
 
         Returns:
@@ -475,7 +472,7 @@ class Crawl:
             except ValueError:
                 return self.yesterday
 
-    def scrape_article_details(self, url: str) -> Tuple[str, List[str], str, int, int]:
+    def scrape_article_details(self, url: str) -> Tuple[list[str] | str | Any, List[str], str, int, int]:
         """
         爬取CSDN文章詳情頁面
 
@@ -588,7 +585,7 @@ class Crawl:
             logger.error(f"抓取文章詳情失敗：{url}, 錯誤：{e}")
             return "N/A", [], "N/A", 0, 0
 
-    def __scrape_csdn_articles(self, max_pages: int) -> List[Dict[str, object]]:
+    def __scrape_csdn_articles(self, max_pages: int) -> List[dict]:
         """
         爬取CSDN的文章
 

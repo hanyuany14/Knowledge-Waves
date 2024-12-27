@@ -1,8 +1,8 @@
 from datetime import datetime
 from google.api_core.exceptions import Conflict
 
-import utils as utils
-import configs as configs
+import src.backend.utils as utils
+import src.backend.configs as configs
 
 
 class GCSOperation:

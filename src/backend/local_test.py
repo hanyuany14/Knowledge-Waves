@@ -1,12 +1,13 @@
-"""This module is used to run the backend locally for testing purposes.
-And need to be ignored in the github.
-"""
+import sys
+import os
 
-from datetime import datetime
-from bigquery_operation import BigQueryOperation
-from gcs_operation import GCSOperation
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../.."))
+sys.path.append(project_root)
 
-from main import Main
+from src.backend.bigquery_operation import BigQueryOperation
+from src.backend.gcs_operation import GCSOperation
+from src.backend.main import Main
 
 if __name__ == "__main__":
 

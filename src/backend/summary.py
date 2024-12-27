@@ -1,9 +1,11 @@
-from vectorstore import VectorStore
-from bigquery_operation import BigQueryOperation
-from gcs_operation import GCSOperation
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
+
+from src.backend.vectorstore import VectorStore
+from src.backend.bigquery_operation import BigQueryOperation
+from src.backend.gcs_operation import GCSOperation
+
 
 os.environ["GOOGLE_API_KEY"] = "AIzaSyBN7sjpwTrMZjdKzVtE5E1jzzZu7__nLT0"
 
@@ -38,23 +40,22 @@ class Summarization:
         tags = VectorStore().search_similar_tags(query=query, sources=sources)
         print(f"tags: {tags}")
         articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
-        print('articles success')
+        print("articles success")
         article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
-        print('content success')
+        print("content success")
         summary = self.llm_summary(article_titles_and_contents)
-        print('summary success')
+        print("summary success")
         articles = {}
         return tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
         # TODO: By 佑
-        prompt = ChatPromptTemplate.from_messages([
-        (
-            "system",
-            "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"
-        ),
-        ("human", "{input}")
-        ])
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
+                ("human", "{input}"),
+            ]
+        )
 
         chain = prompt | self.llm
         summaries = []
@@ -70,4 +71,3 @@ class Summarization:
                     processed_titles.add(title)  # 添加到已处理集合中
 
         return "\n\n".join(summaries)
-

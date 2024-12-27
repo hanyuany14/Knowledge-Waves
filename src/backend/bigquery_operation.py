@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 from google.cloud import bigquery
 import time
 
-import utils as utils
-import configs as configs
+import src.backend.utils as utils
+import src.backend.configs as configs
 
 
 class BigQueryOperation:
@@ -14,7 +14,7 @@ class BigQueryOperation:
 
         self.__create_dataset_if_not_exists()
 
-    def upload(self, crawl_results: dict[str, list[dict[str, str | list[str] | datetime]]]):
+    def upload(self, crawl_results: dict[str, list[dict]]):
         """
         Uploads a list of articles to BigQuery.
 

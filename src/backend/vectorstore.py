@@ -4,8 +4,8 @@ from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_community import BigQueryVectorStore
 
 
-import configs as configs
-import utils as utils
+import src.backend.configs as configs
+import src.backend.utils as utils
 
 
 class VectorStore:
