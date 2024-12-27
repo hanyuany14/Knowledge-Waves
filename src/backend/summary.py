@@ -22,7 +22,7 @@ class Summarization:
 
     def do_summary(
         self, query: str, sources: list[str] | None = None
-    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str]]]]:
+    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
         """The function to summarize the articles based on the user query.
 
         Args:
@@ -46,6 +46,10 @@ class Summarization:
         print("summary success")
         interested_tags = [tag[0] for tag in tags]
 
+        print(f"\n\ninterested_tags: \n\n{interested_tags}")
+        print(f"\n\nsummary: \n\n{summary}")
+        print(f"\n\narticles: \n\n{articles}")
+
         return interested_tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
@@ -58,7 +62,7 @@ class Summarization:
 
         chain = prompt | self.llm
         summaries = []
-        processed_titles = set()  # 用来记录已处理过的标题
+        processed_titles = set()
 
         for source, articles in target_articles.items():
             for title, content in articles:

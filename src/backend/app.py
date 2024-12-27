@@ -1,10 +1,21 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.backend.api.response_schema import SummarizeResponse
 from src.backend.api.request_schema import SummarizeRequest
 from src.backend.main import Main
 
 app = FastAPI()
 main_service = Main()
+
+# 啟用 CORS 中間件
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 替換 "*" 為具體的前端網址，如 "http://127.0.0.1:5500"
+    allow_credentials=True,
+    allow_methods=["*"],  # 允許的 HTTP 方法
+    allow_headers=["*"],  # 允許的請求標頭
+)
 
 
 @app.get("/")
