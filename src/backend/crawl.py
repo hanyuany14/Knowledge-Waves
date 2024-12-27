@@ -15,6 +15,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from urllib.parse import quote
 import feedparser
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderServiceError
 
 import src.backend.configs as configs
 import src.backend.utils as utils
@@ -24,9 +26,9 @@ class Crawl:
     def __init__(self) -> None:
         self.yesterday, self.today = utils.get_time_range()
 
-        self.__medium_max_times = 3
-        self.__medium_categories = 3
-        self.__csdn_max_pages = 2
+        self.__medium_max_times = 1
+        self.__medium_categories = 1
+        self.__csdn_max_pages = 1
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
@@ -220,9 +222,8 @@ class Crawl:
                 "tags": topics,
                 "url": repo_url,
                 "publish_date": publish_date,
-                "language": language,
+                "language": country,
                 "likes": stars,
-                "country": country,  # 新增的國家欄位
             }
 
             result.append(repo_data)
@@ -230,16 +231,6 @@ class Crawl:
         return result
 
     def get_owner_country(self, owner_url: str, headers: Dict[str, str]) -> str:
-        """
-        獲取倉庫擁有者的國家資訊
-
-        Args:
-            owner_url (str): 擁有者的API URL
-            headers (Dict[str, str]): HTTP請求頭
-
-        Returns:
-            str: 國家名稱或"未知"
-        """
         if owner_url in self.location_cache:
             return self.location_cache[owner_url]
 
@@ -252,25 +243,33 @@ class Crawl:
                     self.location_cache[owner_url] = "未知"
                     return "未知"
 
-                # 嘗試將位置轉換為國家名稱
-                try:
-                    geocode = self.geolocator.geocode(location, language="en")
-                    if geocode and geocode.raw.get("address", {}).get("country"):
-                        country = geocode.raw["address"]["country"]
-                    else:
-                        country = "未知"
-                except GeocoderServiceError as ge:
-                    logger.error(f"地理編碼服務錯誤：{ge} for location: {location}")
-                    country = "未知"
+                # 正規化與分割位置字符串
+                location = self.normalize_location(location)
+                locations = self.parse_multiple_locations(location)
 
-                self.location_cache[owner_url] = country
-                return country
+                for loc in locations:
+                    try:
+                        geocode = self.geolocator.geocode(loc, language="en")
+                        if geocode and geocode.raw.get("address", {}).get("country"):
+                            country = geocode.raw["address"]["country"]
+                            self.location_cache[owner_url] = country
+                            return country
+                    except GeocoderServiceError:
+                        continue  # 嘗試下一個位置
+
+                # 嘗試從用戶名推測
+                username = owner_data.get("login", "")
+                inferred_country = self.infer_country_from_username(username)
+                if inferred_country != "未知":
+                    self.location_cache[owner_url] = inferred_country
+                    return inferred_country
+
+                self.location_cache[owner_url] = "未知"
+                return "未知"
             else:
-                logger.error(f"無法獲取擁有者信息：{owner_url}, 狀態碼：{response.status_code}")
                 self.location_cache[owner_url] = "未知"
                 return "未知"
         except Exception as e:
-            logger.error(f"獲取擁有者位置信息失敗：{owner_url}, 錯誤：{e}")
             self.location_cache[owner_url] = "未知"
             return "未知"
 
@@ -370,7 +369,7 @@ class Crawl:
         repo_elements = soup.find_all("article", class_="Box-row")
         trending_repos = []
 
-        # 注意：在呼叫 GitHub API 時一樣要帶上 headers（含 token）
+        # 在呼叫 GitHub API 時一樣要帶上 headers（含 token）
         headers = {
             "Authorization": f"token {configs.GITHUB_PERSONAL_ACCESS_TOKEN}",
             "Accept": "application/vnd.github.v3+json",
@@ -413,16 +412,24 @@ class Crawl:
             # 透過 GitHub API 取得 README 內容
             readme_content = self.fetch_readme(repo_name, headers)
 
-            # **透過我們剛新增的函式取得實際建立時間**
+            # 取得實際建立時間
             publish_date = self.fetch_repo_creation_date(repo_name, headers)
+
+            # 獲取擁有者的位置信息
+            owner_url = f"https://api.github.com/users/{owner}"
+            country = self.get_owner_country(owner_url, headers)
+            print(f"處理倉庫: {repo_name}, 所有者國家: {country}")
+            # 確保 country 已正確設置
+            if not country:
+                country = "未知"
 
             repo_data = {
                 "title": repo_name,
                 "content": f"This is repo_description:\n{repo_description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 使用實際建立時間
-                "language": repo_language,
+                "publish_date": publish_date,
+                "language": country,  # 將 country 資料存入 language 欄位
                 "likes": star_count,
             }
 
