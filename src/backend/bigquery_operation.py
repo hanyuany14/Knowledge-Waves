@@ -60,7 +60,7 @@ class BigQueryOperation:
         except Exception as e:
             raise Exception(f"Failed to upload articles to BQ. {e}")
 
-    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str]]]:
+    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str | None]]]:
         """
         Fetches articles from BigQuery based on tags and organizes the results by source.
 

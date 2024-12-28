@@ -42,7 +42,7 @@ class GCSOperation:
         return True
 
     def fetch_articles_by_title(
-        self, source_and_titles_and_url: dict[str, list[tuple[str, str, int, str]]]
+        self, source_and_titles_and_url: dict[str, list[tuple[str, str, int, str | None]]]
     ) -> dict[str, list[tuple[str, str]]]:
         """Fetches articles from the bucket based on source and titles.
 
