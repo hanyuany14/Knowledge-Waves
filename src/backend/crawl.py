@@ -85,6 +85,11 @@ class Crawl:
             print(f"CSDN爬取失敗：{e}")
             csdn_result, csdn_tags = [], set()
 
+        # TODO: 苟哥，這裡要改一些東西：
+        # 1. 把 bigquery_operation 寫好的 function 換成在這裡做
+        # 2. 要針對 today_tags 的所有結果翻譯成英文
+        # 3. 針對 crawl_results 中的所有結果中的 tags 也做翻譯
+
         crawl_results = {
             "github": github_result,
             "medium": medium_result,
