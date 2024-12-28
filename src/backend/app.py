@@ -1,20 +1,25 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.backend.api.response_schema import SummarizeResponse
+from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, ShortcutResponse
 from src.backend.api.request_schema import SummarizeRequest
 from src.backend.main import Main
+from src.backend.shortcut import ShortcutsUtil
 
 app = FastAPI()
 main_service = Main()
+shortcuts_util = ShortcutsUtil()
+
 
 # 啟用 CORS 中間件
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 替換 "*" 為具體的前端網址，如 "http://127.0.0.1:5500"
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # 允許的 HTTP 方法
-    allow_headers=["*"],  # 允許的請求標頭
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -52,5 +57,61 @@ def do_summarize(request: SummarizeRequest):
         return SummarizeResponse(
             interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/shortcut/question1", response_model=ShortcutResponseWithLikes)
+def get_question_1():
+    """
+    提問 1：今天最受歡迎的文章前五篇文章分別為何？
+    """
+    try:
+        articles, summarized_content = shortcuts_util.question_1()
+        formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
+        return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/shortcut/question2", response_model=ShortcutResponseWithLikes)
+def get_question_2():
+    """
+    提問 2：今天內關於「AI」的文章中，點讚數最高的三篇文章標題是什麼？
+    """
+    try:
+        articles, summarized_content = shortcuts_util.question_2()
+        formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
+        return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/shortcut/question3", response_model=ShortcutResponse)
+def get_question_3():
+    """
+    提問 3：對所有來源今日的文章關於 LLM RAG 的內容進行介紹
+    """
+    try:
+        articles, summarized_content = shortcuts_util.question_3()
+        formatted_articles = [ShortcutResponse.Article(**article) for article in articles]
+        return ShortcutResponse(articles=formatted_articles, summarized_content=summarized_content)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/shortcut/question4", response_model=ShortcutResponse)
+def get_question_4():
+    """
+    提問 4：目前資料中來自「medium」的五篇最熱門文章是什麼？
+    """
+    try:
+        articles, summarized_content = shortcuts_util.question_4()
+        formatted_articles = [ShortcutResponse.Article(**article) for article in articles]
+        return ShortcutResponse(articles=formatted_articles, summarized_content=summarized_content)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

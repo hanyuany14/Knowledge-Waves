@@ -41,7 +41,7 @@ class GCSOperation:
 
         return True
 
-    def fetch_articles_by_title(
+    def fetch_articles_by_title_and_url(
         self, source_and_titles_and_url: dict[str, list[tuple[str, str, int, str | None]]]
     ) -> dict[str, list[tuple[str, str]]]:
         """Fetches articles from the bucket based on source and titles.
@@ -79,6 +79,54 @@ class GCSOperation:
                         print(f"Successfully fetched content for {file_path}.")
                     else:
                         print(f"File {file_path} does not exist in the bucket.")
+        except Exception as e:
+            raise Exception(f"Failed to fetch articles from GCS: {e}")
+
+        return article_titles_and_contents
+
+    def fetch_articles_by_title(self, source_and_titles: list[dict[str, str]]) -> dict[str, list[tuple[str, str]]]:
+        """Fetches articles from the bucket based on source and titles.
+
+        Args:
+            source_and_titles (dict[str, list[tuple[str, str]]]): A dictionary where the key is the source
+                                                     (e.g., 'github', 'medium', 'csdn')
+                                                     and the value is a list of article titles.
+
+        Returns:
+            dict[str, list[tuple[str, str]]]: A dictionary where the key is the source and the value is a list of
+                                              tuples containing the title and its content.
+
+                                              e.g., {
+                                                    "github": [("title1", "content1"), ("title2", "content2")],
+                                                    "medium": [("title3", "content3"), ("title4", "content4")],
+                                                    "csdn": [("title5", "content5"), ("title6", "content6")]
+                                                }
+        """
+        article_titles_and_contents = {}
+
+        try:
+            for source_and_title in source_and_titles:
+                source = source_and_title["source"]
+                title = source_and_title["title"]
+
+                if not source or not title:
+                    print(f"Invalid source or title: {source_and_title}")
+                    continue
+
+                if source not in article_titles_and_contents:
+                    article_titles_and_contents[source] = []
+
+                file_path = f"{self.__datetime_str}/{source}/{title}.txt"
+                bucket = utils.GCS_CLIENT.bucket(configs.GCS_BUCKET_ID)
+                blob = bucket.blob(file_path)
+
+                if blob.exists():
+                    content = blob.download_as_text()
+                    article_titles_and_contents[source].append((title, content))
+                    print(f"Successfully fetched content for {file_path}.")
+                else:
+                    print(f"File {file_path} does not exist in the bucket.")
+
         except Exception as e:
             raise Exception(f"Failed to fetch articles from GCS: {e}")
 

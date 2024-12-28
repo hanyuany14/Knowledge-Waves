@@ -40,7 +40,7 @@ class Summarization:
         print(f"tags: {tags}")
         articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
         print("articles success")
-        article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
+        article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
         print("content success")
         summary = self.llm_summary(article_titles_and_contents)
         print("summary success")

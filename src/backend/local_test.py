@@ -50,6 +50,6 @@ if __name__ == "__main__":
     # ]
 
     # articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
-    # article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles_and_url=articles)
+    # article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
     # print("articles:", articles)
     # print("contents:", article_titles_and_contents)
