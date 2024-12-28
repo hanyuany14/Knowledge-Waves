@@ -17,6 +17,8 @@ class VectorStore:
         self.__table_name = f"{configs.VECTORSTORE_TABLE_ID}_{today_date}"
         print(f"table_name: {self.__table_name}")
 
+        # TODO: 進去 vectorstore 之前要進行 trnaslate
+
     def embedding_and_upload(self, today_tags: dict[str, set[str]]) -> bool:
 
         print(f"\n\nNow embedding and uploading tags to vectorestore...")

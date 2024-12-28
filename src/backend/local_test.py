@@ -13,18 +13,18 @@ if __name__ == "__main__":
 
     main = Main()
 
-    print("Start preparing news...")
-    main.prepare_news()
-    print("Done!")
+    # print("Start preparing news...")
+    # main.prepare_news()
+    # print("Done!")
 
-    # query = "我想要找生成式ai"
-    # print(query)
-    # sources = ["github", "medium"]
-    # tags, summary, articles = main.do_summarize(query=query, sources=sources)
+    query = "我想要找生成式ai"
+    print(query)
+    sources = ["github", "medium"]
+    tags, summary, articles = main.do_summarize(query=query, sources=sources)
 
-    # print(f"\n\ntags: {tags}")
-    # print(f"\n\narticles: {articles}")
-    # print(f"\n\nsummary: {summary}")
+    print(f"\n\ntags: {tags}")
+    print(f"\n\narticles: {articles}")
+    print(f"\n\nsummary: {summary}")
 
     # tags = [
     #     ("目标跟踪", "github"),
