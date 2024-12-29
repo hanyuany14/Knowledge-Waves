@@ -17,7 +17,7 @@ from urllib.parse import quote
 import feedparser
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderServiceError
-
+from google.cloud import translate_v3 as translate
 import src.backend.configs as configs
 import src.backend.utils as utils
 
@@ -57,6 +57,9 @@ class Crawl:
         adapter = HTTPAdapter(max_retries=retries)
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
+        self.translate_client = translate.TranslationServiceClient(credentials=utils.CREDENTIAL_OBJ)
+        self.parent = f"projects/{configs.PROJECT_ID}/locations/{configs.TRANSLATION_LOCATION}"
+        self.translation_cache = {}
 
     def crawl(
         self,
@@ -89,11 +92,6 @@ class Crawl:
             print(f"CSDN爬取失敗：{e}")
             csdn_result, csdn_tags = [], set()
 
-        # TODO: 苟哥，這裡要改一些東西：
-        # 1. 把 bigquery_operation 寫好的 function 換成在這裡做
-        # 2. 要針對 today_tags 的所有結果翻譯成英文
-        # 3. 針對 crawl_results 中的所有結果中的 tags 也做翻譯
-
         crawl_results = {
             "github": github_result,
             "medium": medium_result,
@@ -106,7 +104,105 @@ class Crawl:
             "csdn": csdn_tags,
         }
 
+        # 將所有 today_tags 聚合到一個列表中進行翻譯
+        all_today_tags = list(github_tags.union(medium_tags).union(csdn_tags))
+        translated_today_tags = self.__translate(all_today_tags)
+
+        # 將翻譯後的標籤重新分配回各個來源
+        translated_today_tags_dict = {
+            "github": set(),
+            "medium": set(),
+            "csdn": set(),
+        }
+
+        for tag in translated_today_tags:
+            if tag in github_tags:
+                translated_today_tags_dict["github"].add(tag)
+            if tag in medium_tags:
+                translated_today_tags_dict["medium"].add(tag)
+            if tag in csdn_tags:
+                translated_today_tags_dict["csdn"].add(tag)
+
+        # 替換原有的 today_tags 為翻譯後的標籤
+        today_tags = translated_today_tags_dict
+
+        # 將所有標籤從 crawl_results 中提取出來進行翻譯
+        all_crawl_tags = set()
+        for source, results in crawl_results.items():
+            for item in results:
+                all_crawl_tags.update(item.get("tags", []))
+
+        translated_crawl_tags = self.__translate(list(all_crawl_tags))
+
+        # 創建一個標籤對照表
+        tag_translation_map = {
+            original: translated for original, translated in zip(all_crawl_tags, translated_crawl_tags)
+        }
+
+        # 替換 crawl_results 中的標籤
+        for source, results in crawl_results.items():
+            for item in results:
+                original_tags = item.get("tags", [])
+                translated_tags = [tag_translation_map.get(tag, tag) for tag in original_tags]
+                item["tags"] = translated_tags
+                print(f"來源 {source} 的文章 '{item['title']}' 的標籤已翻譯為 {translated_tags}")
+
         return crawl_results, today_tags
+
+    def __is_chinese(self, text: str) -> bool:
+        """
+        檢查字符串中是否包含中文字符。
+
+        Args:
+            text (str): 要檢查的字符串。
+
+        Returns:
+            bool: 如果包含中文字符，返回 True，否則返回 False。
+        """
+        return bool(re.search(r"[\u4e00-\u9fff]", text))
+
+    def __translate(self, tags_list: list[str]) -> list[str]:
+        """
+        將標籤列表中的中文標籤翻譯為英文。
+
+        Args:
+            tags_list (list[str]): 原始標籤列表。
+
+        Returns:
+            list[str]: 翻譯後的標籤列表。
+        """
+        translated_tags_list = []
+        tags_to_translate = [tag for tag in tags_list if self.__is_chinese(tag) and tag not in self.translation_cache]
+        tags_original = [tag for tag in tags_list]
+
+        if tags_to_translate:
+            try:
+                response = self.translate_client.translate_text(
+                    request={
+                        "parent": self.parent,
+                        "contents": tags_to_translate,
+                        "mime_type": "text/plain",
+                        "target_language_code": "en",
+                    }
+                )
+                for original, translation in zip(tags_to_translate, response.translations):
+                    self.translation_cache[original] = translation.translated_text
+                    print(f"翻譯標籤: '{original}' -> '{translation.translated_text}'")
+            except Exception as e:
+                print(f"翻譯標籤時出錯: {e}")
+                for tag in tags_to_translate:
+                    self.translation_cache[tag] = tag  # 保留原始標籤
+
+        for tag in tags_original:
+            if self.__is_chinese(tag):
+                translated_tag = self.translation_cache.get(tag, tag)
+                translated_tags_list.append(translated_tag)
+                print(f"最終標籤: '{tag}' -> '{translated_tag}'")
+            else:
+                translated_tags_list.append(tag)
+                print(f"標籤不需要翻譯: '{tag}'")
+
+        return translated_tags_list
 
     def __get_tags(self, parse_results_list: List[dict]) -> Set[str]:
         """

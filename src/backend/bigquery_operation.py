@@ -16,58 +16,6 @@ class BigQueryOperation:
         self.article_table_ref = f"{configs.PROJECT_ID}.{configs.DATASET_ID}.{configs.ARTICLE_INFO_TABLE_ID}"
 
         self.__create_dataset_if_not_exists()
-        self.translate_client = translate.TranslationServiceClient(credentials=utils.CREDENTIAL_OBJ)
-        # self.translate_client = translate.Client(credentials=utils.CREDENTIAL_OBJ)
-        self.parent = f"projects/{configs.PROJECT_ID}/locations/{configs.TRANSLATION_LOCATION}"
-        self.translation_cache = {}
-
-    def __is_chinese(self, text: str) -> bool:
-        """
-        檢查字符串中是否包含中文字符。
-
-        Args:
-            text (str): 要檢查的字符串。
-
-        Returns:
-            bool: 如果包含中文字符，返回 True，否則返回 False。
-        """
-        # 使用正則表達式檢測中文字符範圍
-        return bool(re.search(r"[\u4e00-\u9fff]", text))
-
-    def __translate(self, tags_list: list[str]) -> list[str]:
-        translated_tags_list = []
-        tags_to_translate = [tag for tag in tags_list if self.__is_chinese(tag) and tag not in self.translation_cache]
-        tags_original = [tag for tag in tags_list]
-
-        if tags_to_translate:
-            try:
-                response = self.translate_client.translate_text(
-                    request={
-                        "parent": self.parent,
-                        "contents": tags_to_translate,
-                        "mime_type": "text/plain",
-                        # "source_language_code": "zh",
-                        "target_language_code": "en",
-                    }
-                )
-                for original, translation in zip(tags_to_translate, response.translations):
-                    self.translation_cache[original] = translation.translated_text
-                    print(f"翻譯標籤: '{original}' -> '{translation.translated_text}'")  # 添加打印語句
-            except Exception as e:
-                print(f"翻譯標籤時出錯: {e}")
-                for tag in tags_to_translate:
-                    self.translation_cache[tag] = tag  # 保留原始標籤
-
-        for tag in tags_original:
-            if self.__is_chinese(tag):
-                translated_tag = self.translation_cache.get(tag, tag)
-                translated_tags_list.append(translated_tag)
-                print(f"最終標籤: '{tag}' -> '{translated_tag}'")  # 添加打印語句
-            else:
-                translated_tags_list.append(tag)
-                print(f"標籤不需要翻譯: '{tag}'")  # 添加打印語句
-
-        return translated_tags_list
 
     def upload(self, crawl_results: dict[str, list[dict[str, str | list[str] | datetime]]]) -> bool:
         """
@@ -89,7 +37,7 @@ class BigQueryOperation:
                 rows_to_insert = [
                     {
                         "title": article["title"],
-                        "tags": self.__translate(article["tags"]),  # 調用翻譯方法
+                        "tags": article["tags"],
                         "url": article["url"],
                         "publish_date": (
                             article["publish_date"].strftime("%Y-%m-%dT%H:%M:%S")
