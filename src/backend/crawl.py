@@ -38,7 +38,7 @@ class Crawl:
         self.__csdn_existed_article = set()
         self.__csdn_existed_tags = set()
         self.geolocator = Nominatim(user_agent="github_crawler")
-        self.location_cache = {}  # 緩存已解析的位置信息以減少API調用
+        self.location_cache = {}
 
         self.HEADERS = [
             {
@@ -99,32 +99,32 @@ class Crawl:
         }
 
         today_tags = {
-            "github": github_tags,
-            "medium": medium_tags,
-            "csdn": csdn_tags,
+            "github": self.__translate(list(github_tags)),
+            "medium": self.__translate(list(medium_tags)),
+            "csdn": self.__translate(list(csdn_tags)),
         }
 
-        # 將所有 today_tags 聚合到一個列表中進行翻譯
-        all_today_tags = list(github_tags.union(medium_tags).union(csdn_tags))
-        translated_today_tags = self.__translate(all_today_tags)
+        # # 將所有 today_tags 聚合到一個列表中進行翻譯
+        # all_today_tags = list(github_tags.union(medium_tags).union(csdn_tags))
+        # translated_today_tags = self.__translate(all_today_tags)
 
-        # 將翻譯後的標籤重新分配回各個來源
-        translated_today_tags_dict = {
-            "github": set(),
-            "medium": set(),
-            "csdn": set(),
-        }
+        # # 將翻譯後的標籤重新分配回各個來源
+        # translated_today_tags_dict = {
+        #     "github": set(),
+        #     "medium": set(),
+        #     "csdn": set(),
+        # }
 
-        for tag in translated_today_tags:
-            if tag in github_tags:
-                translated_today_tags_dict["github"].add(tag)
-            if tag in medium_tags:
-                translated_today_tags_dict["medium"].add(tag)
-            if tag in csdn_tags:
-                translated_today_tags_dict["csdn"].add(tag)
+        # for tag in translated_today_tags:
+        #     if tag in github_tags:
+        #         translated_today_tags_dict["github"].add(tag)
+        #     if tag in medium_tags:
+        #         translated_today_tags_dict["medium"].add(tag)
+        #     if tag in csdn_tags:
+        #         translated_today_tags_dict["csdn"].add(tag)
 
-        # 替換原有的 today_tags 為翻譯後的標籤
-        today_tags = translated_today_tags_dict
+        # # 替換原有的 today_tags 為翻譯後的標籤
+        # today_tags = translated_today_tags_dict
 
         # 將所有標籤從 crawl_results 中提取出來進行翻譯
         all_crawl_tags = set()
@@ -173,7 +173,7 @@ class Crawl:
         """
         translated_tags_list = []
         tags_to_translate = [tag for tag in tags_list if self.__is_chinese(tag) and tag not in self.translation_cache]
-        tags_original = [tag for tag in tags_list]
+        tags_original = tags_list
 
         if tags_to_translate:
             try:
