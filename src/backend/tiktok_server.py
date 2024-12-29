@@ -19,8 +19,8 @@ def job():
     main.prepare_news()
 
 
-# 排程每天早上 8:00 執行
-schedule.every().day.at("21:04").do(job)
+# 排程每天早上 7:00 執行
+schedule.every().day.at("7:00").do(job)
 
 while True:
     schedule.run_pending()
