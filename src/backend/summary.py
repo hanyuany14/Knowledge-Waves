@@ -81,101 +81,119 @@ class Summarization:
 
         return selected_tags, summary, articles
 
+    # def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
+    #     prompt_1 = ChatPromptTemplate.from_messages(
+    #         [
+    #             ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
+    #             ("human", "{input}"),
+    #         ]
+    #     )
+
+    #     prompt_2 = ChatPromptTemplate.from_messages(
+    #         [
+    #             (
+    #                 "system",
+    #                 "你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url",
+    #             ),
+    #             ("human", "{input}"),
+    #         ]
+    #     )
+    #     chain_1 = prompt_1 | self.llm
+    #     chain_2 = prompt_2 | self.llm
+
+    #     summaries = []
+    #     processed_titles = set()
+
+    #     for source, articles in target_articles.items():
+    #         for title, content in articles:
+    #             if title not in processed_titles:
+    #                 response = chain_1.invoke({"input": content})
+    #                 summary = f'"{source}" {title}: {response.content}'
+    #                 summaries.append(summary)
+    #                 processed_titles.add(title)
+
+    #     return "\n\n".join(summaries)
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
         """
-        1. 現在總結是對每一個 repo 或是文章做總結，但太長了，現在要改成對一個 source 就做一個總節
-        ex.
-        github:
-        今天關於 rag 資訊有 memory, prompt 層面。例如 abc/rag-memory 提出一個全新的 memory 演算法，加入了短期演算法改善了模型的記憶。
-
-        csdn:
-        xxx
-
-        medium:
-        xxx
-
-        -> 建議解決方案：現在是一個 for 迴圈，可以再一個 for 迴圈再一次總結，兩個是不同的 prompt
-
-
-        2. 內容中要如果提到文章標題，要變成超連結型態。
-        ex.
-        今天關於 rag 資訊有 memory, prompt 層面。例如<a href=""https://github.com"">abc/rag-memory</a>提出一個全新的 memory 演算法，
-
-        -> 所以現在的參數要額外傳入每個文章的 url，並且一起送進去給第一層的 api
-        -> 要在第二層 prompt 加入要用超連結的格式指引，可以給他上面的範例。
-
-        兩層迴圈輸入與輸出：
-        第一層輸入：
-        url: https:////
-        content: xxxxx
-
-        url: https:////
-        content: xxxxx
-
-        第一層輸出 & 第二層輸入：
-        url: https:////
-        title: ooo
-        summay: xxxxx
-
-        url: https:////
-        title: ooo
-        summay: xxxxx
-
-        第二層輸出：
-        source_summay:
-        今天關於 rag 資訊有 memory, prompt 層面。例如<a href=""https:////"">ooo</a>提出一個全新的 memory 演算法，
-
-        最後得到：
-        {
-            'github':source_summay,
-            'csdn: source_summay,
-            "medium": source_summay,
-        }
-
-        最後要 return 的是一個完整 str:
-        ex.
-        github:
-        xxx
-
-        medium:
-        xxx
-
-        csdn:
-        xxx
-
-
-        第一層的 llm 的 prompt 大概可以是「你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。」
-        第二層的 llm 的 prompt 可以是「你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url」
-
+        將目標文章進行總結，按來源分組，每個來源一個總結，並將文章標題轉為超連結。
         """
-        prompt_1 = ChatPromptTemplate.from_messages(
+        # 第一層提示：對單篇文章進行總結，並將標題轉為超連結
+        prompt_article = ChatPromptTemplate.from_messages(
             [
                 ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
-                ("human", "{input}"),
+                ("human", "URL: {url}\n內容: {content}"),
             ]
         )
 
-        prompt_2 = ChatPromptTemplate.from_messages(
+        # 第二層提示：將同一來源下的所有文章總結整合成一段敘述，並使用超連結格式
+        prompt_source = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
-                    "你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url",
+                    '你需要將每一個文章的總結整合成一段敘述，並確保文章標題以超連結的格式呈現。例如：<a href="https://github.com">abc/rag-memory</a>。請使用繁體中文回覆。',
                 ),
-                ("human", "{input}"),
+                ("human", "來源: {source}\n文章總結:\n{summaries}"),
             ]
         )
-        chain_1 = prompt_1 | self.llm
-        chain_2 = prompt_2 | self.llm
 
-        summaries = []
-        processed_titles = set()
+        chain_article = prompt_article | self.llm
+        chain_source = prompt_source | self.llm
+
+        source_summaries = {}
+        gcs_operation = GCSOperation()
 
         for source, articles in target_articles.items():
+            article_summaries = []
             for title, content in articles:
-                if title not in processed_titles:
-                    response = chain_1.invoke({"input": content})
-                    summary = f'"{source}" {title}: {response.content}'
-                    summaries.append(summary)
-                    processed_titles.add(title)
+                # 重建 URL 基於來源和標題
+                url = self.reconstruct_url(source, title)
+                if not url:
+                    print(f"無法重建 URL 針對來源: {source}, 標題: {title}")
+                    continue
 
-        return "\n\n".join(summaries)
+                response = chain_article.invoke({"url": url, "content": content})
+                # 將標題轉為超連結格式
+                linked_title = f'<a href="{url}">{title}</a>'
+                # 將標題與摘要結合
+                summary = f"{linked_title}: {response.content}"
+                article_summaries.append(summary)
+            if not article_summaries:
+                continue
+            # 將所有文章的總結傳遞給第二層提示
+            combined_summaries = "\n".join(article_summaries)
+            response_source = chain_source.invoke({"source": source, "summaries": combined_summaries})
+            source_summaries[source] = response_source.content
+
+        # 將所有來源的總結組合成一個完整的字符串
+        final_summary = "\n\n".join([f"{source}:\n{summary}" for source, summary in source_summaries.items()])
+
+        return final_summary
+
+    def reconstruct_url(self, source: str, title: str) -> str | None:
+        """
+        根據來源和標題重建 URL。
+        假設不同來源有不同的 URL 結構。
+
+        Args:
+            source (str): 文章來源，例如 'github', 'medium', 'csdn'
+            title (str): 文章標題
+
+        Returns:
+            str | None: 重建的 URL，如果無法重建則返回 None
+        """
+        try:
+            if source.lower() == "github":
+                # 假設 GitHub 標題格式為 'user/repo'
+                return f"https://github.com/{title}"
+            elif source.lower() == "medium":
+                # 假設 Medium 標題是完整的 URL
+                return title  # 如果標題已經是 URL
+            elif source.lower() == "csdn":
+                # 假設 CSDN 標題格式為 'article-id'
+                return f"https://blog.csdn.net/{title}"
+            else:
+                # 其他來源的處理邏輯
+                return None
+        except Exception as e:
+            print(f"重建 URL 失敗: {e}")
+            return None
