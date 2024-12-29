@@ -12,6 +12,7 @@ class ShortcutResponseWithLikes(BaseModel):
     class ArticleWithLikes(BaseModel):
         title: str
         source: str
+        url: str
         likes: str
 
     articles: List[ArticleWithLikes]
@@ -21,7 +22,12 @@ class ShortcutResponseWithLikes(BaseModel):
 class ShortcutResponse(BaseModel):
     class Article(BaseModel):
         title: str
+        url: str
         source: str
 
     articles: List[Article]
     summarized_content: str
+
+
+class TagsResponse(BaseModel):
+    tag: List[str]

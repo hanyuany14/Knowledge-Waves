@@ -29,7 +29,7 @@ class ShortcutsUtil:
         提問 1：今天最受歡迎的文章前五篇文章分別為何？
         """
         query = f"""
-        SELECT title, source, likes
+        SELECT title, source, likes, url
         FROM {self.article_table_ref}
         WHERE publish_date >= TIMESTAMP('{self.yesterday}')
             AND publish_date < TIMESTAMP('{self.today}')
@@ -38,7 +38,9 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source, "likes": str(row.likes)} for row in results]
+        parse_result = [
+            {"title": row.title, "source": row.source, "likes": str(row.likes), "url": row.url} for row in results
+        ]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
@@ -48,7 +50,7 @@ class ShortcutsUtil:
         提問 2：今天內關於「AI」的文章中，點讚數最高的三篇文章標題是什麼？
         """
         query = f"""
-        SELECT DISTINCT title, source, likes
+        SELECT DISTINCT title, source, likes, url
         FROM `{self.article_table_ref}`,
             UNNEST(tags) AS tag
         WHERE publish_date >= TIMESTAMP('{self.yesterday}')
@@ -59,7 +61,9 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source, "likes": str(row.likes)} for row in results]
+        parse_result = [
+            {"title": row.title, "source": row.source, "likes": str(row.likes), "url": row.url} for row in results
+        ]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
@@ -69,7 +73,7 @@ class ShortcutsUtil:
         提問 3：對所有來源今日的文章關於 LLM RAG 的內容進行介紹
         """
         query = f"""
-        SELECT DISTINCT title, source
+        SELECT DISTINCT title, source, url
         FROM `{self.article_table_ref}`,
             UNNEST(tags) AS tag
         WHERE publish_date >= TIMESTAMP('{self.yesterday}')
@@ -78,7 +82,7 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source} for row in results]
+        parse_result = [{"title": row.title, "source": row.source, "url": row.url} for row in results]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
@@ -88,7 +92,7 @@ class ShortcutsUtil:
         提問 4：目前資料中來自「medium」的五篇最熱門文章是什麼？
         """
         query = f"""
-        SELECT title, source
+        SELECT title, source, url
         FROM `{self.article_table_ref}`
         WHERE source = 'medium'
         ORDER BY likes DESC
@@ -96,7 +100,23 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source} for row in results]
+        parse_result = [{"title": row.title, "source": row.source, "url": row.url} for row in results]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
+
+    def get_today_tags(self) -> list[str]:
+        """
+        提問：今天內的 tags DISTINCT 是什麼？
+        """
+        query = f"""
+        SELECT DISTINCT tag
+        FROM {self.article_table_ref},
+            UNNEST(tags) AS tag
+        WHERE publish_date >= TIMESTAMP('{self.yesterday}')
+            AND publish_date < TIMESTAMP('{self.today}')
+        """
+        query_job = self.bq_client.query(query)
+        results = query_job.result()
+        tags = [row.tag for row in results]
+        return tags

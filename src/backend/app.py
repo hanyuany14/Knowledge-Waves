@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, ShortcutResponse
+from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, ShortcutResponse, TagsResponse
 from src.backend.api.request_schema import SummarizeRequest
 from src.backend.main import Main
 from src.backend.shortcut import ShortcutsUtil
@@ -12,8 +12,8 @@ app = FastAPI()
 main_service = Main()
 shortcuts_util = ShortcutsUtil()
 
+# 5. 數據分析 - 文章內容的斷詞和分析、文字雲可以先在 python 做，然後存在 GCS 前端就去取
 
-# 啟用 CORS 中間件
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -112,6 +112,19 @@ def get_question_4():
         articles, summarized_content = shortcuts_util.question_4()
         formatted_articles = [ShortcutResponse.Article(**article) for article in articles]
         return ShortcutResponse(articles=formatted_articles, summarized_content=summarized_content)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/get_today_tags", response_model=TagsResponse)
+def get_today_tags():
+    """
+    取得今日範圍內 tags 清單
+    """
+    try:
+        today_tags = shortcuts_util.get_today_tags()
+        return TagsResponse(tag=today_tags)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
