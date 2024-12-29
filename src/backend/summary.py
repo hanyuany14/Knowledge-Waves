@@ -97,7 +97,7 @@ class Summarization:
         -> 建議解決方案：現在是一個 for 迴圈，可以再一個 for 迴圈再一次總結，兩個是不同的 prompt
 
 
-        2. 內容中要如果提到文章內容，要變成超連結型態。
+        2. 內容中要如果提到文章標題，要變成超連結型態。
         ex.
         今天關於 rag 資訊有 memory, prompt 層面。例如<a href=""https://github.com"">abc/rag-memory</a>提出一個全新的 memory 演算法，
 
@@ -114,44 +114,68 @@ class Summarization:
 
         第一層輸出 & 第二層輸入：
         url: https:////
+        title: ooo
         summay: xxxxx
 
         url: https:////
+        title: ooo
         summay: xxxxx
 
         第二層輸出：
-        source_summay: 今天關於 rag 資訊有 memory, prompt 層面。例如<a href=""https://github.com"">abc/rag-memory</a>提出一個全新的 memory 演算法，
+        source_summay:
+        今天關於 rag 資訊有 memory, prompt 層面。例如<a href=""https:////"">ooo</a>提出一個全新的 memory 演算法，
 
-        最後就是 return:
-
-        return {
+        最後得到：
+        {
             'github':source_summay,
             'csdn: source_summay,
             "medium": source_summay,
         }
+
+        最後要 return 的是一個完整 str:
+        ex.
+        github:
+        xxx
+
+        medium:
+        xxx
+
+        csdn:
+        xxx
 
 
         第一層的 llm 的 prompt 大概可以是「你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。」
         第二層的 llm 的 prompt 可以是「你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url」
 
         """
-        prompt = ChatPromptTemplate.from_messages(
+        prompt_1 = ChatPromptTemplate.from_messages(
             [
                 ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
                 ("human", "{input}"),
             ]
         )
 
-        chain = prompt | self.llm
+        prompt_2 = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    "你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url",
+                ),
+                ("human", "{input}"),
+            ]
+        )
+        chain_1 = prompt_1 | self.llm
+        chain_2 = prompt_2 | self.llm
+
         summaries = []
         processed_titles = set()
 
         for source, articles in target_articles.items():
             for title, content in articles:
                 if title not in processed_titles:
-                    response = chain.invoke({"input": content})
+                    response = chain_1.invoke({"input": content})
                     summary = f'"{source}" {title}: {response.content}'
                     summaries.append(summary)
-                    processed_titles.add(title)  # 添加到已处理集合中
+                    processed_titles.add(title)
 
         return "\n\n".join(summaries)
