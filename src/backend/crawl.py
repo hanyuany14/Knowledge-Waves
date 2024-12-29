@@ -15,6 +15,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from urllib.parse import quote
 import feedparser
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderServiceError
 
 import src.backend.configs as configs
 import src.backend.utils as utils
@@ -24,9 +26,9 @@ class Crawl:
     def __init__(self) -> None:
         self.yesterday, self.today = utils.get_time_range()
 
-        self.__medium_max_times = 3
-        self.__medium_categories = 3
-        self.__csdn_max_pages = 2
+        self.__medium_max_times = 1
+        self.__medium_categories = 1
+        self.__csdn_max_pages = 1
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
@@ -35,6 +37,8 @@ class Crawl:
 
         self.__csdn_existed_article = set()
         self.__csdn_existed_tags = set()
+        self.geolocator = Nominatim(user_agent="github_crawler")
+        self.location_cache = {}  # 緩存已解析的位置信息以減少API調用
 
         self.HEADERS = [
             {
@@ -200,28 +204,90 @@ class Crawl:
             stars = repo.get("stargazers_count", 0)
             forks = repo.get("forks_count", 0)
             created_at_str = repo.get("created_at", "無創建日期")
+            owner = repo.get("owner", {})
+            owner_login = owner.get("login", "")
+            owner_url = owner.get("url", "")
+
             try:
                 created_at = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M:%SZ")
                 publish_date = created_at.isoformat()
             except ValueError:
                 publish_date = self.yesterday.isoformat()  # 如果日期格式不正確，設置為昨天並轉換為字符串
 
+            # 獲取README內容和主題
             readme_content = self.fetch_readme(title, headers)
             topics = self.fetch_topics(title, headers)
 
+            # 獲取擁有者的位置信息
+            country = self.get_owner_country(owner_url, headers)
+            print(f"處理倉庫: {title}, 所有者國家: {country}")
             repo_data = {
                 "title": title,
                 "content": f"This is description:\n{description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,
                 "url": repo_url,
                 "publish_date": publish_date,
-                "language": language,
+                "language": country,
                 "likes": stars,
             }
 
             result.append(repo_data)
 
         return result
+
+    def get_owner_country(self, owner_url: str, headers: Dict[str, str]) -> str:
+        """
+        獲取 GitHub 用戶的國家信息，優先使用 Geopy，備用 Restcountries API。
+        """
+        if owner_url in self.location_cache:
+            return self.location_cache[owner_url]
+
+        try:
+            response = self.session.get(owner_url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                owner_data = response.json()
+                location = owner_data.get("location", "")
+                if location is None or not location.strip():
+                    self.location_cache[owner_url] = "未知"
+                    return "未知"
+
+                # 處理多地點，逐一嘗試
+                locations = [loc.strip() for loc in location.split(",")]
+
+                for loc in locations:
+                    # Step 1: 嘗試使用 Geopy
+                    try:
+                        geocode = self.geolocator.geocode(loc, language="en")
+                        if geocode and geocode.raw.get("address", {}).get("country"):
+                            country = geocode.raw["address"]["country"]
+                            self.location_cache[owner_url] = country
+                            return country
+                    except Exception as geopy_error:
+                        print(f"Geopy 無法解析 {loc}：{geopy_error}")
+
+                    # Step 2: 使用 Restcountries API
+                    try:
+                        restcountries_url = f"https://restcountries.com/v3.1/name/{loc}"
+                        rest_response = self.session.get(restcountries_url, timeout=5)
+                        if rest_response.status_code == 200:
+                            rest_data = rest_response.json()
+                            if rest_data and len(rest_data) > 0:
+                                country = rest_data[0].get("name", {}).get("common", "未知")
+                                self.location_cache[owner_url] = country
+                                return country
+                    except Exception as restcountries_error:
+                        print(f"Restcountries 無法解析 {loc}：{restcountries_error}")
+
+                # 如果仍然失敗
+                self.location_cache[owner_url] = "未知"
+                return "未知"
+            else:
+                self.location_cache[owner_url] = "未知"
+                return "未知"
+        except Exception as e:
+            print(f"無法獲取擁有者信息，URL: {owner_url}, 錯誤: {e}")
+            self.location_cache[owner_url] = "未知"
+            return "未知"
 
     def fetch_readme(self, repo_full_name: str, headers: Dict[str, str]) -> str:
         """
@@ -319,7 +385,7 @@ class Crawl:
         repo_elements = soup.find_all("article", class_="Box-row")
         trending_repos = []
 
-        # 注意：在呼叫 GitHub API 時一樣要帶上 headers（含 token）
+        # 在呼叫 GitHub API 時一樣要帶上 headers（含 token）
         headers = {
             "Authorization": f"token {configs.GITHUB_PERSONAL_ACCESS_TOKEN}",
             "Accept": "application/vnd.github.v3+json",
@@ -362,16 +428,24 @@ class Crawl:
             # 透過 GitHub API 取得 README 內容
             readme_content = self.fetch_readme(repo_name, headers)
 
-            # **透過我們剛新增的函式取得實際建立時間**
+            # 取得實際建立時間
             publish_date = self.fetch_repo_creation_date(repo_name, headers)
+
+            # 獲取擁有者的位置信息
+            owner_url = f"https://api.github.com/users/{owner}"
+            country = self.get_owner_country(owner_url, headers)
+            print(f"處理倉庫: {repo_name}, 所有者國家: {country}")
+            # 確保 country 已正確設置
+            if not country:
+                country = "未知"
 
             repo_data = {
                 "title": repo_name,
                 "content": f"This is repo_description:\n{repo_description}.\n This is readme of the repo:{readme_content}",
                 "tags": topics,
                 "url": repo_url,
-                "publish_date": publish_date,  # 使用實際建立時間
-                "language": repo_language,
+                "publish_date": publish_date,
+                "language": country,  # 將 country 資料存入 language 欄位
                 "likes": star_count,
             }
 
