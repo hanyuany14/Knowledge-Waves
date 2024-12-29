@@ -17,15 +17,15 @@ if __name__ == "__main__":
     # main.prepare_news()
     # print("Done!")
 
-    query = "react"
-    print(query)
-    sources = ["github", "medium"]
-    tags, summary, articles = main.do_text_search_summary(query=query, sources=sources)
-
-    # selected_tags = ["react", "python"]
-    # print(selected_tags)
+    # query = "react"
+    # print(query)
     # sources = ["github", "medium"]
-    # tags, summary, articles = main.do_select_tag_summary(selected_tags=selected_tags, sources=sources)
+    # tags, summary, articles = main.do_text_search_summary(query=query, sources=sources)
+
+    selected_tags = ["react", "python"]
+    print(selected_tags)
+    sources = ["github", "medium", "csdn"]
+    tags, summary, articles = main.do_select_tag_summary(selected_tags=selected_tags, sources=sources)
 
     print(f"\n\ntags: {tags}")
     print(f"\n\narticles: {articles}")
