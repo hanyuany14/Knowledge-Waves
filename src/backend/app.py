@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, ShortcutResponse, TagsResponse
-from src.backend.api.request_schema import SummarizeRequest
+from src.backend.api.request_schema import TextSearchSummarizeRequest, SelectedTagsSummarizeRequest
 from src.backend.main import Main
 from src.backend.shortcut import ShortcutsUtil
 
@@ -37,8 +37,8 @@ def root():
     }
 
 
-@app.post("/summarize", response_model=SummarizeResponse)
-def do_summarize(request: SummarizeRequest):
+@app.post("/text_search_summarize", response_model=SummarizeResponse)
+def do_text_search_summarize(request: TextSearchSummarizeRequest):
     """
     Summarize articles based on user query and optional sources.
 
@@ -51,8 +51,32 @@ def do_summarize(request: SummarizeRequest):
     - 回傳結果：將總結回傳給使用者
     """
     try:
-        interested_tags, summarized_content, article_titles = main_service.do_summarize(
+        interested_tags, summarized_content, article_titles = main_service.do_text_search_summary(
             query=request.query, sources=request.sources
+        )
+        return SummarizeResponse(
+            interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/selected_tags_summarize", response_model=SummarizeResponse)
+def do_select_tag_summarize(request: SelectedTagsSummarizeRequest):
+    """
+    Summarize articles based on selected tags and optinal sources by user.
+
+    使用者層：接收使用者 query 今日有興趣主題
+    - 使用者輸入：今日有興趣主題的自然語言
+    - 相似性搜尋：挑出使用者輸入相似的 tags
+    - 取得 tags 的文章標題：從 BigQuery 取得 tags 包含的所有文章標題
+    - 標題取得文章：從 GCS 取得該文章的內容
+    - LLM 總結：使用 LLM 將文章內容總結
+    - 回傳結果：將總結回傳給使用者
+    """
+    try:
+        interested_tags, summarized_content, article_titles = main_service.do_select_tag_summary(
+            selected_tags=request.selected_tags, sources=request.sources
         )
         return SummarizeResponse(
             interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles

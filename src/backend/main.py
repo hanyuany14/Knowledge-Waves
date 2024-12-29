@@ -8,10 +8,11 @@ from src.backend.crawl import Crawl
 class Main:
     def __init__(self): ...
 
-    def do_summarize(
+    def do_text_search_summary(
         self, query: str, sources: list[str] | None = None
     ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
-        """
+        """使用者進行自然語言查詢
+
         使用者層：接收使用者 query 今日有興趣主題
         - 使用者輸入：今日有興趣主題的自然語言
         - 相似性搜尋：挑出使用者輸入相似的 tags
@@ -26,7 +27,34 @@ class Main:
             article_titles (list[tuple[str, str]]): tags 包含的所有文章標題 e.g. [("title", "url")]
         """
 
-        interested_tags, summaarized_content, article_titles = Summarization().do_summary(query, sources)
+        interested_tags, summaarized_content, article_titles = Summarization().do_text_search_summary(query, sources)
+
+        return interested_tags, summaarized_content, article_titles
+
+    def do_select_tag_summary(
+        self, selected_tags: list[str], sources: list[str] | None = None
+    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
+        """使用者用 tags 選取查詢
+
+        使用者層：接收使用者 query 今日有興趣主題
+        - 使用者輸入：今日有興趣主題的自然語言
+        - 相似性搜尋：挑出使用者輸入相似的 tags
+        - 取得 tags 的文章標題：從 BigQuery 取得 tags 包含的所有文章標題
+        - 標題取得文章：從 GCS 取得該文章的內容
+        - LLM 總結：使用 LLM 將文章內容總結
+        - 回傳結果：將總結回傳給使用者
+
+        Returns:
+            interested_tags (list[str]): 相似的 tags e.g. ["tag1", "tag2"]
+            summaarized_content (str): 總結的文章內容 e.g. "summary"
+            article_titles (list[tuple[str, str]]): tags 包含的所有文章標題 e.g. [("title", "url")]
+        """
+        if selected_tags == []:
+            raise ValueError(f"selected_tags can not be empty.")
+
+        interested_tags, summaarized_content, article_titles = Summarization().do_select_tag_summary(
+            selected_tags, sources
+        )
 
         return interested_tags, summaarized_content, article_titles
 

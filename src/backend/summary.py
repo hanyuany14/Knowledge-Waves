@@ -20,7 +20,7 @@ class Summarization:
         api_key=GOOGLE_API_KEY,  # type: ignore
     )
 
-    def do_summary(
+    def do_text_search_summary(
         self, query: str, sources: list[str] | None = None
     ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
         """The function to summarize the articles based on the user query.
@@ -51,6 +51,35 @@ class Summarization:
         print(f"\n\narticles: \n\n{articles}")
 
         return interested_tags, summary, articles
+
+    def do_select_tag_summary(
+        self, selected_tags: list[str], sources: list[str] | None = None
+    ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
+        """The function to summarize the articles based on the user query.
+
+        Args:
+            query (str): The query to search for. e.g. "Give me some information about NLP."
+            sources (list[str], optional): The sources selected by user to search. Defaults to None.
+                                            e.g. ["github", "medium"]
+        Returns:
+            tuple[list[str], str, dict[str, list[tuple[str, str]]]]:
+                - tags(list[str]): A list of similar tags.
+                - summary(str): The summarized content of the articles.
+                - articles(dict[str, list[tuple[str, str]]]): A dictionary where the key is the source and the value
+                            is a list of tuples containing the title and URL of matching articles.
+        """
+        articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=selected_tags, sources=sources)
+        print("articles success")
+        article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
+        print("content success")
+        summary = self.llm_summary(article_titles_and_contents)
+        print("summary success")
+
+        print(f"\n\selected_tags: \n\n{selected_tags}")
+        print(f"\n\nsummary: \n\n{summary}")
+        print(f"\n\narticles: \n\n{articles}")
+
+        return selected_tags, summary, articles
 
     def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
         prompt = ChatPromptTemplate.from_messages(

@@ -69,7 +69,9 @@ class BigQueryOperation:
             print(f"Failed to upload articles to BQ. {e}")
             raise Exception(f"Failed to upload articles to BQ. {e}")
 
-    def fetch_articles_by_tags(self, interested_tags: list[str]) -> dict[str, list[tuple[str, str, int, str | None]]]:
+    def fetch_articles_by_tags(
+        self, interested_tags: list[str], sources: list[str] | None = ["github", "medium", "csdn"]
+    ) -> dict[str, list[tuple[str, str, int, str | None]]]:
         """
         Fetches articles from BigQuery based on tags and organizes the results by source.
 
@@ -95,18 +97,18 @@ class BigQueryOperation:
                     WHERE tag IN UNNEST(@interested_tags)
                 )
                 AND publish_date BETWEEN TIMESTAMP('{self.yesterday}') AND TIMESTAMP('{self.today}')
+                AND source IN UNNEST(@sources)
             """
             job_config = bigquery.QueryJobConfig(
                 query_parameters=[
                     bigquery.ArrayQueryParameter("interested_tags", "STRING", interested_tags),
-                    bigquery.ScalarQueryParameter("yesterday", "TIMESTAMP", self.yesterday),
-                    bigquery.ScalarQueryParameter("today", "TIMESTAMP", self.today),
+                    bigquery.ArrayQueryParameter("sources", "STRING", sources),
                 ]
             )
 
             query_job = utils.BQ_CLIENT.query(query, job_config=job_config)
-
             results = query_job.result()
+
             articles_by_source = {}
             for row in results:
                 source = row["source"]
@@ -159,10 +161,10 @@ class BigQueryOperation:
         except Exception as e:
             print(f"Failed to create dataset {dataset_ref}: {e}")
 
-    def __delete_existed_table(self):
-        try:
-            utils.BQ_CLIENT.delete_table(self.article_table_ref, not_found_ok=True)
-            time.sleep(5)
-            print(f"Table `{self.article_table_ref}` deleted successfully.")
-        except Exception as e:
-            print(f"Failed to delete table {self.article_table_ref}: {e}")
+    # def __delete_existed_table(self):
+    #     try:
+    #         utils.BQ_CLIENT.delete_table(self.article_table_ref, not_found_ok=True)
+    #         time.sleep(5)
+    #         print(f"Table `{self.article_table_ref}` deleted successfully.")
+    #     except Exception as e:
+    #         print(f"Failed to delete table {self.article_table_ref}: {e}")
