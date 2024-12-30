@@ -102,6 +102,7 @@ class Summarization:
 
         return selected_tags, summary, articles
 
+
     def llm_summary(self, target_articles: dict[str, list[dict[str, str]]]) -> str:
         # 第一層提示：對每篇文章進行摘要，使用白話且列點
         prompt_1 = ChatPromptTemplate.from_messages(
@@ -132,7 +133,9 @@ class Summarization:
 
         for source, articles in target_articles.items():
             per_article_summaries = []
+            print(f"articles: {articles}")
             for article in articles:
+                print(f"article: {article}")
                 title = article["title"]
                 url = article["url"]
                 content = article["content"]

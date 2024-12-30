@@ -90,31 +90,32 @@ class GCSOperation:
         Args:
             source_and_titles (dict[str, list[tuple[str, str]]]): A dictionary where the key is the source
                                                      (e.g., 'github', 'medium', 'csdn')
-                                                     and the value is a list of article titles.
+                                                     and the value is a list of article titles and dict
 
         Returns:
             dict[str, list[tuple[str, str]]]: A dictionary where the key is the source and the value is a list of
                                               tuples containing the title and its content.
 
                                               e.g., {
-                                                    "github": [("title1", "content1"), ("title2", "content2")],
-                                                    "medium": [("title3", "content3"), ("title4", "content4")],
-                                                    "csdn": [("title5", "content5"), ("title6", "content6")]
+                                                    "github": [{"title": title, "url": url, "content": content}],
+                                                    "medium": [{"title": title, "url": url, "content": content}],
+                                                    "csdn": [{"title": title, "url": url, "content": content}]
                                                 }
         """
-        article_titles_and_contents = {}
-
+        article_titles_and_contents_and_urls = {}
+        print(f"\n\nsource_and_titles: \n\n{source_and_titles}")
         try:
             for source_and_title in source_and_titles:
                 source = source_and_title["source"]
                 title = source_and_title["title"]
+                url = source_and_title["title"]
 
                 if not source or not title:
                     print(f"Invalid source or title: {source_and_title}")
                     continue
 
-                if source not in article_titles_and_contents:
-                    article_titles_and_contents[source] = []
+                if source not in article_titles_and_contents_and_urls:
+                    article_titles_and_contents_and_urls[source] = []
 
                 file_path = f"{self.__datetime_str}/{source}/{title}.txt"
                 bucket = utils.GCS_CLIENT.bucket(configs.GCS_BUCKET_ID)
@@ -122,7 +123,10 @@ class GCSOperation:
 
                 if blob.exists():
                     content = blob.download_as_text()
-                    article_titles_and_contents[source].append((title, content))
+                    # article_titles_and_contents_and_urls[source].append((title, content))
+                    article_titles_and_contents_and_urls[source].append(
+                        {"title": title, "url": url, "content": content}
+                    )
                     print(f"Successfully fetched content for {file_path}.")
                 else:
                     print(f"File {file_path} does not exist in the bucket.")
@@ -130,7 +134,7 @@ class GCSOperation:
         except Exception as e:
             raise Exception(f"Failed to fetch articles from GCS: {e}")
 
-        return article_titles_and_contents
+        return article_titles_and_contents_and_urls
 
     def __create_bucket(self):
         try:

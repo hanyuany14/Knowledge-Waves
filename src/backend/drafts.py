@@ -33,3 +33,31 @@
         ]
     },
 }
+
+
+{
+    "medium": [
+        (
+            "महाकुंभ भारत का एक प्रसिद्ध धार्मिक और सांस्कृतिक पर्व है, जिसे हिंदू धर्म में अत्यंत पवित्र माना…",
+            "महाकुंभ भारत का एक प्रसिद्ध धार्मिक और सांस्कृतिक पर्व है, जिसे हिंदू धर्म में अत्यंत पवित्र माना जाता है। यह आयोजन हर 12 वर्ष में चार प्रमुख स्थानों पर आयोजित किया जाता है:1. प्रयागराज (इलाहाबाद)2. हरिद्वार3. उज्जैन4. नाशिकमहाकुंभ का महत्व:यह पर्व गंगा, यमुना और सरस्वती (प्रयागराज), गोदावरी (नाशिक), क्षिप्रा (उज्जैन), और गंगा (हरिद्वार) नदियों के संगम स्थल पर होता है।इसे हिंदू धर्म में आत्मा की शुद्धि, पापों से मुक्ति और मोक्ष प्राप्ति का माध्यम माना जाता है।कुंभ पर्व का वर्णन प्राचीन भारतीय ग्रंथों और पुराणों में मिलता है।आयोजन की प्रक्रिया:प्रत्येक 12 वर्ष में एक बार, महाकुंभ होता है।बीच के 6 वर्ष में अर्धकुंभ और हर वर्ष अन्य छोटे मेलों का आयोजन होता है।महाकुंभ में स्नान करना अत्यंत पुण्यकारी माना जाता है।यह आयोजन न केवल आध्यात्मिक महत्व रखता है, बल्कि भारतीय संस्कृति, कला, और परंपराओं का भी प्रतीक है। लाखों श्रद्धालु और साधु-संत इसमें भाग लेते हैं।",
+        ),
+        (
+            "पाबूजी\xa0राजस्थान\xa0के लोक-देवता हैं जिनकी पूजा राजस्थान और आसपास के क्षेत्रों,\xa0गुजरात\xa0और\xa0सिंध…",
+            "पाबूजी\xa0राजस्थान\xa0के लोक-देवता हैं जिनकी पूजा राजस्थान और आसपास के क्षेत्रों,\xa0गुजरात\xa0और\xa0सिंध\xa0(पाकिस्तान) तक होती है।[1]पाबूजी राठौड़पाबूजी मंदिर, कोलूजन्मकोलूनिधनदेचूघरानाराठौड़ वंशपिताधाँधल जीधर्महिन्दूपाबूजी की फड़\xa0में चित्रित पाबूजी\xa0; राष्ट्रीय संग्रहालय, नयी दिल्ली में रखी एक\xa0फड़\xa0चित्रकलापंचपीर में से एकउपनाम-\xa0प्लेग रक्षक लोकदेवता, सर्रा रोग रक्षक लोकदेवता, ऊंटों के लोकदेवता, राड़-फाड़ के लोकदेवताजन्म – 1239 ईस्वी कोलुमंड,जोधपुरमाता -\xa0कमला देवीपिता -\xa0धांधलदेव राठौड़गुरु\xa0- समरथ भारती, गोरखनाथ जीपत्नी -\xa0फूलन देवी, सुप्यारदे(अमरकोट सूरजमल सोढा की पुत्री)भाई -\xa0बुढोजीअवतार -\xa0लक्ष्मण जी काभतीजा -\xa0रुपनाथ झरडा / बालकनाथबहने -\xa0पैमादे, सोनलदेभक्त एवं सहयोगी -\xa0सावंतजी, डेमाजी, हरमलजी, चांदोजी, सलजीमुहणोत नैणसी\xa0और आंसिया मोडजी के अनुसार पाबूजी का जन्म जूनागाव,बीकानेर\xa0में एक अप्सरा से हुआ था।ऊंट बीमार होने पर पाबूजी की पूजा की जाती है।घोड़ी -\xa0केसर कालमीदेवल चारणी की गायों की रक्षा हेतु अपने विवाह के फेरो के बीच में से जाकर अपने बहनोई जिन्दराव खिंची से युद्ध में लड़ते हुए देंचू नामक स्थान पर वीरगती को प्राप्त हुए।पाबूजी ने चार ही फेरे लिए थे ।भतीजे रुपनाथ ने जिन्दराव खिंची को मारकर पाबूजी की हत्या का बदला लिया।पाबूजी का मंदिर -\xa0कोलूमंड, जोधपुर ( अश्वारोही प्रतिमा और बाई और झुकी हुई पाग)मेला -\xa0चैत्र अमावस्या कोपाबूजी की फड़ -\xa0भोपा द्वारा वाचन ( वाद्ययंत्र - रावनहत्था )",
+        ),
+        (
+            "बीकानेर एक अलमस्त शहर है, अलमस्त इसलिए कि यहाँ के लोग बेफिक्र के साथ अपना जीवन यापन करते है।…",
+            'बीकानेर एक अलमस्त शहर है, अलमस्त इसलिए कि यहाँ के लोग बेफिक्र के साथ अपना जीवन यापन करते है। बीकानेर नगर की स्थापना के विषय मे दो कहानियाँ लोक में प्रचलित है। एक तो यह कि, नापा साँखला जो कि बीकाजी के मामा थे उन्होंने राव जोधा से कहा कि आपने भले ही राव सातल जी को जोधपुर का उत्तराधिकारी बनाया किंतु बीकाजी को कुछ सैनिक सहायता सहित सारुँडे का पट्टा दे दीजिये।[3] वह वीर तथा भाग्य का धनी है। वह अपने बूते खुद अपना राज्य स्थापित कर लेगा। जोधाजी ने नापा की सलाह मान ली। और पचास सैनिकों सहित पट्टा नापा को दे दिया। बीकाजी ने यह फैसला राजी खुशी मान लिया। उस समय कांधल जी, रूपा जी, मांडल जी, नाथा जी और नन्दा जी ये पाँच सरदार जो जोधा के सगे भाई थे साथ ही नापा साँखला, बेला पडिहार, लाला लखन सिंह बैद, चौथमल कोठारी, नाहर सिंह बच्छावत, विक्रम सिंह राजपुरोहित, सालू जी राठी आदि कई लोगों ने राव बीका जी का साथ दिया। इन सरदारों के साथ राव बीका जी ने बीकानेर की स्थापना की।बीकानेर की स्थापना के पीछे दूसरी कहानी ये हैं कि एक दिन राव जोधा दरबार में बैठे थे बीकाजी दरबार में देर से आये तथा प्रणाम कर अपने चाचा कांधल से कान में धीरे धीरे बात करने लगे यह देख कर जोधा ने व्यँग्य में कहा “मालूम होता है कि चाचा-भतीजा किसी नवीन राज्य को विजित करने की योजना बना रहे हैं"। इस पर बीका और कांधल ने कहाँ कि यदि आप की कृपा हो तो यही होगा। और इसी के साथ चाचा – भतीजा दोनों दरबार से उठ के चले आये तथा दोनों ने बीकानेर राज्य की स्थापना की। इस संबंध में एक लोक दोहा भी प्रचलित है-पन्द्रह सौ पैंतालवे, सुद बैसाख सुमेरथावर बीज थरपियो, बीका बीकानेर',
+        ),
+        (
+            "Money plays a significant role in modern life, serving as a means to achieve stability, comfort…",
+            "Money plays a significant role in modern life, serving as a means to achieve stability, comfort, and access to various opportunities. Its importance can be viewed from several perspectives:1. Basic Needs and SurvivalMoney is essential for meeting basic needs such as food, shelter, clothing, and healthcare. Without it, maintaining a decent standard of living becomes challenging.2. Education and GrowthAccess to quality education often depends on financial resources. Education, in turn, opens doors to personal and professional growth, contributing to a better quality of life.3. Security and StabilityHaving money provides financial security and peace of mind. It acts as a buffer during emergencies, such as medical crises or job loss, reducing stress and uncertainty.4. Freedom and IndependenceMoney grants individuals the freedom to make choices about their lives, whether it's pursuing passions, traveling, or exploring new career opportunities.5. Social ContributionWealth allows people to support causes they care about, donate to charities, and help others in need, thereby creating a positive societal impact.6. Enhancing Quality of LifeWhile money alone can't buy happiness, it can improve the quality of life by providing access to better healthcare, technology, entertainment, and experiences.",
+        ),
+    ],
+    "github": [
+        (
+            "Windy3f3f3f3f/LLM-FuzzX",
+            "This is description:\nLLM-FuzzX is a user-friendly fuzz testing tool for Large Language Models (e.g., GPT, Claude, LLaMA), featuring advanced task-aware mutation strategies, fine-grained evaluations, and jailbreak detection to uncover potential security vulnerabilities and enhance model robustness..\n This is readme of the repo:README無法訪問或未找到。",
+        )
+    ],
+}

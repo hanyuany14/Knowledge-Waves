@@ -21,6 +21,7 @@ class ShortcutsUtil:
 
     def __shortcut_summary(self, source_and_titles: list[dict[str, str]]) -> str:
         article_titles_and_contents = GCSOperation().fetch_articles_by_title(source_and_titles=source_and_titles)
+        print(f"\n\narticle_titles_and_contents: \n\n{article_titles_and_contents}")
         summaarized_content = Summarization().llm_summary(target_articles=article_titles_and_contents)
         return summaarized_content
 
