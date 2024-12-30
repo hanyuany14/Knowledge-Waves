@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, ShortcutResponse, TagsResponse
+from src.backend.api.response_schema import SummarizeResponse, ShortcutResponseWithLikes, TagsResponse
 from src.backend.api.request_schema import TextSearchSummarizeRequest, SelectedTagsSummarizeRequest
 from src.backend.main import Main
 from src.backend.shortcut import ShortcutsUtil
@@ -113,29 +113,29 @@ def get_question_2():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/shortcut/question3", response_model=ShortcutResponse)
+@app.get("/shortcut/question3", response_model=ShortcutResponseWithLikes)
 def get_question_3():
     """
     提問 3：對所有來源今日的文章關於 LLM RAG 的內容進行介紹
     """
     try:
         articles, summarized_content = shortcuts_util.question_3()
-        formatted_articles = [ShortcutResponse.Article(**article) for article in articles]
-        return ShortcutResponse(articles=formatted_articles, summarized_content=summarized_content)
+        formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
+        return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/shortcut/question4", response_model=ShortcutResponse)
+@app.get("/shortcut/question4", response_model=ShortcutResponseWithLikes)
 def get_question_4():
     """
     提問 4：目前資料中來自「medium」的五篇最熱門文章是什麼？
     """
     try:
         articles, summarized_content = shortcuts_util.question_4()
-        formatted_articles = [ShortcutResponse.Article(**article) for article in articles]
-        return ShortcutResponse(articles=formatted_articles, summarized_content=summarized_content)
+        formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
+        return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

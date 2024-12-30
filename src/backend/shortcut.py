@@ -73,7 +73,7 @@ class ShortcutsUtil:
         提問 3：對所有來源今日的文章關於 LLM RAG 的內容進行介紹
         """
         query = f"""
-        SELECT DISTINCT title, source, url
+        SELECT DISTINCT title, source, likes, url
         FROM `{self.article_table_ref}`,
             UNNEST(tags) AS tag
         WHERE publish_date >= TIMESTAMP('{self.yesterday}')
@@ -82,7 +82,9 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source, "url": row.url} for row in results]
+        parse_result = [
+            {"title": row.title, "source": row.source, "likes": str(row.likes), "url": row.url} for row in results
+        ]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
@@ -92,7 +94,7 @@ class ShortcutsUtil:
         提問 4：目前資料中來自「medium」的五篇最熱門文章是什麼？
         """
         query = f"""
-        SELECT title, source, url
+        SELECT title, source, likes, url
         FROM `{self.article_table_ref}`
         WHERE source = 'medium'
         ORDER BY likes DESC
@@ -100,7 +102,9 @@ class ShortcutsUtil:
         """
         query_job = self.bq_client.query(query)
         results = query_job.result()
-        parse_result = [{"title": row.title, "source": row.source, "url": row.url} for row in results]
+        parse_result = [
+            {"title": row.title, "source": row.source, "likes": str(row.likes), "url": row.url} for row in results
+        ]
         summaarized_content = self.__shortcut_summary(parse_result)
 
         return parse_result, summaarized_content
