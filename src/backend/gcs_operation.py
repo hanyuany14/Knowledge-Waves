@@ -84,7 +84,7 @@ class GCSOperation:
 
         return article_titles_and_contents
 
-    def fetch_articles_by_title(self, source_and_titles: list[dict[str, str]]) -> dict[str, list[tuple[str, str]]]:
+    def fetch_articles_by_title(self, source_and_titles: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
         """Fetches articles from the bucket based on source and titles.
 
         Args:
@@ -123,7 +123,6 @@ class GCSOperation:
 
                 if blob.exists():
                     content = blob.download_as_text()
-                    # article_titles_and_contents_and_urls[source].append((title, content))
                     article_titles_and_contents_and_urls[source].append(
                         {"title": title, "url": url, "content": content}
                     )
