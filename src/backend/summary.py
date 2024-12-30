@@ -10,16 +10,16 @@ from src.backend.configs import GOOGLE_API_KEY
 
 
 class Summarization:
-    def __init__(self): ...
+    def __init__(self):
 
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash-8b",
-        temperature=0,
-        max_tokens=None,
-        timeout=None,
-        max_retries=2,
-        api_key=GOOGLE_API_KEY,  # type: ignore
-    )
+        self.llm = ChatGoogleGenerativeAI(
+            model="gemini-1.5-flash-8b",
+            temperature=0,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+            api_key=GOOGLE_API_KEY,  # type: ignore
+        )
 
     def do_text_search_summary(
         self, query: str, sources: list[str] | None = None
