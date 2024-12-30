@@ -55,13 +55,12 @@ class Summarization:
 
         summary = self.llm_summary(combined_articles)
         print("summary success")
-        interested_tags = [tag[0] for tag in tags]
 
-        print(f"\n\ninterested_tags: \n\n{interested_tags}")
+        print(f"\n\ninterested_tags: \n\n{tags}")
         print(f"\n\nsummary: \n\n{summary}")
         print(f"\n\narticles: \n\n{articles}")
 
-        return interested_tags, summary, articles
+        return tags, summary, articles
 
     def do_select_tag_summary(
         self, selected_tags: list[str], sources: list[str] | None = None

@@ -89,6 +89,7 @@ class BigQueryOperation:
                                                         }
         """
         try:
+            print(f"interested_tags: {interested_tags}")
             query = f"""
                 SELECT source, title, url, likes, language
                 FROM `{self.article_table_ref}`
@@ -116,6 +117,8 @@ class BigQueryOperation:
                 if source not in articles_by_source:
                     articles_by_source[source] = []
                 articles_by_source[source].append(title_url_tuple)
+
+            print(f"articles_by_source: {articles_by_source}")
 
             return articles_by_source
 
