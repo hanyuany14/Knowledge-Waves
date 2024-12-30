@@ -26,9 +26,9 @@ class Crawl:
     def __init__(self) -> None:
         self.yesterday, self.today = utils.get_time_range()
 
-        self.__medium_max_times = 1
-        self.__medium_categories = 1
-        self.__csdn_max_pages = 1
+        self.__medium_max_times = 8
+        self.__medium_categories = 1000
+        self.__csdn_max_pages = 10
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
