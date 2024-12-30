@@ -38,7 +38,7 @@ class Summarization:
         """
         tags = VectorStore().search_similar_tags(query=query, sources=sources)
         print(f"tags: {tags}")
-        articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
+        articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags, sources=sources)
         print("articles success")
         article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
         print("content success")

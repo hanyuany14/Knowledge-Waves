@@ -13,14 +13,14 @@ if __name__ == "__main__":
 
     main = Main()
 
-    print("Start preparing news...")
-    main.prepare_news()
-    print("Done!")
+    # print("Start preparing news...")
+    # main.prepare_news()
+    # print("Done!")
 
-    # query = "react"
-    # print(query)
-    # sources = ["github", "medium"]
-    # tags, summary, articles = main.do_text_search_summary(query=query, sources=sources)
+    query = "react"
+    print(query)
+    sources = ["github", "medium"]
+    tags, summary, articles = main.do_text_search_summary(query=query, sources=sources)
 
     # selected_tags = ["python"]
     # print(selected_tags)

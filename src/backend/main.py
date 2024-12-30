@@ -26,7 +26,8 @@ class Main:
             summaarized_content (str): 總結的文章內容 e.g. "summary"
             article_titles (list[tuple[str, str]]): tags 包含的所有文章標題 e.g. [("title", "url")]
         """
-
+        print(f"query: {query}")
+        print(f"sources: {sources}")
         interested_tags, summaarized_content, article_titles = Summarization().do_text_search_summary(query, sources)
 
         return interested_tags, summaarized_content, article_titles
