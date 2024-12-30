@@ -90,13 +90,13 @@ def get_question_1():
     """
     提問 1：今天最受歡迎的文章前五篇文章分別為何？
     """
-    # try:
-    articles, summarized_content = shortcuts_util.question_1()
-    formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
-    return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
+    try:
+        articles, summarized_content = shortcuts_util.question_1()
+        formatted_articles = [ShortcutResponseWithLikes.ArticleWithLikes(**article) for article in articles]
+        return ShortcutResponseWithLikes(articles=formatted_articles, summarized_content=summarized_content)
 
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/shortcut/question2", response_model=ShortcutResponseWithLikes)

@@ -18,17 +18,5 @@ class ShortcutResponseWithLikes(BaseModel):
     articles: List[ArticleWithLikes]
     summarized_content: str
 
-
-# class ShortcutResponse(BaseModel):
-#     class Article(BaseModel):
-#         title: str
-#         url: str
-#         source: str
-#         likes: str
-
-#     articles: List[Article]
-#     summarized_content: str
-
-
 class TagsResponse(BaseModel):
     tag: List[str]
