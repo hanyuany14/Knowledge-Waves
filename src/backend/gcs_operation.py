@@ -108,7 +108,7 @@ class GCSOperation:
             for source_and_title in source_and_titles:
                 source = source_and_title["source"]
                 title = source_and_title["title"]
-                url = source_and_title["title"]
+                url = source_and_title["url"]
 
                 if not source or not title:
                     print(f"Invalid source or title: {source_and_title}")
