@@ -1,6 +1,7 @@
+import os
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
-import os
+from langchain_core.output_parsers import StrOutputParser
 
 from src.backend.vectorstore import VectorStore
 from src.backend.bigquery_operation import BigQueryOperation
@@ -62,37 +63,6 @@ class Summarization:
 
         return interested_tags, summary, articles
 
-    # def do_text_search_summary(
-    #     self, query: str, sources: list[str] | None = None
-    # ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
-    #     """The function to summarize the articles based on the user query.
-
-    #     Args:
-    #         query (str): The query to search for. e.g. "Give me some information about NLP."
-    #         sources (list[str], optional): The sources selected by user to search. Defaults to None.
-    #                                         e.g. ["github", "medium"]
-    #     Returns:
-    #         tuple[list[str], str, dict[str, list[tuple[str, str]]]]:
-    #             - tags(list[str]): A list of similar tags.
-    #             - summary(str): The summarized content of the articles.
-    #             - articles(dict[str, list[tuple[str, str]]]): A dictionary where the key is the source and the value
-    #                         is a list of tuples containing the title and URL of matching articles.
-    #     """
-    #     tags = VectorStore().search_similar_tags(query=query, sources=sources)
-    #     print(f"tags: {tags}")
-    #     articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=tags)
-    #     print("articles success")
-    #     article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
-    #     print("content success")
-    #     summary = self.llm_summary(article_titles_and_contents)
-    #     print("summary success")
-    #     interested_tags = [tag[0] for tag in tags]
-
-    #     print(f"\n\ninterested_tags: \n\n{interested_tags}")
-    #     print(f"\n\nsummary: \n\n{summary}")
-    #     print(f"\n\narticles: \n\n{articles}")
-
-    #     return interested_tags, summary, articles
     def do_select_tag_summary(
         self, selected_tags: list[str], sources: list[str] | None = None
     ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
@@ -132,67 +102,6 @@ class Summarization:
 
         return selected_tags, summary, articles
 
-    # def do_select_tag_summary(
-    #     self, selected_tags: list[str], sources: list[str] | None = None
-    # ) -> tuple[list[str], str, dict[str, list[tuple[str, str, int, str | None]]]]:
-    #     """The function to summarize the articles based on the user query.
-
-    #     Args:
-    #         query (str): The query to search for. e.g. "Give me some information about NLP."
-    #         sources (list[str], optional): The sources selected by user to search. Defaults to None.
-    #                                         e.g. ["github", "medium"]
-    #     Returns:
-    #         tuple[list[str], str, dict[str, list[tuple[str, str]]]]:
-    #             - tags(list[str]): A list of similar tags.
-    #             - summary(str): The summarized content of the articles.
-    #             - articles(dict[str, list[tuple[str, str]]]): A dictionary where the key is the source and the value
-    #                         is a list of tuples containing the title and URL of matching articles.
-    #     """
-    #     articles = BigQueryOperation().fetch_articles_by_tags(interested_tags=selected_tags, sources=sources)
-    #     print("articles success")
-    #     article_titles_and_contents = GCSOperation().fetch_articles_by_title_and_url(source_and_titles_and_url=articles)
-    #     print("content success")
-    #     summary = self.llm_summary(article_titles_and_contents)
-    #     print("summary success")
-
-    #     print(f"\n\selected_tags: \n\n{selected_tags}")
-    #     print(f"\n\nsummary: \n\n{summary}")
-    #     print(f"\n\narticles: \n\n{articles}")
-
-    #     return selected_tags, summary, articles
-
-    # def llm_summary(self, target_articles: dict[str, list[tuple[str, str]]]) -> str:
-    #     prompt_1 = ChatPromptTemplate.from_messages(
-    #         [
-    #             ("system", "你是一個友善的學者，負責將文章總結成有意義且重點的段落。請使用繁體中文回覆。"),
-    #             ("human", "{input}"),
-    #         ]
-    #     )
-
-    #     prompt_2 = ChatPromptTemplate.from_messages(
-    #         [
-    #             (
-    #                 "system",
-    #                 "你需要將每一個文章總結整合成一段敘述，然後標題（repo 標題或是文章標題）要用 <a href> 中間加入 url",
-    #             ),
-    #             ("human", "{input}"),
-    #         ]
-    #     )
-    #     chain_1 = prompt_1 | self.llm
-    #     chain_2 = prompt_2 | self.llm
-
-    #     summaries = []
-    #     processed_titles = set()
-
-    #     for source, articles in target_articles.items():
-    #         for title, content in articles:
-    #             if title not in processed_titles:
-    #                 response = chain_1.invoke({"input": content})
-    #                 summary = f'"{source}" {title}: {response.content}'
-    #                 summaries.append(summary)
-    #                 processed_titles.add(title)
-
-    #     return "\n\n".join(summaries)
     def llm_summary(self, target_articles: dict[str, list[dict[str, str]]]) -> str:
         # 第一層提示：對每篇文章進行摘要，使用白話且列點
         prompt_1 = ChatPromptTemplate.from_messages(
@@ -216,8 +125,8 @@ class Summarization:
             ]
         )
 
-        chain_1 = prompt_1 | self.llm
-        chain_2 = prompt_2 | self.llm
+        chain_1 = prompt_1 | self.llm | StrOutputParser()
+        chain_2 = prompt_2 | self.llm | StrOutputParser()
 
         source_summaries = {}
 
@@ -230,7 +139,7 @@ class Summarization:
 
                 # 第一層摘要
                 response = chain_1.invoke({"content": content})
-                article_summary = response.content.strip()
+                article_summary = response.strip()
                 # 格式化每篇文章的摘要，保留標題和 URL
                 formatted_summary = f'"{title}": {article_summary} <a href="{url}">{title}</a>'
                 per_article_summaries.append(formatted_summary)
@@ -240,7 +149,7 @@ class Summarization:
 
             # 第二層摘要，生成來源級別的總結
             response = chain_2.invoke({"summaries": summaries_input})
-            source_summary = response.content.strip()
+            source_summary = response.strip()
             source_summaries[source] = source_summary
 
         # 將所有來源的總結組合成最終的總結字符串
