@@ -1,3 +1,10 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../.."))
+sys.path.append(project_root)
+
 import requests
 import json
 import base64
@@ -9,7 +16,6 @@ import markdown
 import re
 import time
 import random
-import logging
 from logging.handlers import RotatingFileHandler
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -26,9 +32,9 @@ class Crawl:
     def __init__(self) -> None:
         self.yesterday, self.today = utils.get_time_range()
 
-        self.__medium_max_times = 8
-        self.__medium_categories = 1000
-        self.__csdn_max_pages = 10
+        self.__medium_max_times = 3
+        self.__medium_categories = 10
+        self.__csdn_max_pages = 5
 
         self.__medium_existed_article = set()
         self.__medium_existed_tags = set()
@@ -92,6 +98,9 @@ class Crawl:
             print(f"CSDN爬取失敗：{e}")
             csdn_result, csdn_tags = [], set()
 
+        # github_result, github_tags = [], set()
+        # csdn_result, csdn_tags = [], set()
+
         crawl_results = {
             "github": github_result,
             "medium": medium_result,
@@ -103,49 +112,6 @@ class Crawl:
             "medium": self.__translate(list(medium_tags)),
             "csdn": self.__translate(list(csdn_tags)),
         }
-
-        # # 將所有 today_tags 聚合到一個列表中進行翻譯
-        # all_today_tags = list(github_tags.union(medium_tags).union(csdn_tags))
-        # translated_today_tags = self.__translate(all_today_tags)
-
-        # # 將翻譯後的標籤重新分配回各個來源
-        # translated_today_tags_dict = {
-        #     "github": set(),
-        #     "medium": set(),
-        #     "csdn": set(),
-        # }
-
-        # for tag in translated_today_tags:
-        #     if tag in github_tags:
-        #         translated_today_tags_dict["github"].add(tag)
-        #     if tag in medium_tags:
-        #         translated_today_tags_dict["medium"].add(tag)
-        #     if tag in csdn_tags:
-        #         translated_today_tags_dict["csdn"].add(tag)
-
-        # # 替換原有的 today_tags 為翻譯後的標籤
-        # today_tags = translated_today_tags_dict
-
-        # 將所有標籤從 crawl_results 中提取出來進行翻譯
-        all_crawl_tags = set()
-        for source, results in crawl_results.items():
-            for item in results:
-                all_crawl_tags.update(item.get("tags", []))
-
-        translated_crawl_tags = self.__translate(list(all_crawl_tags))
-
-        # 創建一個標籤對照表
-        tag_translation_map = {
-            original: translated for original, translated in zip(all_crawl_tags, translated_crawl_tags)
-        }
-
-        # 替換 crawl_results 中的標籤
-        for source, results in crawl_results.items():
-            for item in results:
-                original_tags = item.get("tags", [])
-                translated_tags = [tag_translation_map.get(tag, tag) for tag in original_tags]
-                item["tags"] = translated_tags
-                print(f"來源 {source} 的文章 '{item['title']}' 的標籤已翻譯為 {translated_tags}")
 
         return crawl_results, today_tags
 
@@ -596,6 +562,8 @@ class Crawl:
             bool: 是否在範圍內
         """
         now = datetime.now()
+
+        print(f"publish_timeL {publish_time}")
         if "小時前" in publish_time:
             hours = int(re.search(r"(\d+)小時前", publish_time).group(1))
             publish_time_obj = now - timedelta(hours=hours)
@@ -626,6 +594,7 @@ class Crawl:
             datetime: 發布時間的datetime對象
         """
         now = datetime.now()
+        print(f"publish_timeL {publish_time}")
         if "小時前" in publish_time:
             hours = int(re.search(r"(\d+)小時前", publish_time).group(1))
             return now - timedelta(hours=hours)
@@ -885,6 +854,8 @@ class Crawl:
                 json_data = response.text[16:]
                 data = json.loads(json_data)
 
+                # print(f"\n\ndata:\n\n{data}")
+
                 paragraphs = data["payload"]["value"]["content"]["bodyModel"]["paragraphs"]
                 clap_count = data["payload"]["value"]["virtuals"]["totalClapCount"]
                 language = data["payload"]["value"]["detectedLanguage"]
@@ -959,19 +930,3 @@ if __name__ == "__main__":
     crawl_results, today_tags = crawl.crawl()
     print(f"\n\ncrawl_results:\n\n{crawl_results}")
     print(f"\n\ntoday_tags:\n\n{today_tags}")
-
-    # # 合併 crawl_results 和 today_tags 到一個字典中
-    # # 將 today_tags 中的 set 轉換為 list，以便 JSON 序列化
-    # combined_results = {"crawl_results": crawl_results, "today_tags": {k: list(v) for k, v in today_tags.items()}}
-
-    # # 保存到一個 JSON 文件
-    # with open("combined_crawl_results_csdn.json", "w", encoding="utf-8") as f:
-    #     json.dump(combined_results, f, ensure_ascii=False, indent=2)
-    # print("Combined crawl results 已保存到 combined_crawl_results_csdn.json")
-
-    # # 另外保存CSDN的結果
-    # csdn_results = crawl_results.get("csdn", [])
-    # # 由於__crawl_from_csdn已經過濾了24小時內的文章，直接保存
-    # with open("csdn_crawl_results_24.json", "w", encoding="utf-8") as f:
-    #     json.dump(csdn_results, f, ensure_ascii=False, indent=2)
-    # print("CSDN crawl results 已保存到 csdn_crawl_results_24.json")

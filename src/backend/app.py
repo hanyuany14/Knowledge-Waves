@@ -50,15 +50,15 @@ def do_text_search_summarize(request: TextSearchSummarizeRequest):
     - LLM 總結：使用 LLM 將文章內容總結
     - 回傳結果：將總結回傳給使用者
     """
-    try:
-        interested_tags, summarized_content, article_titles = main_service.do_text_search_summary(
-            query=request.query, sources=request.sources
-        )
-        return SummarizeResponse(
-            interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    # try:
+    interested_tags, summarized_content, article_titles = main_service.do_text_search_summary(
+        query=request.query, sources=request.sources
+    )
+    return SummarizeResponse(
+        interested_tags=interested_tags, summarized_content=summarized_content, article_titles=article_titles
+    )
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/selected_tags_summarize", response_model=SummarizeResponse)

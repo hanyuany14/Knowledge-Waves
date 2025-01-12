@@ -1,3 +1,10 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../.."))
+sys.path.append(project_root)
+
 from src.backend.summary import Summarization
 from src.backend.vectorstore import VectorStore
 from src.backend.bigquery_operation import BigQueryOperation
@@ -79,3 +86,9 @@ class Main:
         VectorStore().embedding_and_upload(today_tags=today_tags)
 
         return True
+
+
+if __name__ == "__main__":
+    main_service = Main()
+    main_service.prepare_news()
+    print("Prepare news success")
