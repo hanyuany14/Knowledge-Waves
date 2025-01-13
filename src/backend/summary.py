@@ -136,6 +136,10 @@ class Summarization:
                 url = article["url"]
                 content = article["content"]
 
+                content = content.strip()
+                if not content:
+                    continue
+
                 # 第一層摘要
                 response = chain_1.invoke({"content": content})
                 article_summary = response.strip()

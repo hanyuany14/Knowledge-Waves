@@ -12,11 +12,11 @@ app = FastAPI()
 main_service = Main()
 shortcuts_util = ShortcutsUtil()
 
-# 5. 數據分析 - 文章內容的斷詞和分析、文字雲可以先在 python 做，然後存在 GCS 前端就去取
+origins = ["*", "https://data-model-final-project.vercel.app"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
